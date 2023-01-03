@@ -4,8 +4,7 @@ fn player_name_to_file_name(player_name: String) -> String {
     format!("{}_save_data.txt", player_name).to_ascii_lowercase()
 }
 
-
-/// Creates a save file for the player and returns the name of the file
+// Creates a save file for the player and returns the name of the file
 pub fn create_save_file(player_name: String) -> String {
     let file_name = player_name_to_file_name(player_name);
     let create_file_result = File::create(file_name.clone());

@@ -1,16 +1,12 @@
-mod save;
-mod io_util;
+mod utils;
+mod prompts;
+mod class;
+mod player;
 
-fn is_valid_name(name: String) -> bool {
-    name.chars().all(char::is_alphabetic)
-}
+use utils::save;
+use prompts::new_player_prompt;
 
 fn main() {
-    let name = io_util::request_input(
-        "What is your name?",
-        is_valid_name,
-        "Name must be alphetic (letters only). Please enter a different name."
-    );
-    println!("Hello, {name}!");
-    save::create_save_file(name);
+    let player = new_player_prompt::new_player();
+    save::create_save_file(player.name);
 }
