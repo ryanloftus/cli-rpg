@@ -18,12 +18,7 @@ pub fn new_player() -> Player {
     println!("Territories far and wide have all been suffering from various wars, monster attacks, and infighting.");
     let will_save_world = io_util::request_yes_or_no("Will you help save the world? [Y/N]");
     if will_save_world {
-        Player {
-            name,
-            class,
-            level: 1,
-            skills: [].to_vec(),
-        }
+        Player::new(name, class)
     } else {
         panic!("The world was not saved.");
     }

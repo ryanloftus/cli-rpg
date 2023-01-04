@@ -1,5 +1,6 @@
 mod area;
 mod class;
+mod enemy;
 mod player;
 mod prompts;
 mod skill;
