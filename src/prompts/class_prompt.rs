@@ -8,9 +8,7 @@ fn is_valid_class(class: String, options: &[class::Class]) -> bool {
             .iter()
             .any(|real_class| class == real_class.unique_id)
     } else {
-        options
-            .iter()
-            .any(|real_class| class == real_class.name)
+        options.iter().any(|real_class| class == real_class.name)
     }
 }
 
@@ -36,7 +34,9 @@ fn starter_class_from_string(class: String) -> class::Class {
 
 pub fn starting_class_prompt() -> class::Class {
     println!("What class of fighter are you?");
-    class::STARTER_CLASSES.iter().for_each(|class| println!("{}", class.to_string()));
+    class::STARTER_CLASSES
+        .iter()
+        .for_each(|class| println!("{}", class.to_option_string()));
     let class = io_util::request_input(
         "Choose a class.",
         is_valid_starter_class,

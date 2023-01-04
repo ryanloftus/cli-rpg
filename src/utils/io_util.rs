@@ -22,3 +22,24 @@ pub fn request_input(
     }
     input
 }
+
+fn is_yes(answer: &String) -> bool {
+    answer.to_ascii_lowercase().starts_with("y")
+}
+
+fn is_no(answer: &String) -> bool {
+    answer.to_ascii_lowercase().starts_with("n")
+}
+
+fn is_valid_yes_or_no(answer: String) -> bool {
+    is_yes(&answer) || is_no(&answer)
+}
+
+pub fn request_yes_or_no(prompt: &str) -> bool {
+    let answer = request_input(
+        prompt,
+        is_valid_yes_or_no,
+        "Please enter yes (Y) or no (N).",
+    );
+    is_yes(&answer)
+}

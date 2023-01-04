@@ -8,7 +8,7 @@ pub struct Class {
 }
 
 impl Class {
-    pub fn to_string(&self) -> String {
+    pub fn to_option_string(&self) -> String {
         format!("({}) {}", self.unique_id, self.name)
     }
 
