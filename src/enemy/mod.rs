@@ -11,13 +11,7 @@ pub struct Enemy {
 }
 
 impl Enemy {
-    pub const fn new_const(name: &'static str, level: u8, skills: &'static [Skill]) -> Enemy {
-        Enemy {
-            name: Cow::Borrowed(name),
-            level: level,
-            skills: skills.to_vec(),
-        }
-    }
-
     // TODO: new fn for each type of enemy for simpler enemy generation.
+    // should enemies be generated at compile time? or should the be generated as needed?
+    // the player should be able to train against an infinite pool of practice enemies
 }

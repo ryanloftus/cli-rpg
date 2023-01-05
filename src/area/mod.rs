@@ -1,2 +1,26 @@
-pub mod area;
-pub mod area_progress;
+mod plains;
+mod forest;
+mod mountains;
+mod islands;
+
+use crate::enemy::Enemy;
+use plains::PLAINS;
+use forest::FOREST;
+use mountains::MOUNTAINS;
+use islands::ISLANDS;
+
+#[derive(Debug, Clone)]
+pub struct Area {
+    pub name: &'static str,
+    pub unique_id: &'static str,
+    pub enemies: &'static [Enemy],
+    // TODO: add progress
+}
+
+impl Area {
+    pub fn to_option_string(&self) -> String {
+        format!("({}) {}", self.unique_id, self.name)
+    }
+}
+
+const AREAS: &[Area] = &[PLAINS, FOREST, ISLANDS, MOUNTAINS];
