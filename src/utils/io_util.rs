@@ -9,7 +9,12 @@ pub fn my_read_line() -> String {
     input_buffer.clone().trim_end().to_owned()
 }
 
-pub fn request_input(
+pub fn request_input(prompt: &str) -> String {
+    println!("{prompt}");
+    my_read_line()
+}
+
+pub fn request_input_with_validation(
     prompt: &str,
     validation_predicate: fn(String) -> bool,
     reprompt: &str,
@@ -36,7 +41,7 @@ fn is_valid_yes_or_no(answer: String) -> bool {
 }
 
 pub fn request_yes_or_no(prompt: &str) -> bool {
-    let answer = request_input(
+    let answer = request_input_with_validation(
         prompt,
         is_valid_yes_or_no,
         "Please enter yes (Y) or no (N).",

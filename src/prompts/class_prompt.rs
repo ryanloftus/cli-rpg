@@ -37,7 +37,7 @@ pub fn starting_class_prompt() -> class::Class {
     class::STARTER_CLASSES
         .iter()
         .for_each(|class| println!("{}", class.to_option_string()));
-    let class = io_util::request_input(
+    let class = io_util::request_input_with_validation(
         "Choose a class.",
         is_valid_starter_class,
         "Please enter a valid class option. Valid options are \"S\", \"K\", \"B\", \"M\", \"H\", and \"G\"",

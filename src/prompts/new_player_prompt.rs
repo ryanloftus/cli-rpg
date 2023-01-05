@@ -1,16 +1,16 @@
-use crate::utils::io_util;
-use crate::player::Player;
 use super::class_prompt::starting_class_prompt;
+use crate::player::Player;
+use crate::utils::io_util;
 
 fn is_valid_name(name: String) -> bool {
     name.chars().all(char::is_alphabetic)
 }
 
 pub fn new_player() -> Player {
-    let name = io_util::request_input(
+    let name = io_util::request_input_with_validation(
         "What is your name?",
         is_valid_name,
-        "Name must be alphabetic (letters only). Please enter a different name."
+        "Name must be alphabetic (letters only). Please enter a different name.",
     );
     println!("Hello, {name}!");
     let class = starting_class_prompt();

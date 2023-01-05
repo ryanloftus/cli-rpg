@@ -2,6 +2,7 @@ mod plains;
 mod forest;
 mod mountains;
 mod islands;
+mod story;
 
 use crate::enemy::Enemy;
 use plains::PLAINS;
@@ -14,7 +15,7 @@ pub struct Area {
     pub name: &'static str,
     pub unique_id: &'static str,
     pub enemies: &'static [Enemy],
-    // TODO: add progress
+    // pub story: &'static [AreaStory],
 }
 
 impl Area {
