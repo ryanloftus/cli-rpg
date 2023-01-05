@@ -16,13 +16,13 @@ const RETURN_TO_PREVIOUS_AREA_OPTION: PromptOption = PromptOption {
     short_name: "R",
 };
 
-const PROMPT: InputPrompt = InputPrompt {
-    initial_prompt: "What will you do next?",
-    options: &[NEXT_BATTLE_OPTION, RETURN_TO_PREVIOUS_AREA_OPTION],
-};
+const PROMPT: &str = "What will you do next?";
 
 pub fn prompt() -> AfterBattleAction {
-    let selected_option = PROMPT.show();
+    let selected_option = InputPrompt {
+        initial_prompt: PROMPT,
+        options: [NEXT_BATTLE_OPTION, RETURN_TO_PREVIOUS_AREA_OPTION].to_vec(),
+    }.show();
     if selected_option.short_name == NEXT_BATTLE_OPTION.short_name {
         AfterBattleAction::NextBattle
     } else {

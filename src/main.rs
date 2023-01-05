@@ -8,9 +8,9 @@ mod story;
 mod utils;
 
 use utils::save;
-use prompts::new_player_prompt;
+use prompts::start_game;
 
 fn main() {
-    let mut player = new_player_prompt::new_player();
+    let mut player = start_game::new_player();
     save::create_save_file(&player);
 }

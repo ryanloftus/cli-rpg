@@ -13,9 +13,9 @@ pub fn create_save_file(player: &Player) {
         let error_message = create_file_result.expect_err("").to_string();
         panic!("Failed to create save data file with name {file_name}. Error: {error_message}");
     }
-    // TODO: call save to fill in the file's contents
 }
 
+// TODO: only use a single save function instead of create and save as separate functions
 pub fn _save(_player: &Player) {
     todo!("write the player to the save file")
 }
