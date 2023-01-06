@@ -4,23 +4,23 @@ mod mountains;
 mod islands;
 mod story;
 
-use crate::enemy::Enemy;
+use crate::player::Player;
 use plains::PLAINS;
 use forest::FOREST;
 use mountains::MOUNTAINS;
 use islands::ISLANDS;
+use story::StoryComponent;
 
 #[derive(Debug, Clone)]
 pub struct Area {
     pub name: &'static str,
     pub unique_id: &'static str,
-    pub enemies: &'static [Enemy],
-    // pub story: &'static [AreaStory],
+    pub story: Vec<StoryComponent>,
 }
 
 impl Area {
-    pub fn to_option_string(&self) -> String {
-        format!("({}) {}", self.unique_id, self.name)
+    pub fn start(mut player: &Player) {
+        // TODO
     }
 }
 

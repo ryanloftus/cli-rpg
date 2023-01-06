@@ -1,7 +1,8 @@
 mod experience;
+mod story_progress;
 use crate::class::Class;
 use crate::skill::Skill;
-use crate::story::story_progress::StoryProgress;
+use story_progress::StoryProgress;
 use experience::Experience;
 
 pub struct Player {

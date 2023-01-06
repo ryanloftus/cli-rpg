@@ -1,5 +1,6 @@
 const EXPERIENCE_PER_LEVEL: u8 = 100;
 const EXPERIENCE_FOR_ENEMY_DEFEATED: u8 = 5;
+const EXPERIENCE_FOR_BOSS_DEFEATED: u8 = 100;
 const EXPERIENCE_FOR_AREA_CLEARED: u8 = 100;
 
 #[derive(Debug, Clone)]
@@ -17,8 +18,12 @@ impl Experience {
         }
     }
 
-    pub fn enemy_defeated(self) {
-        self.add_experience(EXPERIENCE_FOR_ENEMY_DEFEATED);
+    pub fn enemies_defeated(self, num_enemies: u8) {
+        self.add_experience(EXPERIENCE_FOR_ENEMY_DEFEATED * num_enemies);
+    }
+
+    pub fn boss_defeated(self) {
+        self.add_experience(EXPERIENCE_FOR_BOSS_DEFEATED);
     }
 
     pub fn area_cleared(self) {

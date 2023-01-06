@@ -4,7 +4,6 @@ mod enemy;
 mod player;
 mod prompts;
 mod skill;
-mod story;
 mod utils;
 
 use utils::save::save;

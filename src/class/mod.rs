@@ -5,12 +5,6 @@ pub struct Class {
     // TODO: add stat modifiers and skills and class progressions
 }
 
-impl Class {
-    pub fn to_option_string(&self) -> String {
-        format!("({}) {}", self.unique_id, self.name)
-    }
-}
-
 mod starter {
     use super::Class;
 
