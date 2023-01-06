@@ -7,10 +7,10 @@ mod skill;
 mod story;
 mod utils;
 
-use utils::save;
+use utils::save::save;
 use prompts::start_game;
 
 fn main() {
     let mut player = start_game::new_player();
-    save::create_save_file(&player);
+    save(&player);
 }

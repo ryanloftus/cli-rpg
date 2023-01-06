@@ -1,21 +1,59 @@
 use std::fs::File;
+use std::io::BufWriter;
+use std::io::Write;
 use crate::player::Player;
 
-fn player_name_to_file_name(player_name: &String) -> String {
-    format!("{}_save_data.txt", player_name)
+fn get_current_working_dir() -> String {
+    std::env::current_dir()
+        .expect("Failed to get current working directory")
+        .into_os_string()
+        .into_string()
+        .unwrap()
 }
 
-// Creates a save file for the player and returns the name of the file
-pub fn create_save_file(player: &Player) {
-    let file_name = player_name_to_file_name(&player.name);
-    let create_file_result = File::create(file_name.clone());
-    if create_file_result.is_err() {
-        let error_message = create_file_result.expect_err("").to_string();
-        panic!("Failed to create save data file with name {file_name}. Error: {error_message}");
-    }
+fn player_name_to_file_path(player_name: &String) -> String {
+    format!(
+        "{dir}\\{player_name}_save_data.txt",
+        dir = get_current_working_dir(),
+        player_name = player_name,
+    )
 }
 
-// TODO: only use a single save function instead of create and save as separate functions
-pub fn _save(_player: &Player) {
-    todo!("write the player to the save file")
+// TODO: save skills
+fn get_save_file_contents(player: &Player) -> String {
+    format!(
+"{{
+    name: {player_name},
+    class: {class_id},
+    experience: {{
+        level: {level},
+        experience_towards_next_level: {experience_towards_next_level},
+    }},
+    skills: [
+        // TODO
+    ],
+    story_progress: {{
+        areas_completed: {areas_completed},
+        enemies_defeated_in_current_area: {enemies_defeated_in_current_area},
+    }}
+}}",
+        player_name = player.name,
+        class_id = player.class.unique_id,
+        level = player.experience.level,
+        experience_towards_next_level = player.experience.experience_towards_next_level,
+        areas_completed = player.story_progress.areas_completed,
+        enemies_defeated_in_current_area = player.story_progress.enemies_defeated_in_current_area,
+    )
+}
+
+fn open_save_file(player_name: &String) -> File {
+    let file_name = player_name_to_file_path(&player_name);
+    File::create(file_name.clone()).expect("Could not create/open the save file.")
+}
+
+pub fn save(player: &Player) {
+    let file = open_save_file(&player.name);
+    let contents = get_save_file_contents(player);
+    let mut writer = BufWriter::new(file);
+    writer.write_all(contents.as_bytes()).expect("Write to save file failed");
 }

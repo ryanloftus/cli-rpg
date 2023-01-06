@@ -24,4 +24,4 @@ impl Area {
     }
 }
 
-const AREAS: &[Area] = &[PLAINS, FOREST, ISLANDS, MOUNTAINS];
+pub const AREAS: &[Area] = &[PLAINS, FOREST, ISLANDS, MOUNTAINS];
