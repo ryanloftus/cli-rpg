@@ -1,7 +1,9 @@
+use serde::{Deserialize, Serialize};
+
 /*
  * SkillAttributes describe a Skill and allow Skills to have more complex effects than simply dealing damage
  */
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SkillAttribute {
     name: &'static str,
 }

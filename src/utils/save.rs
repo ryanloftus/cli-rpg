@@ -1,6 +1,10 @@
+use std::error::Error;
 use std::fs::File;
 use std::io::BufWriter;
 use std::io::Write;
+use std::io::BufReader;
+use std::path::Path;
+use serde_json;
 use crate::player::Player;
 
 fn get_current_working_dir() -> String {
@@ -19,31 +23,8 @@ fn player_name_to_file_path(player_name: &String) -> String {
     )
 }
 
-// TODO: save skills
 fn get_save_file_contents(player: &Player) -> String {
-    format!(
-"{{
-    name: {player_name},
-    class: {class_id},
-    experience: {{
-        level: {level},
-        experience_towards_next_level: {experience_towards_next_level},
-    }},
-    skills: [
-        // TODO
-    ],
-    story_progress: {{
-        areas_completed: {areas_completed},
-        enemies_defeated_in_current_area: {enemies_defeated_in_current_area},
-    }}
-}}",
-        player_name = player.name,
-        class_id = player.class.unique_id,
-        level = player.experience.level,
-        experience_towards_next_level = player.experience.experience_towards_next_level,
-        areas_completed = player.story_progress.areas_completed,
-        enemies_defeated_in_current_area = player.story_progress.enemies_defeated_in_current_area,
-    )
+    serde_json::to_string_pretty(player).expect("Failed to serialize player.")
 }
 
 fn open_save_file(player_name: &String) -> File {
@@ -56,4 +37,17 @@ pub fn save(player: &Player) {
     let contents = get_save_file_contents(player);
     let mut writer = BufWriter::new(file);
     writer.write_all(contents.as_bytes()).expect("Write to save file failed");
+}
+
+pub fn has_save_file(player_name: &String) -> bool {
+    let save_file_path = player_name_to_file_path(player_name);
+    let save_file_path = Path::new(&save_file_path);
+    save_file_path.exists()
+}
+
+pub fn load_save_file(player_name: &String) -> Result<Player, Box<dyn Error>> {
+    let file = open_save_file(player_name);
+    let reader = BufReader::new(file);
+    let mut player = serde_json::from_reader(reader)?;
+    Ok(player)
 }

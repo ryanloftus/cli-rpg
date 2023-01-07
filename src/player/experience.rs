@@ -1,9 +1,11 @@
+use serde::{Deserialize, Serialize};
+
 const EXPERIENCE_PER_LEVEL: u8 = 100;
 const EXPERIENCE_FOR_ENEMY_DEFEATED: u8 = 5;
 const EXPERIENCE_FOR_BOSS_DEFEATED: u8 = 100;
 const EXPERIENCE_FOR_AREA_CLEARED: u8 = 100;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Experience {
     pub level: u16,
     pub experience_towards_next_level: u8,

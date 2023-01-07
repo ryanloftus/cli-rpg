@@ -5,10 +5,6 @@ mod islands;
 mod story;
 
 use crate::player::Player;
-use plains::PLAINS;
-use forest::FOREST;
-use mountains::MOUNTAINS;
-use islands::ISLANDS;
 use story::StoryComponent;
 
 #[derive(Debug, Clone)]
@@ -24,4 +20,4 @@ impl Area {
     }
 }
 
-pub const AREAS: &[Area] = &[PLAINS, FOREST, ISLANDS, MOUNTAINS];
+pub const AREAS: &[Area] = &[];
