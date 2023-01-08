@@ -29,7 +29,12 @@ fn get_save_file_contents(player: &Player) -> String {
 
 fn open_save_file(player_name: &String) -> File {
     let file_name = player_name_to_file_path(&player_name);
-    File::create(file_name.clone()).expect("Could not create/open the save file.")
+    std::fs::OpenOptions::new().write(true).append(true).create(true).open(file_name).unwrap()
+}
+
+fn open_save_file_readonly(player_name: &String) -> File {
+    let file_name = player_name_to_file_path(&player_name);
+    File::open(file_name).unwrap()
 }
 
 pub fn save(player: &Player) {
@@ -46,8 +51,8 @@ pub fn has_save_file(player_name: &String) -> bool {
 }
 
 pub fn load_save_file(player_name: &String) -> Result<Player, Box<dyn Error>> {
-    let file = open_save_file(player_name);
+    let file = open_save_file_readonly(player_name);
     let reader = BufReader::new(file);
-    let mut player = serde_json::from_reader(reader)?;
+    let player = serde_json::from_reader(reader)?;
     Ok(player)
 }
