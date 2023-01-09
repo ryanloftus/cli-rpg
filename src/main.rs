@@ -11,4 +11,5 @@ use utils::save::save;
 fn main() {
     let mut player = prompts::start_game::start();
     save(&player);
+    let areas = area::build_areas();
 }

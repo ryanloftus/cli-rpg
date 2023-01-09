@@ -20,4 +20,6 @@ impl Area {
     }
 }
 
-pub const AREAS: &[Area] = &[];
+pub fn build_areas() -> [Area; 1] {
+    [plains::new()] // TODO: add more areas
+}

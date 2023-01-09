@@ -1,5 +1,5 @@
-mod monster;
-mod soldier;
+pub mod monster;
+pub mod soldier;
 
 use crate::skill::Skill;
 use rand::{self, Rng};

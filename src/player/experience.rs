@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 const EXPERIENCE_PER_LEVEL: u8 = 100;
-const EXPERIENCE_FOR_ENEMY_DEFEATED: u8 = 5;
+const EXPERIENCE_FOR_ENEMY_DEFEATED: u8 = 5; // TODO: set xp amount when generating the enemy (based on enemy type) and pass vec into enemies_defeated (or convert enemy type to exp here)
 const EXPERIENCE_FOR_BOSS_DEFEATED: u8 = 100;
 const EXPERIENCE_FOR_AREA_CLEARED: u8 = 100;
 
