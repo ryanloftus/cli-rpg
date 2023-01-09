@@ -15,7 +15,7 @@ pub fn new() -> Area {
 fn generate_story() -> Vec<StoryComponent> {
     let mut story = Vec::new();
     story.push(StoryComponent::Text(String::from(OPENING_TEXT)));
-    for i in 1..100 {
+    for i in 1..=100 {
         story.push(StoryComponent::Enemy(
             if i % 20 == 0 {
                 Enemy::new(EnemyType::Monster(MonsterType::Dragon), (i / 20) + 1, (i / 15) + 1)
