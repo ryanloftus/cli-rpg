@@ -21,7 +21,7 @@ const PROMPT: &str = "What will you do next?";
 
 pub fn prompt() -> AfterBattleAction {
     let selected_option = InputPrompt {
-        initial_prompt: PROMPT,
+        initial_prompt: String::from(PROMPT),
         options: [NEXT_BATTLE_OPTION, RETURN_TO_PREVIOUS_AREA_OPTION].to_vec(),
     }.show();
     if selected_option.short_name == NEXT_BATTLE_OPTION.short_name {

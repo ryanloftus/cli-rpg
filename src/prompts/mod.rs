@@ -30,13 +30,13 @@ impl PromptOption {
 
 #[derive(Debug, Clone)]
 pub struct InputPrompt {
-    initial_prompt: &'static str,
+    initial_prompt: String,
     options: Vec<PromptOption>,
 }
 
 impl InputPrompt {
     fn generate_prompt_with_options(&self) -> String {
-        let mut prompt = String::from(self.initial_prompt);
+        let mut prompt = self.initial_prompt.to_string();
         self.options.iter().for_each(|option| {
             if !prompt.is_empty() {
                 prompt.push('\n');
