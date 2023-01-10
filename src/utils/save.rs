@@ -3,9 +3,10 @@ use std::fs::File;
 use std::io::BufWriter;
 use std::io::Write;
 use std::io::BufReader;
-use std::path::Path;
 use serde_json;
 use crate::player::Player;
+
+const SAVE_FILE_SUFFIX: &str = "_save_file.txt";
 
 fn get_current_working_dir() -> String {
     std::env::current_dir()
@@ -17,9 +18,10 @@ fn get_current_working_dir() -> String {
 
 fn player_name_to_file_path(player_name: &String) -> String {
     format!(
-        "{dir}\\{player_name}_save_data.txt",
+        "{dir}\\{player_name}{suffix}",
         dir = get_current_working_dir(),
         player_name = player_name,
+        suffix = SAVE_FILE_SUFFIX,
     )
 }
 
@@ -37,17 +39,22 @@ fn open_save_file_readonly(player_name: &String) -> File {
     File::open(file_name).unwrap()
 }
 
+pub fn find_existing_saves() -> Vec<String> {
+    let dir = get_current_working_dir();
+    let files_in_dir = std::fs::read_dir(dir).unwrap();
+    let existing_save_files = files_in_dir.map(|file| -> String {
+        let file_path = file.unwrap().path().display().to_string();
+        let name_len = file_path.len() - SAVE_FILE_SUFFIX.len() + 1;
+        file_path[0..name_len].to_string()
+    });
+    existing_save_files.collect()
+}
+
 pub fn save(player: &Player) {
     let file = open_save_file(&player.name);
     let contents = get_save_file_contents(player);
     let mut writer = BufWriter::new(file);
     writer.write_all(contents.as_bytes()).expect("Write to save file failed");
-}
-
-pub fn has_save_file(player_name: &String) -> bool {
-    let save_file_path = player_name_to_file_path(player_name);
-    let save_file_path = Path::new(&save_file_path);
-    save_file_path.exists()
 }
 
 pub fn load_save_file(player_name: &String) -> Result<Player, Box<dyn Error>> {

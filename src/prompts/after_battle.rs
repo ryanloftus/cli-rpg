@@ -1,5 +1,6 @@
 use super::InputPrompt;
 use super::PromptOption;
+use std::borrow::Cow;
 
 pub enum AfterBattleAction {
     NextBattle,
@@ -7,13 +8,13 @@ pub enum AfterBattleAction {
 }
 
 const NEXT_BATTLE_OPTION: PromptOption = PromptOption {
-    name: "Next battle",
-    short_name: "N",
+    name: Cow::Borrowed("Next battle"),
+    short_name: Some("N"),
 };
 
 const RETURN_TO_PREVIOUS_AREA_OPTION: PromptOption = PromptOption {
-    name: "Return to a previous area",
-    short_name: "R",
+    name: Cow::Borrowed("Return to a previous area"),
+    short_name: Some("R"),
 };
 
 const PROMPT: &str = "What will you do next?";

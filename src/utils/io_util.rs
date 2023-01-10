@@ -9,7 +9,7 @@ pub fn my_read_line() -> String {
     input_buffer.clone().trim_end().to_owned()
 }
 
-pub fn request_input(prompt: String) -> String {
+pub fn request_input(prompt: &str) -> String {
     println!("{prompt}");
     my_read_line()
 }
