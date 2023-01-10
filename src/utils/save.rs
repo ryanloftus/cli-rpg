@@ -6,7 +6,7 @@ use std::io::BufReader;
 use serde_json;
 use crate::player::Player;
 
-const SAVE_FILE_SUFFIX: &str = "_save_file.txt";
+const SAVE_FILE_SUFFIX: &str = "_save_data.txt";
 
 fn get_current_working_dir() -> String {
     std::env::current_dir()
@@ -41,12 +41,18 @@ fn open_save_file_readonly(player_name: &String) -> File {
 
 pub fn find_existing_saves() -> Vec<String> {
     let dir = get_current_working_dir();
+    let dir_len = dir.len();
     let files_in_dir = std::fs::read_dir(dir).unwrap();
-    let existing_save_files = files_in_dir.map(|file| -> String {
-        let file_path = file.unwrap().path().display().to_string();
-        let name_len = file_path.len() - SAVE_FILE_SUFFIX.len() + 1;
-        file_path[0..name_len].to_string()
-    });
+    let existing_save_files = files_in_dir
+        .filter(|file| file.is_ok())
+        .map(|file| file.unwrap().path().display().to_string())
+        .filter(|path| path.ends_with(SAVE_FILE_SUFFIX))
+        .map(|path| -> String {
+            let name_len = path.len() - dir_len - SAVE_FILE_SUFFIX.len() - 1;
+            let name_start = dir_len + 1;
+            let name_end = name_start + name_len;
+            path[name_start..name_end].to_string()
+        });
     existing_save_files.collect()
 }
 
