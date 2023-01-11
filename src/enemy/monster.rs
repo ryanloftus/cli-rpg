@@ -10,10 +10,10 @@ pub enum MonsterType {
 
 pub fn new(monster_type: MonsterType, level: u8) -> Enemy {
     match monster_type {
-        Slime => new_slime(level),
-        Goblin => new_goblin(level),
-        Dragon => new_dragon(level),
-        Ogre => new_ogre(level),
+        MonsterType::Slime => new_slime(level),
+        MonsterType::Goblin => new_goblin(level),
+        MonsterType::Dragon => new_dragon(level),
+        MonsterType::Ogre => new_ogre(level),
     }
 }
 

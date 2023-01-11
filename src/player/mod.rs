@@ -27,7 +27,7 @@ impl Player {
             skill_ids: [].to_vec(),
             story_progress: StoryProgress {
                 areas_completed: 0,
-                enemies_defeated_in_current_area: 0,
+                current_area_progress: 0,
             },
         }
     }
