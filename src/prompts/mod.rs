@@ -1,6 +1,6 @@
 pub mod class;
 pub mod start_game;
-pub mod after_battle;
+pub mod before_battle;
 
 use crate::utils::io_util;
 use std::option::Option;

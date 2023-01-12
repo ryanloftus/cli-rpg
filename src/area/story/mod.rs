@@ -6,4 +6,5 @@ pub enum StoryComponent {
     Boss(Enemy),
     Text(String),
     // TODO: add complex component that takes the story vector to allow for dynamic stories (choose your path)
+    // (note that there is currently no way to save choices like this)
 }

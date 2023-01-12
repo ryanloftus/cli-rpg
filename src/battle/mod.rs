@@ -1,9 +1,11 @@
 use crate::player::Player;
 use crate::enemy::Enemy;
 
-pub fn do_battle(mut player: &Player, enemy: &Enemy) {
+pub fn do_battle(mut player: &Player, enemies: Vec<Enemy>) {
     // TODO: implement this function
     let winner = player.name.clone();
-    let loser = enemy.name.clone();
-    println!("{winner} beat {loser}!");
+    for enemy in enemies {
+        let loser = enemy.name.clone();
+        println!("{winner} beat {loser}");
+    }
 }
