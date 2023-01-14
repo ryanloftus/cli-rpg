@@ -1,6 +1,6 @@
 pub mod class;
 pub mod start_game;
-pub mod before_battle;
+pub mod story_component;
 
 use crate::utils::io_util;
 use std::option::Option;
@@ -9,7 +9,7 @@ use std::borrow::Cow;
 const REPROMPT_OPTION: &str = "reprompt";
 
 #[derive(Debug, Clone)]
-pub struct PromptOption {
+pub struct PromptOption { // TODO: create a trait + macro + generic fn to convert types to PromptOptions
     name: Cow<'static, str>,
     short_name: Option<&'static str>,
 }
