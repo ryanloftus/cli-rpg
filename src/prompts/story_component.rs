@@ -2,7 +2,6 @@ use super::InputPrompt;
 use super::PromptOption;
 use crate::enemy::Enemy;
 use crate::utils::io_util::request_num;
-use core::num;
 use std::borrow::Cow;
 
 pub enum StoryComponentAction {
