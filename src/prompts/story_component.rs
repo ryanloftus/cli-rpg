@@ -2,11 +2,12 @@ use super::InputPrompt;
 use super::PromptOption;
 use crate::enemy::Enemy;
 use crate::utils::io_util::request_num;
+use core::num;
 use std::borrow::Cow;
 
 pub enum StoryComponentAction {
     ShowText(String),
-    Battle(u8),
+    Battle(Vec<Enemy>),
     BossBattle(Enemy),
     ReturnToPreviousArea,
 }
@@ -25,15 +26,16 @@ const ENEMY_PROMPT: &str = "You see enemies ahead. What will you do?";
 const NUM_ENEMIES_PROMPT: &str = "How many enemies will you take on?";
 const BOSS_PROMPT: &str = "You see a boss ahead. What will you do?";
 
-pub fn show_enemy_prompt(max_enemies: i32) -> StoryComponentAction {
+pub fn show_enemy_prompt(upcoming_enemies: Vec<&Enemy>) -> StoryComponentAction {
     let selected_option = InputPrompt {
         initial_prompt: String::from(ENEMY_PROMPT),
         options: vec![FIGHT_OPTION, RETURN_TO_PREVIOUS_AREA_OPTION],
     }
     .show();
     if selected_option.short_name == FIGHT_OPTION.short_name {
-        let num_enemies = request_num(NUM_ENEMIES_PROMPT, 1, max_enemies) as u8;
-        StoryComponentAction::Battle(num_enemies)
+        // TODO: preview summary of upcoming enemies in the prompt
+        let num_enemies = request_num(NUM_ENEMIES_PROMPT, 1, upcoming_enemies.len() as i32) as usize;
+        StoryComponentAction::Battle(upcoming_enemies[0..num_enemies].iter().map(|e| (**e).clone()).collect())
     } else {
         StoryComponentAction::ReturnToPreviousArea
     }
