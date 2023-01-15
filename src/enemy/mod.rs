@@ -5,10 +5,19 @@ use crate::skill::Skill;
 use rand::{self, Rng};
 
 #[derive(Debug, Clone)]
+pub enum EnemyDifficulty {
+    Weak,
+    Strong,
+    Boss,
+    Special,
+}
+
+#[derive(Debug, Clone)]
 pub struct Enemy {
     pub name: String,
     pub level: u8,
     pub skills: Vec<Skill>,
+    pub difficulty: EnemyDifficulty,
     // TODO: add stats
     // TODO: add Attributes to determine effectiveness of attacks against this foe
 }

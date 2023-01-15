@@ -1,34 +1,46 @@
 use serde::{Deserialize, Serialize};
+use crate::enemy::{Enemy, EnemyDifficulty};
 
-const EXPERIENCE_PER_LEVEL: u8 = 100;
-const EXPERIENCE_FOR_ENEMY_DEFEATED: u8 = 5; // TODO: set xp amount when generating the enemy (based on enemy type) and pass vec into enemies_defeated (or convert enemy type to exp here)
-const EXPERIENCE_FOR_BOSS_DEFEATED: u8 = 100;
-const EXPERIENCE_FOR_AREA_CLEARED: u8 = 100;
+const XP_PER_LEVEL: u16 = 100;
+const BASE_XP_FOR_ENEMY_DEFEATED: u16 = 5;
+const XP_FOR_AREA_CLEARED: u16 = 100;
+
+const WEAK_ENEMY_XP_MULTIPLIER: u16 = 1;
+const STRONG_ENEMY_XP_MULTIPLIER: u16 = 2;
+const BOSS_ENEMY_XP_MULTIPLIER: u16 = 20;
+const SPECIAL_ENEMY_XP_MULTIPLIER: u16 = 50;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Experience {
     pub level: u16,
-    pub experience_towards_next_level: u8,
+    pub experience_towards_next_level: u16,
 }
 
 impl Experience {
-    fn add_experience(mut self, experience: u8) {
+    fn add_experience(&mut self, experience: u16) {
         self.experience_towards_next_level = self.experience_towards_next_level + experience;
-        while self.experience_towards_next_level >= EXPERIENCE_PER_LEVEL {
+        while self.experience_towards_next_level >= XP_PER_LEVEL {
             self.level = self.level + 1;
-            self.experience_towards_next_level = self.experience_towards_next_level - EXPERIENCE_PER_LEVEL;
+            self.experience_towards_next_level = self.experience_towards_next_level - XP_PER_LEVEL;
         }
     }
 
-    pub fn enemies_defeated(self, num_enemies: u8) {
-        self.add_experience(EXPERIENCE_FOR_ENEMY_DEFEATED * num_enemies);
+    fn get_difficulty_multiplier(enemy: &Enemy) -> u16 {
+        match enemy.difficulty {
+            EnemyDifficulty::Weak => WEAK_ENEMY_XP_MULTIPLIER,
+            EnemyDifficulty::Strong => STRONG_ENEMY_XP_MULTIPLIER,
+            EnemyDifficulty::Boss => BOSS_ENEMY_XP_MULTIPLIER,
+            EnemyDifficulty::Special => SPECIAL_ENEMY_XP_MULTIPLIER,
+        }
     }
 
-    pub fn boss_defeated(self) {
-        self.add_experience(EXPERIENCE_FOR_BOSS_DEFEATED);
+    pub fn enemies_defeated(&mut self, enemies: &Vec<Enemy>) {
+        for enemy in enemies {
+            self.add_experience(BASE_XP_FOR_ENEMY_DEFEATED * Self::get_difficulty_multiplier(enemy));
+        }
     }
 
-    pub fn area_cleared(self) {
-        self.add_experience(EXPERIENCE_FOR_AREA_CLEARED);
+    pub fn area_cleared(&mut self) {
+        self.add_experience(XP_FOR_AREA_CLEARED);
     }
 }

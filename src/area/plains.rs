@@ -1,4 +1,4 @@
-use crate::enemy::{EnemyType, Enemy, monster::MonsterType};
+use crate::enemy::{EnemyType, Enemy, monster::MonsterType, EnemyDifficulty};
 use super::{Area, story::StoryComponent};
 
 const OPENING_TEXT: &str = "";
@@ -33,6 +33,7 @@ fn generate_story() -> Vec<StoryComponent> {
             name: String::from("Demon Lord"),
             level: 10,
             skills: Vec::new(),
+            difficulty: EnemyDifficulty::Boss,
         }
     ));
     story.push(StoryComponent::Text(String::from(CLOSING_TEXT)));

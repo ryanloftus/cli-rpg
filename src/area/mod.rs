@@ -20,7 +20,7 @@ pub struct Area {
 /*
  * Why is the player leaving the area
  */
-enum AreaResult {
+pub enum AreaResult {
     ReturnToPreviousArea,
     AreaCompleted,
     PlayerWasDefeated,
@@ -31,21 +31,24 @@ impl Area {
      * Starts or continues players progress in an area from the given entry point
      * entry_point is an idx in area.story
      */
-    pub fn enter(&self, &mut player: &mut Player, entry_point: u8) -> AreaResult {
-        // TODO: add a wrapper function "start_game" that calls "open_menu" and "play_game"
-        // fn is called by main and handles between area logic
+    pub fn enter(&self, player: &mut Player, entry_point: u8) -> AreaResult {
         for i in usize::from(entry_point)..self.story.len() {
             let action = self.get_action(i);
             match action {
                 StoryComponentAction::ShowText(text) => println!("{text}"),
                 StoryComponentAction::Battle(enemies) => {
-                    if !battle(&player, enemies) {
+                    if !battle(&player, &enemies) {
                         return AreaResult::PlayerWasDefeated;
+                    } else {
+                        player.experience.enemies_defeated(&enemies);
                     }
                 }
                 StoryComponentAction::BossBattle(boss) => {
-                    if !battle(&player, vec![boss]) {
+                    let enemies = vec![boss];
+                    if !battle(&player, &enemies) {
                         return AreaResult::PlayerWasDefeated;
+                    } else {
+                        player.experience.enemies_defeated(&enemies);
                     }
                 }
                 StoryComponentAction::ReturnToPreviousArea => {
@@ -55,6 +58,7 @@ impl Area {
             player.story_progress.current_area_progress += 1;
             save::save(&player);
         }
+        player.experience.area_cleared();
         player.story_progress.areas_completed += 1;
         player.story_progress.current_area_progress = 0;
         save::save(&player);
@@ -65,7 +69,7 @@ impl Area {
      * Should only be called once the player has completed this areas story
      * Player returns to the area to train by fighting practice battles
      */
-    pub fn train(&self, &mut player: &mut Player) {
+    pub fn train(&self, player: &mut Player) {
         todo!("implement training");
     }
 

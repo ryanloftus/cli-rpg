@@ -22,6 +22,7 @@ fn new_slime(level: u8) -> Enemy {
         name: String::from("Slime"),
         level,
         skills: Vec::new(),
+        difficulty: super::EnemyDifficulty::Weak,
     }
 }
 
@@ -30,6 +31,7 @@ fn new_goblin(level: u8) -> Enemy {
         name: String::from("Goblin"),
         level,
         skills: Vec::new(),
+        difficulty: super::EnemyDifficulty::Weak,
     }
 }
 
@@ -38,6 +40,7 @@ fn new_dragon(level: u8) -> Enemy {
         name: String::from("Dragon"),
         level,
         skills: Vec::new(),
+        difficulty: super::EnemyDifficulty::Strong,
     }
 }
 
@@ -49,12 +52,14 @@ fn new_ogre(level: u8) -> Enemy {
             name: String::from("Shrek"),
             level: 100,
             skills: Vec::new(),
+            difficulty: super::EnemyDifficulty::Special,
         }
     } else {
         Enemy {
             name: String::from("Ogre"),
             level,
             skills: Vec::new(),
+            difficulty: super::EnemyDifficulty::Strong,
         }
     }
 }
