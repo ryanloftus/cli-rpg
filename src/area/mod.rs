@@ -35,13 +35,17 @@ impl Area {
         for i in usize::from(entry_point)..self.story.len() {
             let action = self.get_action(i);
             match action {
-                StoryComponentAction::ShowText(text) => println!("{text}"),
+                StoryComponentAction::ShowText(text) => {
+                    println!("{text}");
+                    player.story_progress.current_area_progress += 1;
+                },
                 StoryComponentAction::Battle(enemies) => {
                     if !battle(&player, &enemies) {
                         return AreaResult::PlayerWasDefeated;
                     } else {
                         player.experience.enemies_defeated(&enemies);
                     }
+                    player.story_progress.current_area_progress += enemies.len() as u8;
                 }
                 StoryComponentAction::BossBattle(boss) => {
                     let enemies = vec![boss];
@@ -50,12 +54,12 @@ impl Area {
                     } else {
                         player.experience.enemies_defeated(&enemies);
                     }
+                    player.story_progress.current_area_progress += 1;
                 }
                 StoryComponentAction::ReturnToPreviousArea => {
                     return AreaResult::ReturnToPreviousArea
                 }
             }
-            player.story_progress.current_area_progress += 1;
             save::save(&player);
         }
         player.experience.area_cleared();
