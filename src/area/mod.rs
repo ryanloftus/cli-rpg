@@ -94,6 +94,6 @@ impl Area {
     }
 }
 
-pub fn build_areas() -> [Area; 1] {
-    [plains::new()] // TODO: add more areas
+pub fn build_areas() -> [Area; 2] {
+    return [plains::new(), forest::new()]; // TODO: add more areas
 }

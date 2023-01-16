@@ -6,6 +6,8 @@ pub enum MonsterType {
     Goblin,
     Dragon,
     Ogre,
+    Demon,
+    DemonicBeast,
 }
 
 pub fn new(monster_type: MonsterType, level: u8) -> Enemy {
@@ -14,6 +16,8 @@ pub fn new(monster_type: MonsterType, level: u8) -> Enemy {
         MonsterType::Goblin => new_goblin(level),
         MonsterType::Dragon => new_dragon(level),
         MonsterType::Ogre => new_ogre(level),
+        MonsterType::Demon => new_demon(level),
+        MonsterType::DemonicBeast => new_demonic_beast(level),
     }
 }
 
@@ -61,5 +65,23 @@ fn new_ogre(level: u8) -> Enemy {
             skills: Vec::new(),
             difficulty: super::EnemyDifficulty::Strong,
         }
+    }
+}
+
+fn new_demon(level: u8) -> Enemy {
+    Enemy {
+        name: String::from("Demon"),
+        level,
+        skills: Vec::new(),
+        difficulty: super::EnemyDifficulty::Weak,
+    }
+}
+
+fn new_demonic_beast(level: u8) -> Enemy {
+    Enemy {
+        name: String::from("Demonic Beast"),
+        level,
+        skills: Vec::new(),
+        difficulty: super::EnemyDifficulty::Strong,
     }
 }

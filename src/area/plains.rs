@@ -1,8 +1,8 @@
 use crate::enemy::{EnemyType, Enemy, monster::MonsterType, EnemyDifficulty};
 use super::{Area, story::StoryComponent};
 
-const OPENING_TEXT: &str = "";
-const CLOSING_TEXT: &str = "";
+const OPENING_TEXT: &str = ""; // TODO
+const CLOSING_TEXT: &str = ""; // TODO
 
 pub fn new() -> Area {
     Area {

@@ -14,13 +14,11 @@ mod starter {
     pub const KNIGHT: Class = Class { name: "Knight", unique_id: "K" };
     pub const BRAWLER: Class = Class { name: "Brawler", unique_id: "B" };
     pub const MAGE: Class = Class { name: "Mage", unique_id: "M" };
-    pub const HEALER: Class = Class { name: "Healer", unique_id: "H" };
 }
 
-pub const STARTER_CLASSES: [Class; 5] = [
+pub const STARTER_CLASSES: [Class; 4] = [
     starter::SWORDSMAN,
     starter::KNIGHT,
     starter::BRAWLER,
     starter::MAGE,
-    starter::HEALER,
 ];
