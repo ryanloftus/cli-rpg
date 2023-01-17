@@ -6,7 +6,8 @@ use crate::player::Player;
  * Returns true if the player won and false otherwise.
  */
 pub fn battle(mut player: &Player, enemies: &Vec<Enemy>) -> bool {
-    // TODO: implement this function
+    // TODO: implement actual battle logic
+    // TODO: to return more information in the future, return a tuple instead of a bool
     let winner = player.name.clone();
     for enemy in enemies {
         let loser = enemy.name.clone();

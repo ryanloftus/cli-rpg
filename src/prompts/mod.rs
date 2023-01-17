@@ -1,8 +1,8 @@
 pub mod class;
 pub mod start_game;
 pub mod story_component;
+mod io_util;
 
-use crate::utils::io_util;
 use std::option::Option;
 use std::borrow::Cow;
 

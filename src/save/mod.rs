@@ -69,3 +69,4 @@ pub fn load_save_file(player_name: &String) -> Result<Player, Box<dyn Error>> {
     let player = serde_json::from_reader(reader)?;
     Ok(player)
 }
+

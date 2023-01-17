@@ -7,7 +7,7 @@ mod story;
 use crate::battle::battle;
 use crate::player::Player;
 use crate::prompts::story_component::{self, StoryComponentAction};
-use crate::utils::save;
+use crate::save;
 use story::StoryComponent;
 
 #[derive(Debug, Clone)]

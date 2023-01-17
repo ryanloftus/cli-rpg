@@ -1,8 +1,8 @@
 use super::PromptOption;
 use super::class::starting_class_prompt;
 use crate::player::Player;
-use crate::prompts::InputPrompt;
-use crate::utils::{ io_util, save };
+use crate::prompts::{InputPrompt, io_util};
+use crate::save;
 
 const WILL_SAVE_WORLD_PROMPT: &str = "Now that you are able to fight... The world is in need of a hero...
 Territories far and wide have all been suffering from wars, monster attacks, and natural disasters.
