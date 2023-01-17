@@ -1,8 +1,8 @@
 use crate::enemy::{EnemyType, Enemy, monster::MonsterType, EnemyDifficulty};
 use super::{Area, story::StoryComponent};
 
-const OPENING_TEXT: &str = ""; // TODO
-const CLOSING_TEXT: &str = ""; // TODO
+const OPENING_TEXT: &str = "You look out onto The Plains and see that it has been overrun by 100 Monsters. Its up to you to stop them!";
+const CLOSING_TEXT: &str = "The Demon Lord has been defeated and The Plains are safe. Well done hero.";
 
 pub fn new() -> Area {
     Area {

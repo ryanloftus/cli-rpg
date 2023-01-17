@@ -1,6 +1,7 @@
 use super::InputPrompt;
 use super::PromptOption;
 use crate::enemy::Enemy;
+use crate::skill::Skill;
 use super::io_util::request_num;
 use std::borrow::Cow;
 
@@ -9,6 +10,7 @@ pub enum StoryComponentAction {
     Battle(Vec<Enemy>),
     BossBattle(Enemy),
     ReturnToPreviousArea,
+    LearnSkill(&'static Skill),
 }
 
 const FIGHT_OPTION: PromptOption = PromptOption {

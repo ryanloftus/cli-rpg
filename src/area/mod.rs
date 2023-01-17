@@ -59,6 +59,10 @@ impl Area {
                 StoryComponentAction::ReturnToPreviousArea => {
                     return AreaResult::ReturnToPreviousArea
                 }
+                StoryComponentAction::LearnSkill(skill) => {
+                    player.skill_ids.push(String::from(skill.unique_id));
+                    player.story_progress.current_area_progress += 1;
+                },
             }
             save::save(&player);
         }
@@ -90,6 +94,8 @@ impl Area {
                 story_component::show_enemy_prompt(enemies)
             }
             StoryComponent::Boss(boss) => story_component::show_boss_prompt(&boss),
+            StoryComponent::Prompt(_) => todo!(),
+            StoryComponent::LearnSkill(skill) => StoryComponentAction::LearnSkill(skill),
         }
     }
 }

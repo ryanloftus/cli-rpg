@@ -1,10 +1,11 @@
-use crate::enemy::Enemy;
+use crate::{enemy::Enemy, prompts::InputPrompt, skill::Skill};
 
 #[derive(Debug, Clone)]
 pub enum StoryComponent {
     Enemy(Enemy),
     Boss(Enemy),
     Text(String),
-    // TODO: add complex component that takes the story vector to allow for dynamic stories (choose your path)
-    // (note that there is currently no way to save choices like this)
+    Prompt(InputPrompt),
+    LearnSkill(&'static Skill),
+    // TODO: GainAttribute once player attributes are added
 }

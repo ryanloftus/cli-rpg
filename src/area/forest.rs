@@ -1,8 +1,8 @@
 use crate::enemy::{EnemyType, Enemy, monster::MonsterType, EnemyDifficulty};
 use super::{Area, story::StoryComponent};
 
-const OPENING_TEXT: &str = "You enter the forest and notice that 100 citizens of the forest have been turned into Demons. Defeat the Demons and whoever is responsible for this tragedy!"; // TODO
-const CLOSING_TEXT: &str = "The Demon Lord"; // TODO
+const OPENING_TEXT: &str = "You enter the forest and notice that 100 citizens of The Forest have been turned into Demons. Defeat the Demons and whoever is responsible for this tragedy!";
+const CLOSING_TEXT: &str = "The Demon Lord has been defeated and The Forest is safe. Well done hero.";
 
 pub fn new() -> Area {
     Area {
