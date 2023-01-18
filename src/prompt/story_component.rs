@@ -1,8 +1,8 @@
+use super::io_util::request_num;
 use super::InputPrompt;
 use super::PromptOption;
 use crate::enemy::Enemy;
 use crate::skill::Skill;
-use super::io_util::request_num;
 use std::borrow::Cow;
 
 pub enum StoryComponentAction {
@@ -32,11 +32,17 @@ pub fn show_enemy_prompt(upcoming_enemies: Vec<&Enemy>) -> StoryComponentAction 
         initial_prompt: String::from(ENEMY_PROMPT),
         options: vec![FIGHT_OPTION, RETURN_TO_PREVIOUS_AREA_OPTION],
     }
-    .show();
+    .show_and_get_selection();
     if selected_option.short_name == FIGHT_OPTION.short_name {
         // TODO: preview summary of upcoming enemies in the prompt
-        let num_enemies = request_num(NUM_ENEMIES_PROMPT, 1, upcoming_enemies.len() as i32) as usize;
-        StoryComponentAction::Battle(upcoming_enemies[0..num_enemies].iter().map(|e| (**e).clone()).collect())
+        let num_enemies =
+            request_num(NUM_ENEMIES_PROMPT, 1, upcoming_enemies.len() as i32) as usize;
+        StoryComponentAction::Battle(
+            upcoming_enemies[0..num_enemies]
+                .iter()
+                .map(|e| (**e).clone())
+                .collect(),
+        )
     } else {
         StoryComponentAction::ReturnToPreviousArea
     }
@@ -52,7 +58,7 @@ pub fn show_boss_prompt(boss: &Enemy) -> StoryComponentAction {
         ),
         options: vec![FIGHT_OPTION, RETURN_TO_PREVIOUS_AREA_OPTION],
     }
-    .show();
+    .show_and_get_selection();
     if selected_option.short_name == FIGHT_OPTION.short_name {
         StoryComponentAction::BossBattle(boss.clone())
     } else {

@@ -1,7 +1,7 @@
 pub mod prompt;
 use serde::{Deserialize, Serialize};
 
-use crate::prompt::{ToPromptOption, PromptOption};
+use crate::prompt::{PromptOption, PromptOption};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Class {
@@ -10,7 +10,7 @@ pub struct Class {
     // TODO: add stat modifiers and skills and class progressions
 }
 
-impl ToPromptOption for Class {
+impl PromptOption for Class {
     fn to_prompt_option(&self) -> PromptOption {
         return PromptOption {
             name: String::from(self.name),
@@ -22,10 +22,22 @@ impl ToPromptOption for Class {
 mod starter {
     use super::Class;
 
-    pub const SWORDSMAN: Class = Class { name: "Swordsman", unique_id: "S" };
-    pub const KNIGHT: Class = Class { name: "Knight", unique_id: "K" };
-    pub const BRAWLER: Class = Class { name: "Brawler", unique_id: "B" };
-    pub const MAGE: Class = Class { name: "Mage", unique_id: "M" };
+    pub const SWORDSMAN: Class = Class {
+        name: "Swordsman",
+        unique_id: "S",
+    };
+    pub const KNIGHT: Class = Class {
+        name: "Knight",
+        unique_id: "K",
+    };
+    pub const BRAWLER: Class = Class {
+        name: "Brawler",
+        unique_id: "B",
+    };
+    pub const MAGE: Class = Class {
+        name: "Mage",
+        unique_id: "M",
+    };
 }
 
 pub const STARTER_CLASSES: [Class; 4] = [

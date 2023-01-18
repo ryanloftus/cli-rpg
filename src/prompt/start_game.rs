@@ -1,10 +1,11 @@
-use super::{PromptOption, ToPromptOption};
+use super::{PromptOption, PromptOption};
 use crate::class::prompt::starting_class_prompt;
 use crate::player::Player;
-use crate::prompt::{InputPrompt, io_util};
+use crate::prompt::{io_util, InputPrompt};
 use crate::save;
 
-const WILL_SAVE_WORLD_PROMPT: &str = "Now that you are able to fight... The world is in need of a hero...
+const WILL_SAVE_WORLD_PROMPT: &str =
+    "Now that you are able to fight... The world is in need of a hero...
 Territories far and wide have all been suffering from wars, monster attacks, and natural disasters.
 Will you help save the world? [Y/N]";
 
@@ -18,9 +19,9 @@ enum SaveFileSelection {
     NewSave,
 }
 
-impl ToPromptOption for SaveFileSelection {
+impl PromptOption for SaveFileSelection {
     fn to_prompt_option(&self) -> PromptOption {
-        
+        PromptOption {}
     }
 }
 
@@ -46,10 +47,13 @@ fn create_new_save() -> Player {
 
 fn select_from_save_file_menu() -> SaveFileSelection {
     let existing_saves = save::find_existing_saves();
-    let mut options: Vec<PromptOption> = existing_saves.iter().map(|name| PromptOption {
-        name: std::borrow::Cow::Owned(name.clone()),
-        short_name: None,
-    }).collect();
+    let mut options: Vec<PromptOption> = existing_saves
+        .iter()
+        .map(|name| PromptOption {
+            name: std::borrow::Cow::Owned(name.clone()),
+            short_name: None,
+        })
+        .collect();
     options.push(NEW_SAVE_OPTION);
     let initial_prompt = format!(
         "Select a save to load or enter \"{new_save_option}\"",
@@ -59,7 +63,7 @@ fn select_from_save_file_menu() -> SaveFileSelection {
         initial_prompt,
         options,
     };
-    let answer = prompt.show();
+    let answer = prompt.show_and_get_selection();
     if answer.name == NEW_SAVE_OPTION.name {
         SaveFileSelection::NewSave
     } else {

@@ -7,6 +7,6 @@ pub fn starting_class_prompt() -> class::Class {
         initial_prompt: String::from("Choose a class."),
         options: class::STARTER_CLASSES.to_vec(),
     };
-    let class = prompt.show();
+    let class = prompt.show_and_get_selection();
     return class;
 }
