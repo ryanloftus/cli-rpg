@@ -1,7 +1,7 @@
-use super::PromptOption;
-use super::class::starting_class_prompt;
+use super::{PromptOption, ToPromptOption};
+use crate::class::prompt::starting_class_prompt;
 use crate::player::Player;
-use crate::prompts::{InputPrompt, io_util};
+use crate::prompt::{InputPrompt, io_util};
 use crate::save;
 
 const WILL_SAVE_WORLD_PROMPT: &str = "Now that you are able to fight... The world is in need of a hero...
@@ -16,6 +16,12 @@ const NEW_SAVE_OPTION: PromptOption = PromptOption {
 enum SaveFileSelection {
     ExistingSave(String),
     NewSave,
+}
+
+impl ToPromptOption for SaveFileSelection {
+    fn to_prompt_option(&self) -> PromptOption {
+        
+    }
 }
 
 fn is_valid_name(name: String) -> bool {

@@ -4,7 +4,7 @@ mod class;
 mod enemy;
 mod game;
 mod player;
-mod prompts;
+mod prompt;
 mod skill;
 mod save;
 

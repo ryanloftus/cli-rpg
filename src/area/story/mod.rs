@@ -1,4 +1,4 @@
-use crate::{enemy::Enemy, prompts::InputPrompt, skill::Skill};
+use crate::{enemy::Enemy, prompt::InputPrompt, skill::Skill};
 
 #[derive(Debug, Clone)]
 pub enum StoryComponent {

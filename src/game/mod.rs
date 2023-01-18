@@ -1,9 +1,9 @@
 use crate::save::save;
 use crate::area;
-use crate::prompts;
+use crate::prompt;
 
 pub fn play_game() {
-    let mut player = prompts::start_game::start();
+    let mut player = prompt::start_game::start();
     save(&player);
     let areas = area::build_areas();
     let current_area = player.story_progress.areas_completed as usize;
