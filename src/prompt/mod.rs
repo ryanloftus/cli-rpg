@@ -1,5 +1,4 @@
-mod io_util;
-pub mod start_game;
+pub mod io_util;
 pub mod story_component;
 
 use std::option::Option;
