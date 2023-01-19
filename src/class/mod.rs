@@ -1,4 +1,3 @@
-pub mod prompt;
 use serde::{Deserialize, Serialize};
 
 use crate::prompt::{PromptOption, InputPrompt};

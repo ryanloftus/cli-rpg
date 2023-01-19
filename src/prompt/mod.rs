@@ -10,13 +10,14 @@ pub trait PromptOption {
 }
 
 #[derive(Debug, Clone)]
-pub struct InputPrompt<T: PromptOption> {
-    initial_prompt: String,
-    options: Vec<T>,
+pub struct InputPrompt<T: PromptOption + Clone> {
+    pub initial_prompt: String,
+    pub options: Vec<T>,
 }
 
-impl<T: PromptOption> InputPrompt<T> {
+impl<T: PromptOption + Clone> InputPrompt<T> {
     pub fn show_and_get_selection(self) -> T {
+        // TODO: fix trailing newline issue (best solution might be to keep it but use print! instead of println! in io_util)
         let prompt = self.generate_prompt_with_options();
         let reprompt = self.generate_reprompt_with_options();
         let mut answer = io_util::request_input(&prompt).to_lowercase();
@@ -29,9 +30,9 @@ impl<T: PromptOption> InputPrompt<T> {
             let selection = self
                 .options
                 .iter()
-                .find(|option| Self::is_option_selected(**option, answer));
+                .find(|option| Self::is_option_selected((*option).clone(), answer.clone()));
             if let Some(selection) = selection {
-                return *selection;
+                return selection.clone();
             }
 
             answer = io_util::request_input(&reprompt).to_lowercase();
@@ -50,8 +51,9 @@ impl<T: PromptOption> InputPrompt<T> {
 
     fn generate_prompt_with_options(&self) -> String {
         let mut prompt = self.initial_prompt.to_string();
+        prompt.push('\n');
         self.options.iter().for_each(|option| {
-            prompt.push_str(&Self::get_prompt_option_string(*option));
+            prompt.push_str(&Self::get_prompt_option_string(option.clone()));
         });
         return prompt;
     }
@@ -72,7 +74,7 @@ impl<T: PromptOption> InputPrompt<T> {
                 name = option_name,
             )
         } else {
-            option_name
+            format!("{option}\n", option = option_name)
         }
     }
 }

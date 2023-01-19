@@ -17,7 +17,7 @@ pub enum StoryComponentAction {
     ShowText(String),
     Battle(Vec<Enemy>),
     BossBattle(Enemy),
-    ReturnToPreviousArea,
+    ReturnToPreviousArea, // TODO: disable this option when there is no previous area to return to (ie you are in the first area)
     LearnSkill(&'static Skill),
 }
 

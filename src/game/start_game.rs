@@ -11,6 +11,7 @@ Will you help save the world? [Y/N]";
 const NEW_SAVE_OPTION: &str = "New";
 const NEW_SAVE_SHORT_OPTION: &str = "N";
 
+#[derive(Clone)]
 enum SaveFileSelection {
     ExistingSave(String),
     NewSave,
@@ -20,7 +21,7 @@ impl PromptOption for SaveFileSelection {
     fn option_name(&self) -> String {
         match self {
             SaveFileSelection::NewSave => String::from(NEW_SAVE_OPTION),
-            SaveFileSelection::ExistingSave(save_name) => *save_name,
+            SaveFileSelection::ExistingSave(save_name) => String::from(save_name),
         }
     }
     
@@ -47,7 +48,7 @@ pub fn start() -> Player {
  * 2. it is not equal to the new save option,
  * 3. it is alphabetic characters only
  */
-fn is_valid_name(name: String, existing_names: Vec<String>) -> bool {
+fn is_valid_name(name: String, existing_names: &Vec<String>) -> bool {
     let lowercase_name = name.to_lowercase();
     return name.chars().all(char::is_alphabetic) &&
         lowercase_name != NEW_SAVE_OPTION.to_lowercase() &&
@@ -62,7 +63,7 @@ fn create_new_save() -> Player {
     let existing_names = save::find_existing_saves();
     let name = io_util::request_input_with_validation(
         "What is your name?",
-        |name| is_valid_name(name, existing_names),
+        |name| is_valid_name(name, &existing_names),
         "Name must satisfy the following conditions:
         1. it has not already been used by an existing save
         2. it is not \"N\" or \"New\" (case-insensitive)
@@ -83,7 +84,7 @@ fn select_from_save_file_menu() -> SaveFileSelection {
     let existing_saves = save::find_existing_saves();
     let mut options: Vec<SaveFileSelection> = existing_saves
         .iter()
-        .map(|name| SaveFileSelection::ExistingSave(*name))
+        .map(|name| SaveFileSelection::ExistingSave(name.clone()))
         .collect();
     options.push(SaveFileSelection::NewSave);
     let initial_prompt = format!(

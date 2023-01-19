@@ -32,9 +32,9 @@ impl Area {
      * Starts or continues players progress in an area from the given entry point
      * entry_point is an idx in area.story
      */
-    pub fn enter(&self, player: &mut Player, entry_point: u8) -> AreaResult {
-        for i in usize::from(entry_point)..self.story.len() {
-            let action = self.get_action(i);
+    pub fn enter(&self, player: &mut Player) -> AreaResult {
+        while player.story_progress.current_area_progress < self.story.len() {
+            let action = self.get_action(player.story_progress.current_area_progress);
             match action {
                 StoryComponentAction::ShowText(text) => {
                     println!("{text}");
@@ -46,7 +46,8 @@ impl Area {
                     } else {
                         player.experience.enemies_defeated(&enemies);
                     }
-                    player.story_progress.current_area_progress += enemies.len() as u8;
+                    println!("{}", enemies.len());
+                    player.story_progress.current_area_progress += enemies.len();
                 }
                 StoryComponentAction::BossBattle(boss) => {
                     let enemies = vec![boss];
@@ -67,6 +68,7 @@ impl Area {
             }
             save::save(&player);
         }
+        // TODO: the following four lines should be run outside this function once it returns as game::area_completed
         player.experience.area_cleared();
         player.story_progress.areas_completed += 1;
         player.story_progress.current_area_progress = 0;

@@ -31,7 +31,7 @@ fn get_save_file_contents(player: &Player) -> String {
 
 fn open_save_file(player_name: &String) -> File {
     let file_name = player_name_to_file_path(&player_name);
-    std::fs::OpenOptions::new().write(true).append(true).create(true).open(file_name).unwrap()
+    std::fs::OpenOptions::new().write(true).create(true).open(file_name).unwrap()
 }
 
 fn open_save_file_readonly(player_name: &String) -> File {
@@ -63,6 +63,7 @@ pub fn save(player: &Player) {
     writer.write_all(contents.as_bytes()).expect("Write to save file failed");
 }
 
+// TODO: fix trailing characters error when loading saves
 pub fn load_save_file(player_name: &String) -> Result<Player, Box<dyn Error>> {
     let file = open_save_file_readonly(player_name);
     let reader = BufReader::new(file);
