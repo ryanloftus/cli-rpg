@@ -1,5 +1,4 @@
 pub mod io_util;
-pub mod story_component;
 
 use std::option::Option;
 
@@ -30,9 +29,9 @@ impl<T: PromptOption> InputPrompt<T> {
             let selection = self
                 .options
                 .iter()
-                .find(|option| Self::is_option_selected(option, answer));
+                .find(|option| Self::is_option_selected(**option, answer));
             if let Some(selection) = selection {
-                return selection;
+                return *selection;
             }
 
             answer = io_util::request_input(&reprompt).to_lowercase();
@@ -52,12 +51,9 @@ impl<T: PromptOption> InputPrompt<T> {
     fn generate_prompt_with_options(&self) -> String {
         let mut prompt = self.initial_prompt.to_string();
         self.options.iter().for_each(|option| {
-            if !prompt.is_empty() {
-                prompt.push('\n');
-            }
-            prompt.push_str(&option.to_prompt_option().to_string());
+            prompt.push_str(&Self::get_prompt_option_string(*option));
         });
-        prompt
+        return prompt;
     }
 
     fn generate_reprompt_with_options(&self) -> String {
@@ -67,10 +63,11 @@ impl<T: PromptOption> InputPrompt<T> {
         )
     }
 
-    fn get_prompt_option_string(option_name: String, short_option_name: String) -> String {
-        if let Some(short_name) = short_option_name {
+    fn get_prompt_option_string(option: T) -> String {
+        let option_name = option.option_name();
+        if let Some(short_name) = option.short_option_name() {
             format!(
-                "({short_name}) {name}",
+                "({short_name}) {name}\n",
                 short_name = short_name,
                 name = option_name,
             )

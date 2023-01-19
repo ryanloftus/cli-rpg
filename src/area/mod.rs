@@ -6,9 +6,10 @@ mod story;
 
 use crate::battle::battle;
 use crate::player::Player;
-use crate::prompt::story_component::{self, StoryComponentAction};
 use crate::save;
 use story::StoryComponent;
+
+use self::story::{StoryComponentAction, story_component_prompt};
 
 #[derive(Debug, Clone)]
 pub struct Area {
@@ -91,10 +92,9 @@ impl Area {
                         enemies.push(enemy);
                     }
                 }
-                story_component::show_enemy_prompt(enemies)
+                story_component_prompt::show_enemy_prompt(enemies)
             }
-            StoryComponent::Boss(boss) => story_component::show_boss_prompt(&boss),
-            StoryComponent::Prompt(_) => todo!(),
+            StoryComponent::Boss(boss) => story_component_prompt::show_boss_prompt(&boss),
             StoryComponent::LearnSkill(skill) => StoryComponentAction::LearnSkill(skill),
         }
     }

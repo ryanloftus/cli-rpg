@@ -1,4 +1,4 @@
-use crate::class::prompt::starting_class_prompt;
+use crate::class;
 use crate::player::Player;
 use crate::prompt::{PromptOption, InputPrompt, io_util};
 use crate::save;
@@ -20,7 +20,7 @@ impl PromptOption for SaveFileSelection {
     fn option_name(&self) -> String {
         match self {
             SaveFileSelection::NewSave => String::from(NEW_SAVE_OPTION),
-            SaveFileSelection::ExistingSave(save_name) => save_name,
+            SaveFileSelection::ExistingSave(save_name) => *save_name,
         }
     }
     
@@ -29,6 +29,14 @@ impl PromptOption for SaveFileSelection {
             SaveFileSelection::NewSave => Some(String::from(NEW_SAVE_SHORT_OPTION)),
             SaveFileSelection::ExistingSave(_) => None,
         }
+    }
+}
+
+pub fn start() -> Player {
+    let save_file_selection = select_from_save_file_menu();
+    match save_file_selection {
+        SaveFileSelection::ExistingSave(name) => save::load_save_file(&name).unwrap(),
+        SaveFileSelection::NewSave => create_new_save(),
     }
 }
 
@@ -47,7 +55,7 @@ fn is_valid_name(name: String, existing_names: Vec<String>) -> bool {
         existing_names
             .iter()
             .map(|existing_name| existing_name.to_lowercase())
-            .find(|lowercase_existing_name| lowercase_existing_name == lowercase_name);
+            .find(|lowercase_existing_name| *lowercase_existing_name == lowercase_name).is_none();
 }
 
 fn create_new_save() -> Player {
@@ -62,7 +70,7 @@ fn create_new_save() -> Player {
         Please enter a different name.",
     );
     println!("Hello, {name}!");
-    let class = starting_class_prompt();
+    let class = class::choose_class_prompt(&class::STARTER_CLASSES);
     let will_save_world = io_util::request_yes_or_no(WILL_SAVE_WORLD_PROMPT);
     if will_save_world {
         Player::new(name.clone(), class)
@@ -75,7 +83,7 @@ fn select_from_save_file_menu() -> SaveFileSelection {
     let existing_saves = save::find_existing_saves();
     let mut options: Vec<SaveFileSelection> = existing_saves
         .iter()
-        .map(|name| SaveFileSelection::ExistingSave(name))
+        .map(|name| SaveFileSelection::ExistingSave(*name))
         .collect();
     options.push(SaveFileSelection::NewSave);
     let initial_prompt = format!(
@@ -83,12 +91,4 @@ fn select_from_save_file_menu() -> SaveFileSelection {
         new_save_option = NEW_SAVE_OPTION,
     );
     return InputPrompt { initial_prompt, options }.show_and_get_selection();
-}
-
-pub fn start() -> Player {
-    let save_file_selection = select_from_save_file_menu();
-    match save_file_selection {
-        SaveFileSelection::ExistingSave(name) => save::load_save_file(&name).unwrap(),
-        SaveFileSelection::NewSave => create_new_save(),
-    }
 }

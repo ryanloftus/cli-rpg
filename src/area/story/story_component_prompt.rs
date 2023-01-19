@@ -1,27 +1,6 @@
 use super::io_util::request_num;
 use super::InputPrompt;
-use super::PromptOption;
 use crate::enemy::Enemy;
-use crate::skill::Skill;
-use std::borrow::Cow;
-
-pub enum StoryComponentAction {
-    ShowText(String),
-    Battle(Vec<Enemy>),
-    BossBattle(Enemy),
-    ReturnToPreviousArea,
-    LearnSkill(&'static Skill),
-}
-
-const FIGHT_OPTION: PromptOption = PromptOption {
-    name: Cow::Borrowed("Fight"),
-    short_name: Some("F"),
-};
-
-const RETURN_TO_PREVIOUS_AREA_OPTION: PromptOption = PromptOption {
-    name: Cow::Borrowed("Return to a previous area to train"),
-    short_name: Some("R"),
-};
 
 const ENEMY_PROMPT: &str = "You see enemies ahead. What will you do?";
 const NUM_ENEMIES_PROMPT: &str = "How many enemies will you take on?";

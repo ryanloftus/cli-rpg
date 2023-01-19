@@ -1,7 +1,7 @@
 pub mod prompt;
 use serde::{Deserialize, Serialize};
 
-use crate::prompt::{PromptOption, PromptOption};
+use crate::prompt::{PromptOption, InputPrompt};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Class {
@@ -11,12 +11,22 @@ pub struct Class {
 }
 
 impl PromptOption for Class {
-    fn to_prompt_option(&self) -> PromptOption {
-        return PromptOption {
-            name: String::from(self.name),
-            short_name: Some(String::from(self.unique_id)),
-        };
+    fn option_name(&self) -> String {
+        String::from(self.name)
     }
+
+    fn short_option_name(&self) -> Option<String> {
+        Some(String::from(self.unique_id))
+    }
+}
+
+pub fn choose_class_prompt(class_options: &[Class]) -> Class {
+    let prompt = InputPrompt {
+        initial_prompt: String::from("Choose a class."),
+        options: class_options.to_vec(),
+    };
+    let class = prompt.show_and_get_selection();
+    return class;
 }
 
 mod starter {
