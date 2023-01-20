@@ -12,6 +12,7 @@ pub struct Player {
     pub experience: Experience,
     pub skill_ids: Vec<String>,
     pub story_progress: StoryProgress,
+    pub current_area_idx: usize,
     // TODO: add Attributes to determine effectiveness of attacks against the Player
 }
 
@@ -29,6 +30,7 @@ impl Player {
                 areas_completed: 0,
                 current_area_progress: 0,
             },
+            current_area_idx: 0,
         }
     }
 }

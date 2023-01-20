@@ -48,7 +48,7 @@ fn new_dragon(level: u8) -> Enemy {
     }
 }
 
-const SHREK_CHANCE: u8 = 1;
+const SHREK_CHANCE: u8 = 5;
 
 fn new_ogre(level: u8) -> Enemy {
     if rand::thread_rng().gen_range(0..=100) < SHREK_CHANCE {

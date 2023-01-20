@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::prompt::{PromptOption, InputPrompt};
+use crate::prompt::{PromptOption, get_selection_from_options};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Class {
@@ -20,12 +20,7 @@ impl PromptOption for Class {
 }
 
 pub fn choose_class_prompt(class_options: &[Class]) -> Class {
-    let prompt = InputPrompt {
-        initial_prompt: String::from("Choose a class."),
-        options: class_options.to_vec(),
-    };
-    let class = prompt.show_and_get_selection();
-    return class;
+    return get_selection_from_options(String::from("Choose a class"), &class_options.to_vec());
 }
 
 mod starter {

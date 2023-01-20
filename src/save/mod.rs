@@ -6,7 +6,7 @@ use std::io::BufReader;
 use serde_json;
 use crate::player::Player;
 
-const SAVE_FILE_SUFFIX: &str = "_save_data.txt";
+const SAVE_FILE_SUFFIX: &str = "_save_data.json";
 
 fn get_current_working_dir() -> String {
     std::env::current_dir()
@@ -25,7 +25,7 @@ fn player_name_to_file_path(player_name: &String) -> String {
     )
 }
 
-fn get_save_file_contents(player: &Player) -> String {
+fn player_to_json(player: &Player) -> String {
     serde_json::to_string_pretty(player).expect("Failed to serialize player.")
 }
 
@@ -58,12 +58,11 @@ pub fn find_existing_saves() -> Vec<String> {
 
 pub fn save(player: &Player) {
     let file = open_save_file(&player.name);
-    let contents = get_save_file_contents(player);
+    let contents = player_to_json(player);
     let mut writer = BufWriter::new(file);
     writer.write_all(contents.as_bytes()).expect("Write to save file failed");
 }
 
-// TODO: fix trailing characters error when loading saves
 pub fn load_save_file(player_name: &String) -> Result<Player, Box<dyn Error>> {
     let file = open_save_file_readonly(player_name);
     let reader = BufReader::new(file);

@@ -1,6 +1,6 @@
 pub mod story_component_prompt;
 
-use crate::{enemy::Enemy, prompt::{InputPrompt, PromptOption}, skill::Skill};
+use crate::{enemy::Enemy, prompt::PromptOption, skill::Skill};
 
 #[derive(Debug, Clone)]
 pub enum StoryComponent {

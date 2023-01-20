@@ -1,6 +1,6 @@
 use crate::class;
 use crate::player::Player;
-use crate::prompt::{PromptOption, InputPrompt, io_util};
+use crate::prompt::{PromptOption, io_util, get_selection_from_options};
 use crate::save;
 
 const WILL_SAVE_WORLD_PROMPT: &str =
@@ -87,9 +87,9 @@ fn select_from_save_file_menu() -> SaveFileSelection {
         .map(|name| SaveFileSelection::ExistingSave(name.clone()))
         .collect();
     options.push(SaveFileSelection::NewSave);
-    let initial_prompt = format!(
+    let prompt = format!(
         "Select a save to load or enter \"{new_save_option}\"",
         new_save_option = NEW_SAVE_OPTION,
     );
-    return InputPrompt { initial_prompt, options }.show_and_get_selection();
+    return get_selection_from_options(prompt, &options);
 }

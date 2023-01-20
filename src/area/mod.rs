@@ -4,7 +4,7 @@ mod mountains;
 mod plains;
 mod story;
 
-use crate::battle::battle;
+use crate::{battle::battle, prompt::PromptOption};
 use crate::player::Player;
 use crate::save;
 use story::StoryComponent;
@@ -16,6 +16,16 @@ pub struct Area {
     pub name: &'static str,
     pub unique_id: &'static str,
     pub story: Vec<StoryComponent>,
+}
+
+impl PromptOption for Area {
+    fn option_name(&self) -> String {
+        String::from(self.name)
+    }
+
+    fn short_option_name(&self) -> Option<String> {
+        Some(String::from(self.unique_id))
+    }
 }
 
 /*
@@ -33,6 +43,8 @@ impl Area {
      * entry_point is an idx in area.story
      */
     pub fn enter(&self, player: &mut Player) -> AreaResult {
+        // TODO: it might make sense to shift more of the weight of this fn to game. This could simplify control flow, 
+        //   and limit coupling (ie only call save from game).
         while player.story_progress.current_area_progress < self.story.len() {
             let action = self.get_action(player.story_progress.current_area_progress);
             match action {
@@ -46,7 +58,6 @@ impl Area {
                     } else {
                         player.experience.enemies_defeated(&enemies);
                     }
-                    println!("{}", enemies.len());
                     player.story_progress.current_area_progress += enemies.len();
                 }
                 StoryComponentAction::BossBattle(boss) => {
@@ -68,11 +79,6 @@ impl Area {
             }
             save::save(&player);
         }
-        // TODO: the following four lines should be run outside this function once it returns as game::area_completed
-        player.experience.area_cleared();
-        player.story_progress.areas_completed += 1;
-        player.story_progress.current_area_progress = 0;
-        save::save(&player);
         return AreaResult::AreaCompleted;
     }
 
