@@ -1,12 +1,6 @@
-use crate::class;
 use crate::player::Player;
 use crate::prompt::{PromptOption, io_util, get_selection_from_options};
 use crate::save;
-
-const WILL_SAVE_WORLD_PROMPT: &str =
-    "Now that you are able to fight... The world is in need of a hero...
-Territories far and wide have all been suffering from wars, monster attacks, and natural disasters.
-Will you help save the world? [Y/N]";
 
 const NEW_SAVE_OPTION: &str = "New";
 const NEW_SAVE_SHORT_OPTION: &str = "N";
@@ -71,13 +65,7 @@ fn create_new_save() -> Player {
         Please enter a different name.",
     );
     println!("Hello, {name}!");
-    let class = class::choose_class_prompt(&class::STARTER_CLASSES);
-    let will_save_world = io_util::request_yes_or_no(WILL_SAVE_WORLD_PROMPT);
-    if will_save_world {
-        Player::new(name.clone(), class)
-    } else {
-        panic!("The world was not saved.");
-    }
+    return Player::new(name.clone());
 }
 
 fn select_from_save_file_menu() -> SaveFileSelection {

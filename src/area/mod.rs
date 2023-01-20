@@ -1,5 +1,8 @@
+mod caves;
 mod forest;
+mod icefields;
 mod islands;
+mod kingdom;
 mod mountains;
 mod plains;
 mod story;
@@ -104,10 +107,11 @@ impl Area {
             }
             StoryComponent::Boss(boss) => story_component_prompt::show_boss_prompt(&boss),
             StoryComponent::LearnSkill(skill) => StoryComponentAction::LearnSkill(skill),
+            StoryComponent::Prompt(_, _) => todo!(),
         }
     }
 }
 
-pub fn build_areas() -> [Area; 2] {
-    return [plains::new(), forest::new()]; // TODO: add more areas
+pub fn build_areas() -> [Area; 3] {
+    return [kingdom::new(), plains::new(), forest::new()]; // TODO: add more areas
 }

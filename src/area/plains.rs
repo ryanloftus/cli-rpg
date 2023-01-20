@@ -4,6 +4,10 @@ use super::{Area, story::StoryComponent};
 const OPENING_TEXT: &str = "You look out onto The Plains and see that it has been overrun by 100 Monsters. Its up to you to stop them!";
 const CLOSING_TEXT: &str = "The Demon Lord has been defeated and The Plains are safe. Well done hero.";
 
+/*
+ * This is the second area in the game, and the first where the player fights enemies.
+ * The area follows a simple pattern of fighting enemies until the boss is reached.
+ */
 pub fn new() -> Area {
     Area {
         name: "The Plains",

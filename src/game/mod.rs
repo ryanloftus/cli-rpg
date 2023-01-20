@@ -1,4 +1,5 @@
-mod start_game;
+mod menu;
+use crate::class::choose_class_prompt;
 use crate::prompt::get_selection_from_options;
 use crate::save::save;
 use crate::area;
@@ -6,7 +7,7 @@ use crate::area;
 const RETURN_TO_AREA_PROMPT: &str = "Which area would you like to return to?";
 
 pub fn play_game() {
-    let mut player = start_game::start();
+    let mut player = menu::start();
     save(&player);
     let areas = area::build_areas();
     let current_area = player.story_progress.areas_completed as usize;
@@ -25,6 +26,7 @@ pub fn play_game() {
                 player.story_progress.areas_completed += 1;
                 player.story_progress.current_area_progress = 0;
                 save(&player);
+                // choose_class_prompt(); // TODO: use class progressions to determine which classes are available
                 // TODO: ask player whether they want to continue on to next area or train in a completed area
             },
             area::AreaResult::PlayerWasDefeated => {

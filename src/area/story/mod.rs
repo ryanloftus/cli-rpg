@@ -8,6 +8,7 @@ pub enum StoryComponent {
     Boss(Enemy),
     Text(String),
     LearnSkill(&'static Skill),
+    Prompt(String, fn (String) -> String),
     // TODO: GainAttribute once player attributes are added
     // TODO: add a Prompt variant to allow so the player can choose their own path
 }
