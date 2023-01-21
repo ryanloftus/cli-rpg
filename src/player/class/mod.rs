@@ -26,28 +26,28 @@ impl PromptOption for Class {
     fn option_name(&self) -> String {
         match self {
             Class::FutureHero => String::from("Future Hero"),
-            Class::Starter(_) => todo!(),
-            Class::Intermediate(_) => todo!(),
-            Class::Advanced(_) => todo!(),
-            Class::Expert(_) => todo!(),
-            Class::Master(_) => todo!(),
-            Class::Overpowered(_) => todo!(),
+            Class::Starter(starter_class) => starter_class.option_name(),
+            Class::Intermediate(intermediate_class) => intermediate_class.option_name(),
+            Class::Advanced(advanced_class) => advanced_class.option_name(),
+            Class::Expert(expert_class) => expert_class.option_name(),
+            Class::Master(master_class) => master_class.option_name(),
+            Class::Overpowered(overpowered_class) => overpowered_class.option_name(),
         }
     }
 
     fn short_option_name(&self) -> Option<String> {
         match self {
             Class::FutureHero => Some(String::from("F")),
-            Class::Starter(_) => todo!(),
-            Class::Intermediate(_) => todo!(),
-            Class::Advanced(_) => todo!(),
-            Class::Expert(_) => todo!(),
-            Class::Master(_) => todo!(),
-            Class::Overpowered(_) => todo!(),
+            Class::Starter(starter_class) => starter_class.short_option_name(),
+            Class::Intermediate(intermediate_class) => intermediate_class.short_option_name(),
+            Class::Advanced(advanced_class) => advanced_class.short_option_name(),
+            Class::Expert(expert_class) => expert_class.short_option_name(),
+            Class::Master(master_class) => master_class.short_option_name(),
+            Class::Overpowered(overpowered_class) => overpowered_class.short_option_name(),
         }
     }
 }
 
 pub fn choose_class_prompt(class_options: Vec<Class>) -> Class {
-    return get_selection_from_options(String::from("Choose a class"), &class_options);
+    return get_selection_from_options(String::from("Choose a class."), &class_options);
 }
