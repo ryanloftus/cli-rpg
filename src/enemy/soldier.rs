@@ -12,7 +12,7 @@ pub fn new(soldier_type: SoldierType, faction: String, level: u8) -> Enemy {
         name: enemy_name(soldier_type, faction),
         level,
         skills: Vec::new(),
-        difficulty: super::EnemyDifficulty::Weak
+        difficulty: super::EnemyDifficulty::Weak,
     }
 }
 
@@ -25,12 +25,10 @@ fn enemy_name(soldier_type: SoldierType, faction: String) -> String {
 }
 
 fn soldier_type_to_string(soldier_type: SoldierType) -> String {
-    String::from(
-        match soldier_type {
-            SoldierType::Footsoldier => "Footsoldier",
-            SoldierType::Knight => "Knight",
-            SoldierType::Archer => "Archer",
-            SoldierType::Guard => "Guard",
-        }
-    )
+    String::from(match soldier_type {
+        SoldierType::Footsoldier => "Footsoldier",
+        SoldierType::Knight => "Knight",
+        SoldierType::Archer => "Archer",
+        SoldierType::Guard => "Guard",
+    })
 }

@@ -63,7 +63,7 @@ pub fn request_num(prompt: &str, min: i32, max: i32) -> i32 {
             "Please enter an integer in the range [{low}, {high}].",
             low = min,
             high = max,
-        )
+        ),
     );
     str::parse::<i32>(&answer).unwrap()
 }

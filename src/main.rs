@@ -4,8 +4,8 @@ mod enemy;
 mod game;
 mod player;
 mod prompt;
-mod skill;
 mod save;
+mod skill;
 
 // TODO: add colored text to terminal output
 fn main() {

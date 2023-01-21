@@ -1,18 +1,23 @@
-pub mod starter_class;
-pub mod intermediate_class;
 pub mod advanced_class;
 pub mod expert_class;
+pub mod intermediate_class;
 pub mod master_class;
 pub mod overpowered_class;
+pub mod starter_class;
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
-use crate::prompt::{PromptOption, get_selection_from_options};
+use crate::prompt::{get_selection_from_options, PromptOption};
 
-use self::{starter_class::StarterClass, intermediate_class::IntermediateClass, advanced_class::AdvancedClass, expert_class::ExpertClass, master_class::MasterClass, overpowered_class::OverpoweredClass};
+use self::{
+    advanced_class::AdvancedClass, expert_class::ExpertClass,
+    intermediate_class::IntermediateClass, master_class::MasterClass,
+    overpowered_class::OverpoweredClass, starter_class::StarterClass,
+};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub enum Class { // TODO: create functions for getting each classes class progression, create functions for getting the stat boosts, skills, and attributes that come with the class
+pub enum Class {
+    // TODO: create functions for getting each classes class progression, create functions for getting the stat boosts, skills, and attributes that come with the class
     FutureHero,
     Starter(StarterClass),
     Intermediate(IntermediateClass),

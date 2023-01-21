@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 use crate::prompt::PromptOption;
 
@@ -9,20 +9,14 @@ pub enum ExpertClass {
 
 impl PromptOption for ExpertClass {
     fn option_name(&self) -> String {
-        String::from(
-            match self {
-                ExpertClass::ExplosionExpert => "Explosion Expert",
-            }
-        )
+        String::from(match self {
+            ExpertClass::ExplosionExpert => "Explosion Expert",
+        })
     }
 
     fn short_option_name(&self) -> Option<String> {
-        Some(
-            String::from(
-                match self {
-                    ExpertClass::ExplosionExpert => "E",
-                }
-            )
-        )
+        Some(String::from(match self {
+            ExpertClass::ExplosionExpert => "E",
+        }))
     }
 }

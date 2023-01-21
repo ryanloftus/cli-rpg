@@ -20,8 +20,5 @@ pub fn new() -> Area {
 }
 
 fn generate_story() -> Vec<StoryComponent> {
-    return vec![
-        StoryComponent::Text(String::from(INTRO_PROMPT)),
-        
-    ];
+    return vec![StoryComponent::Text(String::from(INTRO_PROMPT))];
 }

@@ -7,12 +7,12 @@ mod mountains;
 mod plains;
 mod story;
 
-use crate::{battle::battle, prompt::PromptOption};
 use crate::player::Player;
 use crate::save;
+use crate::{battle::battle, prompt::PromptOption};
 use story::StoryComponent;
 
-use self::story::{StoryComponentAction, story_component_prompt};
+use self::story::{story_component_prompt, StoryComponentAction};
 
 #[derive(Debug, Clone)]
 pub struct Area {
@@ -46,7 +46,7 @@ impl Area {
      * entry_point is an idx in area.story
      */
     pub fn enter(&self, player: &mut Player) -> AreaResult {
-        // TODO: it might make sense to shift more of the weight of this fn to game. This could simplify control flow, 
+        // TODO: it might make sense to shift more of the weight of this fn to game. This could simplify control flow,
         //   and limit coupling (ie only call save from game).
         while player.story_progress.current_area_progress < self.story.len() {
             let action = self.get_action(player.story_progress.current_area_progress);
@@ -54,7 +54,7 @@ impl Area {
                 StoryComponentAction::ShowText(text) => {
                     println!("{text}");
                     player.story_progress.current_area_progress += 1;
-                },
+                }
                 StoryComponentAction::Battle(enemies) => {
                     if !battle(&player, &enemies) {
                         return AreaResult::PlayerWasDefeated;
@@ -78,7 +78,7 @@ impl Area {
                 StoryComponentAction::LearnSkill(skill) => {
                     player.skill_ids.push(String::from(skill.unique_id));
                     player.story_progress.current_area_progress += 1;
-                },
+                }
             }
             save::save(&player);
         }

@@ -24,7 +24,10 @@ pub struct Enemy {
 
 pub enum EnemyType {
     Monster(monster::MonsterType),
-    Soldier { faction: String, soldier_type: soldier::SoldierType },
+    Soldier {
+        faction: String,
+        soldier_type: soldier::SoldierType,
+    },
 }
 
 impl Enemy {
@@ -32,7 +35,10 @@ impl Enemy {
         let level = rand::thread_rng().gen_range(min_level..=max_level);
         match enemy_type {
             EnemyType::Monster(monster_type) => monster::new(monster_type, level),
-            EnemyType::Soldier { faction, soldier_type } => soldier::new(soldier_type, faction, level),
+            EnemyType::Soldier {
+                faction,
+                soldier_type,
+            } => soldier::new(soldier_type, faction, level),
         }
     }
 }

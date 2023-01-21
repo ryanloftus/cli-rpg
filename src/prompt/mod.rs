@@ -21,7 +21,8 @@ pub fn get_selection_from_options<T: PromptOption + Clone>(prompt: String, optio
             continue;
         }
 
-        let selection = options.iter()
+        let selection = options
+            .iter()
             .find(|option| is_option_selected((*option).clone(), answer.clone()));
         if let Some(selection) = selection {
             return selection.clone();
@@ -31,7 +32,7 @@ pub fn get_selection_from_options<T: PromptOption + Clone>(prompt: String, optio
     }
 }
 
-fn is_option_selected<T : PromptOption>(option: T, selection: String) -> bool {
+fn is_option_selected<T: PromptOption>(option: T, selection: String) -> bool {
     let lowercase_selection = selection.to_lowercase();
     if let Some(short_option_name) = option.short_option_name() {
         if short_option_name.to_lowercase() == lowercase_selection {
@@ -41,7 +42,7 @@ fn is_option_selected<T : PromptOption>(option: T, selection: String) -> bool {
     return option.option_name().to_lowercase() == lowercase_selection;
 }
 
-fn generate_prompt_with_options<T : PromptOption>(prompt: String, options: &Vec<T>) -> String {
+fn generate_prompt_with_options<T: PromptOption>(prompt: String, options: &Vec<T>) -> String {
     let mut prompt_with_options = prompt.to_string();
     prompt_with_options.push('\n');
     options.iter().for_each(|option| {
@@ -57,7 +58,7 @@ fn generate_reprompt() -> String {
     )
 }
 
-fn get_prompt_option_string<T : PromptOption>(option: &T) -> String {
+fn get_prompt_option_string<T: PromptOption>(option: &T) -> String {
     let option_name = option.option_name();
     if let Some(short_name) = option.short_option_name() {
         format!(

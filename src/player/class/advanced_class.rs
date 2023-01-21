@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 use crate::prompt::PromptOption;
 
@@ -9,20 +9,14 @@ pub enum AdvancedClass {
 
 impl PromptOption for AdvancedClass {
     fn option_name(&self) -> String {
-        String::from(
-            match self {
-                AdvancedClass::ExplosiveMage => "Explosive Mage",
-            }
-        )
+        String::from(match self {
+            AdvancedClass::ExplosiveMage => "Explosive Mage",
+        })
     }
 
     fn short_option_name(&self) -> Option<String> {
-        Some(
-            String::from(
-                match self {
-                    AdvancedClass::ExplosiveMage => "E",
-                }
-            )
-        )
+        Some(String::from(match self {
+            AdvancedClass::ExplosiveMage => "E",
+        }))
     }
 }

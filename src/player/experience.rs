@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use crate::enemy::{Enemy, EnemyDifficulty};
+use serde::{Deserialize, Serialize};
 
 const XP_PER_LEVEL: u16 = 100;
 const BASE_XP_FOR_ENEMY_DEFEATED: u16 = 5;
@@ -36,7 +36,9 @@ impl Experience {
 
     pub fn enemies_defeated(&mut self, enemies: &Vec<Enemy>) {
         for enemy in enemies {
-            self.add_experience(BASE_XP_FOR_ENEMY_DEFEATED * Self::get_difficulty_multiplier(enemy));
+            self.add_experience(
+                BASE_XP_FOR_ENEMY_DEFEATED * Self::get_difficulty_multiplier(enemy),
+            );
         }
     }
 

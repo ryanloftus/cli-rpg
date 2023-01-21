@@ -3,9 +3,9 @@ mod experience;
 mod story_progress;
 
 use self::class::Class;
-use story_progress::StoryProgress;
 use experience::Experience;
 use serde::{Deserialize, Serialize};
+use story_progress::StoryProgress;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Player {

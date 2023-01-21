@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 use crate::prompt::PromptOption;
 
@@ -12,24 +12,18 @@ pub enum IntermediateClass {
 
 impl PromptOption for IntermediateClass {
     fn option_name(&self) -> String {
-        String::from(
-            match self {
-                IntermediateClass::ElementalMage => "Elemental Mage",
-                IntermediateClass::HolyMage => "Holy Mage",
-                IntermediateClass::DarkMage => "Dark Mage",
-            }
-        )
+        String::from(match self {
+            IntermediateClass::ElementalMage => "Elemental Mage",
+            IntermediateClass::HolyMage => "Holy Mage",
+            IntermediateClass::DarkMage => "Dark Mage",
+        })
     }
 
     fn short_option_name(&self) -> Option<String> {
-        Some(
-            String::from(
-                match self {
-                    IntermediateClass::ElementalMage => "E",
-                    IntermediateClass::HolyMage => "H",
-                    IntermediateClass::DarkMage => "D",
-                }
-            )
-        )
+        Some(String::from(match self {
+            IntermediateClass::ElementalMage => "E",
+            IntermediateClass::HolyMage => "H",
+            IntermediateClass::DarkMage => "D",
+        }))
     }
 }

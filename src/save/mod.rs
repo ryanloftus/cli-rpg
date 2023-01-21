@@ -1,10 +1,10 @@
+use crate::player::Player;
+use serde_json;
 use std::error::Error;
 use std::fs::File;
+use std::io::BufReader;
 use std::io::BufWriter;
 use std::io::Write;
-use std::io::BufReader;
-use serde_json;
-use crate::player::Player;
 
 const SAVE_FILE_SUFFIX: &str = "_save_data.json";
 
@@ -31,7 +31,11 @@ fn player_to_json(player: &Player) -> String {
 
 fn open_save_file(player_name: &String) -> File {
     let file_name = player_name_to_file_path(&player_name);
-    std::fs::OpenOptions::new().write(true).create(true).open(file_name).unwrap()
+    std::fs::OpenOptions::new()
+        .write(true)
+        .create(true)
+        .open(file_name)
+        .unwrap()
 }
 
 fn open_save_file_readonly(player_name: &String) -> File {
@@ -60,7 +64,9 @@ pub fn save(player: &Player) {
     let file = open_save_file(&player.name);
     let contents = player_to_json(player);
     let mut writer = BufWriter::new(file);
-    writer.write_all(contents.as_bytes()).expect("Write to save file failed");
+    writer
+        .write_all(contents.as_bytes())
+        .expect("Write to save file failed");
 }
 
 pub fn load_save_file(player_name: &String) -> Result<Player, Box<dyn Error>> {
@@ -69,4 +75,3 @@ pub fn load_save_file(player_name: &String) -> Result<Player, Box<dyn Error>> {
     let player = serde_json::from_reader(reader)?;
     Ok(player)
 }
-

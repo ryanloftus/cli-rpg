@@ -1,8 +1,9 @@
-use crate::enemy::{EnemyType, Enemy, monster::MonsterType, EnemyDifficulty};
-use super::{Area, story::StoryComponent};
+use super::{story::StoryComponent, Area};
+use crate::enemy::{monster::MonsterType, Enemy, EnemyDifficulty, EnemyType};
 
 const OPENING_TEXT: &str = "You enter the forest and notice that 100 citizens of The Forest have been turned into Demons. Defeat the Demons and whoever is responsible for this tragedy!";
-const CLOSING_TEXT: &str = "The Demon Lord has been defeated and The Forest is safe. Well done hero.";
+const CLOSING_TEXT: &str =
+    "The Demon Lord has been defeated and The Forest is safe. Well done hero.";
 
 /*
  * This is the third area in the game.
@@ -20,22 +21,22 @@ fn generate_story() -> Vec<StoryComponent> {
     let mut story = Vec::new();
     story.push(StoryComponent::Text(String::from(OPENING_TEXT)));
     for i in 1..=100 {
-        story.push(StoryComponent::Enemy(
-            if i % 5 == 0 {
-                Enemy::new(EnemyType::Monster(MonsterType::DemonicBeast), 10 + (i / 20), 12 + (i / 15))
-            } else {
-                Enemy::new(EnemyType::Monster(MonsterType::Demon), 10, (i / 20) + 10)
-            }
-        ))
+        story.push(StoryComponent::Enemy(if i % 5 == 0 {
+            Enemy::new(
+                EnemyType::Monster(MonsterType::DemonicBeast),
+                10 + (i / 20),
+                12 + (i / 15),
+            )
+        } else {
+            Enemy::new(EnemyType::Monster(MonsterType::Demon), 10, (i / 20) + 10)
+        }))
     }
-    story.push(StoryComponent::Boss(
-        Enemy {
-            name: String::from("Demon Lord"),
-            level: 25,
-            skills: Vec::new(),
-            difficulty: EnemyDifficulty::Boss,
-        }
-    ));
+    story.push(StoryComponent::Boss(Enemy {
+        name: String::from("Demon Lord"),
+        level: 25,
+        skills: Vec::new(),
+        difficulty: EnemyDifficulty::Boss,
+    }));
     story.push(StoryComponent::Text(String::from(CLOSING_TEXT)));
     return story;
 }

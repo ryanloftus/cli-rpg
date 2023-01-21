@@ -1,5 +1,5 @@
 use crate::player::Player;
-use crate::prompt::{PromptOption, io_util, get_selection_from_options};
+use crate::prompt::{get_selection_from_options, io_util, PromptOption};
 use crate::save;
 
 const NEW_SAVE_OPTION: &str = "New";
@@ -18,7 +18,7 @@ impl PromptOption for SaveFileSelection {
             SaveFileSelection::ExistingSave(save_name) => String::from(save_name),
         }
     }
-    
+
     fn short_option_name(&self) -> Option<String> {
         match self {
             SaveFileSelection::NewSave => Some(String::from(NEW_SAVE_SHORT_OPTION)),
@@ -44,13 +44,14 @@ pub fn start() -> Player {
  */
 fn is_valid_name(name: String, existing_names: &Vec<String>) -> bool {
     let lowercase_name = name.to_lowercase();
-    return name.chars().all(char::is_alphabetic) &&
-        lowercase_name != NEW_SAVE_OPTION.to_lowercase() &&
-        lowercase_name != NEW_SAVE_SHORT_OPTION.to_lowercase() &&
-        existing_names
+    return name.chars().all(char::is_alphabetic)
+        && lowercase_name != NEW_SAVE_OPTION.to_lowercase()
+        && lowercase_name != NEW_SAVE_SHORT_OPTION.to_lowercase()
+        && existing_names
             .iter()
             .map(|existing_name| existing_name.to_lowercase())
-            .find(|lowercase_existing_name| *lowercase_existing_name == lowercase_name).is_none();
+            .find(|lowercase_existing_name| *lowercase_existing_name == lowercase_name)
+            .is_none();
 }
 
 fn create_new_save() -> Player {

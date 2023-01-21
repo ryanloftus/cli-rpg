@@ -8,7 +8,7 @@ pub enum StoryComponent {
     Boss(Enemy),
     Text(String),
     LearnSkill(&'static Skill),
-    Prompt(String, fn (String) -> String),
+    Prompt(String, fn(String) -> String),
     // TODO: GainAttribute once player attributes are added
     // TODO: add a Prompt variant to allow so the player can choose their own path
 }
@@ -27,7 +27,9 @@ impl PromptOption for StoryComponentAction {
         match self {
             StoryComponentAction::Battle(_) => String::from("Fight"),
             StoryComponentAction::BossBattle(_) => String::from("Boss"),
-            StoryComponentAction::ReturnToPreviousArea => String::from("Return to a previous area to train"),
+            StoryComponentAction::ReturnToPreviousArea => {
+                String::from("Return to a previous area to train")
+            }
             _ => panic!("Prompt should not be shown for LearnSkill StoryComponent"),
         }
     }

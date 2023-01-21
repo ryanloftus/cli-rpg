@@ -1,7 +1,7 @@
 mod menu;
+use crate::area;
 use crate::prompt::get_selection_from_options;
 use crate::save::save;
-use crate::area;
 
 const RETURN_TO_AREA_PROMPT: &str = "Which area would you like to return to?";
 
@@ -20,7 +20,7 @@ pub fn play_game() {
                     &areas[0..player.story_progress.areas_completed].to_vec(),
                 );
                 prev_area.train(&mut player);
-            },
+            }
             area::AreaResult::AreaCompleted => {
                 player.experience.area_cleared();
                 player.story_progress.areas_completed += 1;
@@ -32,11 +32,10 @@ pub fn play_game() {
                     // choose_class_prompt(); // TODO: use class progressions to determine which classes are available
                     // TODO: ask player whether they want to continue on to next area or train in a completed area
                 }
-            },
+            }
             area::AreaResult::PlayerWasDefeated => {
                 // TODO: player wakes up in previous area, no progress is lost
-                
-            },
+            }
         }
     }
     // TODO: simplify control flow so we call "open_menu" and "play_game" (should there be a menu module)
