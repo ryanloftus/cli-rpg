@@ -22,7 +22,7 @@ impl Player {
     pub fn new(name: String) -> Player {
         Player {
             name,
-            class: Class::Basic(class::basic_class::BasicClass::FutureHero),
+            class: Class::FutureHero,
             experience: Experience {
                 level: 1,
                 experience_towards_next_level: 0,

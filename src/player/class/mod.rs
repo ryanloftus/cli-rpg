@@ -12,7 +12,7 @@ use crate::prompt::{PromptOption, get_selection_from_options};
 use self::{starter_class::StarterClass, intermediate_class::IntermediateClass, advanced_class::AdvancedClass, expert_class::ExpertClass, master_class::MasterClass, overpowered_class::OverpoweredClass};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub enum Class {
+pub enum Class { // TODO: create functions for getting each classes class progression, create functions for getting the stat boosts, skills, and attributes that come with the class
     FutureHero,
     Starter(StarterClass),
     Intermediate(IntermediateClass),
@@ -20,6 +20,20 @@ pub enum Class {
     Expert(ExpertClass),
     Master(MasterClass),
     Overpowered(OverpoweredClass),
+}
+
+impl Class {
+    pub fn class_progressions(&self) -> Vec<Class> {
+        match self {
+            Class::FutureHero => todo!(),
+            Class::Starter(_) => todo!(),
+            Class::Intermediate(_) => todo!(),
+            Class::Advanced(_) => todo!(),
+            Class::Expert(_) => todo!(),
+            Class::Master(_) => todo!(),
+            Class::Overpowered(_) => panic!("Cannot progress past OverpoweredClass"),
+        }
+    }
 }
 
 impl PromptOption for Class {

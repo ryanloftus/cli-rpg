@@ -5,6 +5,7 @@ use crate::prompt::PromptOption;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum OverpoweredClass {
     GodOfExplosions,
+    DemonLord,
     // TODO: add more
 }
 
@@ -13,6 +14,7 @@ impl PromptOption for OverpoweredClass {
         String::from(
             match self {
                 OverpoweredClass::GodOfExplosions => "God of Explosions",
+                OverpoweredClass::DemonLord => "Demon Lord",
             }
         )
     }
@@ -22,6 +24,7 @@ impl PromptOption for OverpoweredClass {
             String::from(
                 match self {
                     OverpoweredClass::GodOfExplosions => "E",
+                    OverpoweredClass::DemonLord => "D",
                 }
             )
         )

@@ -1,5 +1,4 @@
 mod menu;
-use crate::class::choose_class_prompt;
 use crate::prompt::get_selection_from_options;
 use crate::save::save;
 use crate::area;
@@ -12,6 +11,7 @@ pub fn play_game() {
     let areas = area::build_areas();
     let current_area = player.story_progress.areas_completed as usize;
     loop {
+        // TODO: provide a way for the player to view their stats, class, etc
         let area_result = areas[current_area].enter(&mut player);
         match area_result {
             area::AreaResult::ReturnToPreviousArea => {
@@ -26,8 +26,12 @@ pub fn play_game() {
                 player.story_progress.areas_completed += 1;
                 player.story_progress.current_area_progress = 0;
                 save(&player);
-                // choose_class_prompt(); // TODO: use class progressions to determine which classes are available
-                // TODO: ask player whether they want to continue on to next area or train in a completed area
+                if player.story_progress.areas_completed == areas.len() {
+                    // TODO: end of game
+                } else {
+                    // choose_class_prompt(); // TODO: use class progressions to determine which classes are available
+                    // TODO: ask player whether they want to continue on to next area or train in a completed area
+                }
             },
             area::AreaResult::PlayerWasDefeated => {
                 // TODO: player wakes up in previous area, no progress is lost
