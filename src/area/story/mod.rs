@@ -1,16 +1,14 @@
 pub mod story_component_prompt;
 
-use crate::{enemy::Enemy, prompt::PromptOption, skill::Skill};
+use crate::{enemy::Enemy, prompt::PromptOption};
 
 #[derive(Debug, Clone)]
 pub enum StoryComponent {
+    Text(String),
     Enemy(Enemy),
     Boss(Enemy),
-    Text(String),
-    LearnSkill(&'static Skill),
-    Prompt(String, fn(String) -> String),
     // TODO: GainAttribute once player attributes are added
-    // TODO: add a Prompt variant to allow so the player can choose their own path
+    // optional todo: implement prompts inside area stories and make stories dynamic (change based on prompt responses)
 }
 
 #[derive(Debug, Clone)]
@@ -18,28 +16,25 @@ pub enum StoryComponentAction {
     ShowText(String),
     Battle(Vec<Enemy>),
     BossBattle(Enemy),
-    ReturnToPreviousArea, // TODO: disable this option when there is no previous area to return to (ie you are in the first area)
-    LearnSkill(&'static Skill),
+    ReturnToPreviousArea,
 }
 
 impl PromptOption for StoryComponentAction {
     fn option_name(&self) -> String {
-        match self {
-            StoryComponentAction::Battle(_) => String::from("Fight"),
-            StoryComponentAction::BossBattle(_) => String::from("Boss"),
-            StoryComponentAction::ReturnToPreviousArea => {
-                String::from("Return to a previous area to train")
-            }
-            _ => panic!("Prompt should not be shown for LearnSkill StoryComponent"),
-        }
+        String::from(match self {
+            StoryComponentAction::Battle(_) => "Fight",
+            StoryComponentAction::BossBattle(_) => "Boss",
+            StoryComponentAction::ReturnToPreviousArea => "Return to a previous area to train",
+            _ => panic!(),
+        })
     }
 
     fn short_option_name(&self) -> Option<String> {
-        match self {
-            StoryComponentAction::Battle(_) => Some(String::from("F")),
-            StoryComponentAction::BossBattle(_) => Some(String::from("B")),
-            StoryComponentAction::ReturnToPreviousArea => Some(String::from("R")),
-            _ => panic!("Prompt should not be shown for this StoryComponent"),
-        }
+        Some(String::from(match self {
+            StoryComponentAction::Battle(_) => "F",
+            StoryComponentAction::BossBattle(_) => "B",
+            StoryComponentAction::ReturnToPreviousArea => "R",
+            _ => panic!(),
+        }))
     }
 }

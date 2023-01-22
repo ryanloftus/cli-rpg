@@ -1,17 +1,35 @@
-pub mod io_util;
+mod io_util;
 
 use std::option::Option;
 
 const REPROMPT_OPTION: &str = "reprompt";
+
+/// Prints the prompt and reads in a number from the user
+pub fn get_selection_from_numeric_range(prompt: &str, min: i32, max: i32) -> i32 {
+    return io_util::request_num(prompt, min, max);
+}
+
+/// Prints the prompt and reads in a yes or no from the user, yes equates to true, and no equates to false
+pub fn _get_selection_from_boolean(prompt: &str) -> bool {
+    return io_util::_request_yes_or_no(prompt);
+}
+
+/// Prints the prompt and reads in a string that meets the validation requirements
+pub fn get_selection_from_custom_validation(
+    prompt: &str,
+    validation_predicate: impl Fn(String) -> bool,
+    reprompt: &str,
+) -> String {
+    return io_util::request_input_with_validation(prompt, validation_predicate, reprompt);
+}
 
 pub trait PromptOption {
     fn option_name(&self) -> String;
     fn short_option_name(&self) -> Option<String>;
 }
 
-// TODO: expand this module to include functions for prompting for numbers, boolean (y/n), or custom (ie entering player name)
+/// Prints the prompt and options and reads in an option from the user
 pub fn get_selection_from_options<T: PromptOption + Clone>(prompt: String, options: &Vec<T>) -> T {
-    // TODO: fix trailing newline issue (best solution might be to keep it but use print! instead of println! in io_util)
     let prompt = generate_prompt_with_options(prompt, options);
     let reprompt = generate_reprompt();
     let mut answer = io_util::request_input(&prompt).to_lowercase();
@@ -53,7 +71,7 @@ fn generate_prompt_with_options<T: PromptOption>(prompt: String, options: &Vec<T
 
 fn generate_reprompt() -> String {
     format!(
-        "Please enter a valid option. Enter \"{reprompt_option}\" to show options again.",
+        "Please enter a valid option. Enter \"{reprompt_option}\" to show options again.\n",
         reprompt_option = REPROMPT_OPTION,
     )
 }

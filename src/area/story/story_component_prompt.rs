@@ -1,7 +1,6 @@
 use super::StoryComponentAction;
 use crate::enemy::Enemy;
-use crate::prompt::get_selection_from_options;
-use crate::prompt::io_util::request_num;
+use crate::prompt::{get_selection_from_numeric_range, get_selection_from_options};
 
 const ENEMY_PROMPT: &str = "You see enemies ahead. What will you do?";
 const NUM_ENEMIES_PROMPT: &str = "How many enemies will you take on?";
@@ -20,8 +19,11 @@ pub fn show_enemy_prompt(upcoming_enemies: Vec<&Enemy>) -> StoryComponentAction 
     );
     return match selected_option {
         StoryComponentAction::Battle(_) => {
-            let num_enemies =
-                request_num(NUM_ENEMIES_PROMPT, 1, upcoming_enemies.len() as i32) as usize;
+            let num_enemies = get_selection_from_numeric_range(
+                NUM_ENEMIES_PROMPT,
+                1,
+                upcoming_enemies.len() as i32,
+            ) as usize;
             StoryComponentAction::Battle(
                 upcoming_enemies[0..num_enemies]
                     .iter()

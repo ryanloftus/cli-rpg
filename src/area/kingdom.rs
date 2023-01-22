@@ -5,7 +5,7 @@ const INTRO_PROMPT: &str = "You're currently in the throne room of The Kingdom's
 You're not sure why, but you seem to be speaking before the King. He says:
 The world is in need of a hero...
 Territories far and wide are in disarray wars, monster attacks, and natural disasters.
-Will you help save the world? [Y/N]";
+It's up to you to save the world.";
 
 /*
  * This is the first area in the game and acts as a tutorial.

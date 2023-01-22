@@ -1,9 +1,14 @@
 use crate::player::Player;
-use crate::prompt::{get_selection_from_options, io_util, PromptOption};
+use crate::prompt::{self, PromptOption};
 use crate::save;
 
 const NEW_SAVE_OPTION: &str = "New";
 const NEW_SAVE_SHORT_OPTION: &str = "N";
+const INVALID_NAME_MESSAGE: &str = "Name must satisfy the following conditions:
+1. it has not already been used by an existing save
+2. it is not \"N\" or \"New\" (case-insensitive)
+3. it is made up of only alphabetic characters
+Please enter a different name.";
 
 #[derive(Clone)]
 enum SaveFileSelection {
@@ -56,14 +61,10 @@ fn is_valid_name(name: String, existing_names: &Vec<String>) -> bool {
 
 fn create_new_save() -> Player {
     let existing_names = save::find_existing_saves();
-    let name = io_util::request_input_with_validation(
+    let name = prompt::get_selection_from_custom_validation(
         "What is your name?",
         |name| is_valid_name(name, &existing_names),
-        "Name must satisfy the following conditions:
-        1. it has not already been used by an existing save
-        2. it is not \"N\" or \"New\" (case-insensitive)
-        3. it is made up of only alphabetic characters
-        Please enter a different name.",
+        INVALID_NAME_MESSAGE,
     );
     println!("Hello, {name}!");
     return Player::new(name.clone());
@@ -80,5 +81,5 @@ fn select_from_save_file_menu() -> SaveFileSelection {
         "Select a save to load or enter \"{new_save_option}\"",
         new_save_option = NEW_SAVE_OPTION,
     );
-    return get_selection_from_options(prompt, &options);
+    return prompt::get_selection_from_options(prompt, &options);
 }
