@@ -1,5 +1,6 @@
 mod menu;
 use crate::area;
+use crate::player::class::choose_class_prompt;
 use crate::prompt::get_selection_from_options;
 use crate::save::save;
 
@@ -29,8 +30,8 @@ pub fn play_game() {
                 if player.story_progress.areas_completed == areas.len() {
                     // TODO: end of game
                 } else {
-                    // choose_class_prompt(); // TODO: use class progressions to determine which classes are available
-                    // TODO: ask player whether they want to continue on to next area or train in a completed area
+                    choose_class_prompt(&player.class); // TODO: use class progressions to determine which classes are available
+                                                        // TODO: ask player whether they want to continue on to next area or train in a completed area
                 }
             }
             area::AreaResult::PlayerWasDefeated => {

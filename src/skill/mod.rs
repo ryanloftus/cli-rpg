@@ -4,7 +4,6 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Skill {
-    pub name: &'static str,
-    pub unique_id: &'static str,
+    pub name: String,
     pub attributes: Vec<SkillAttribute>,
 }

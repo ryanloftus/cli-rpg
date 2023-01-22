@@ -2,6 +2,8 @@ pub mod class;
 mod experience;
 mod story_progress;
 
+use crate::skill::Skill;
+
 use self::class::Class;
 use experience::Experience;
 use serde::{Deserialize, Serialize};
@@ -12,7 +14,7 @@ pub struct Player {
     pub name: String,
     pub class: Class,
     pub experience: Experience,
-    pub skill_ids: Vec<String>,
+    pub skills: Vec<Skill>,
     pub story_progress: StoryProgress,
     pub current_area_idx: usize,
     // TODO: add Attributes to determine effectiveness of attacks against the Player
@@ -27,7 +29,7 @@ impl Player {
                 level: 1,
                 experience_towards_next_level: 0,
             },
-            skill_ids: [].to_vec(),
+            skills: [].to_vec(),
             story_progress: StoryProgress {
                 areas_completed: 0,
                 current_area_progress: 0,

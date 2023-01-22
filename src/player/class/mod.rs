@@ -7,7 +7,10 @@ pub mod starter_class;
 
 use serde::{Deserialize, Serialize};
 
-use crate::prompt::{get_selection_from_options, PromptOption};
+use crate::{
+    progression::Progressable,
+    prompt::{get_selection_from_options, PromptOption},
+};
 
 use self::{
     advanced_class::AdvancedClass, expert_class::ExpertClass,
@@ -25,20 +28,6 @@ pub enum Class {
     Expert(ExpertClass),
     Master(MasterClass),
     Overpowered(OverpoweredClass),
-}
-
-impl Class {
-    pub fn class_progressions(&self) -> Vec<Class> {
-        match self {
-            Class::FutureHero => todo!(),
-            Class::Starter(_) => todo!(),
-            Class::Intermediate(_) => todo!(),
-            Class::Advanced(_) => todo!(),
-            Class::Expert(_) => todo!(),
-            Class::Master(_) => todo!(),
-            Class::Overpowered(_) => panic!("Cannot progress past OverpoweredClass"),
-        }
-    }
 }
 
 impl PromptOption for Class {
@@ -67,6 +56,21 @@ impl PromptOption for Class {
     }
 }
 
-pub fn choose_class_prompt(class_options: Vec<Class>) -> Class {
+impl Progressable for Class {
+    fn get_progressions(&self) -> Vec<Self> {
+        match self {
+            Class::FutureHero => todo!(),
+            Class::Starter(_) => todo!(),
+            Class::Intermediate(_) => todo!(),
+            Class::Advanced(_) => todo!(),
+            Class::Expert(_) => todo!(),
+            Class::Master(_) => todo!(),
+            Class::Overpowered(_) => panic!("Cannot progress past OverpoweredClass"),
+        }
+    }
+}
+
+pub fn choose_class_prompt(current_class: &Class) -> Class {
+    let class_options = current_class.get_progressions();
     return get_selection_from_options(String::from("Choose a class."), &class_options);
 }
