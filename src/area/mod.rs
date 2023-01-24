@@ -107,5 +107,13 @@ impl Area {
 }
 
 pub fn build_areas() -> [Area; 7] {
-    return [kingdom::new(), plains::new(), forest::new(), islands::new(), caves::new(), icefields::new(), mountains::new()];
+    return [
+        kingdom::new(),
+        plains::new(),
+        forest::new(),
+        islands::new(),
+        caves::new(),
+        icefields::new(),
+        mountains::new(),
+    ];
 }

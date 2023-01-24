@@ -21,8 +21,8 @@ fn generate_story() -> Vec<StoryComponent> {
     let mut story = Vec::new();
     story.push(StoryComponent::Text(String::from(OPENING_TEXT)));
     for i in 1..=100 {
-        story.push(StoryComponent::Enemy(Enemy::new(EnemyType::Monster(
-            if i % 20 == 0 {
+        story.push(StoryComponent::Enemy(Enemy::new(
+            EnemyType::Monster(if i % 20 == 0 {
                 MonsterType::Dragon
             } else if i % 10 == 0 {
                 MonsterType::Ogre
