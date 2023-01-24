@@ -31,14 +31,23 @@ pub enum EnemyType {
 }
 
 impl Enemy {
-    pub fn new(enemy_type: EnemyType, min_level: u8, max_level: u8) -> Enemy {
-        let level = rand::thread_rng().gen_range(min_level..=max_level);
-        match enemy_type {
+    pub fn new(enemy_type: EnemyType, base_level: u8, area_progress: u8) -> Enemy {
+        let level = calculate_level(base_level, area_progress);
+        return match enemy_type {
             EnemyType::Monster(monster_type) => monster::new(monster_type, level),
             EnemyType::Soldier {
                 faction,
                 soldier_type,
             } => soldier::new(soldier_type, faction, level),
-        }
+        };
     }
+}
+
+const ENEMY_LEVEL_VARIANCE: f32 = 0.05;
+
+fn calculate_level(base_level: u8, area_progress: u8) -> u8 {
+    let avg_level: f32 = f32::from(base_level) + f32::from(area_progress) / 15.0;
+    let min_level = (avg_level * (1.0 - ENEMY_LEVEL_VARIANCE)).round() as u8;
+    let max_level = (avg_level * (1.0 + ENEMY_LEVEL_VARIANCE)).round() as u8;
+    return rand::thread_rng().gen_range(min_level..=max_level);
 }

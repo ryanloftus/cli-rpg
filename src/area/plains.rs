@@ -21,30 +21,26 @@ fn generate_story() -> Vec<StoryComponent> {
     let mut story = Vec::new();
     story.push(StoryComponent::Text(String::from(OPENING_TEXT)));
     for i in 1..=100 {
-        story.push(StoryComponent::Enemy(if i % 20 == 0 {
-            Enemy::new(
-                EnemyType::Monster(MonsterType::Dragon),
-                (i / 20) + 1,
-                (i / 15) + 1,
-            )
-        } else if i % 10 == 0 {
-            Enemy::new(
-                EnemyType::Monster(MonsterType::Ogre),
-                (i / 20) + 1,
-                (i / 15) + 1,
-            )
-        } else if i % 3 == 0 {
-            Enemy::new(EnemyType::Monster(MonsterType::Goblin), 1, (i / 25) + 1)
-        } else {
-            Enemy::new(EnemyType::Monster(MonsterType::Slime), 1, (i / 25) + 1)
-        }))
+        story.push(StoryComponent::Enemy(Enemy::new(EnemyType::Monster(
+            if i % 20 == 0 {
+                MonsterType::Dragon
+            } else if i % 10 == 0 {
+                MonsterType::Ogre
+            } else if i % 3 == 0 {
+                MonsterType::Goblin
+            } else {
+                MonsterType::Slime
+            }),
+            1,
+            i,
+        )));
     }
     story.push(StoryComponent::Boss(Enemy {
         name: String::from("Demon Lord"),
-        level: 10,
+        level: 12,
         skills: Vec::new(),
         difficulty: EnemyDifficulty::Boss,
     }));
     story.push(StoryComponent::Text(String::from(CLOSING_TEXT)));
-    story
+    return story;
 }

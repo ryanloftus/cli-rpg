@@ -21,15 +21,11 @@ fn generate_story() -> Vec<StoryComponent> {
     let mut story = Vec::new();
     story.push(StoryComponent::Text(String::from(OPENING_TEXT)));
     for i in 1..=100 {
-        story.push(StoryComponent::Enemy(if i % 5 == 0 {
-            Enemy::new(
-                EnemyType::Monster(MonsterType::DemonicBeast),
-                10 + (i / 20),
-                12 + (i / 15),
-            )
-        } else {
-            Enemy::new(EnemyType::Monster(MonsterType::Demon), 10, (i / 20) + 10)
-        }))
+        story.push(StoryComponent::Enemy(Enemy::new(
+            enemy_type_at(i),
+            15,
+            i,
+        )));
     }
     story.push(StoryComponent::Boss(Enemy {
         name: String::from("Demon Lord"),
@@ -39,4 +35,14 @@ fn generate_story() -> Vec<StoryComponent> {
     }));
     story.push(StoryComponent::Text(String::from(CLOSING_TEXT)));
     return story;
+}
+
+fn enemy_type_at(story_idx: u8) -> EnemyType {
+    return EnemyType::Monster(
+        if story_idx % 5 == 0 {
+            MonsterType::DemonicBeast
+        } else {
+            MonsterType::Demon
+        }
+    );
 }

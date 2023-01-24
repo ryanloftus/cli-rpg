@@ -106,6 +106,6 @@ impl Area {
     }
 }
 
-pub fn build_areas() -> [Area; 3] {
-    return [kingdom::new(), plains::new(), forest::new()]; // TODO: add more areas
+pub fn build_areas() -> [Area; 7] {
+    return [kingdom::new(), plains::new(), forest::new(), islands::new(), caves::new(), icefields::new(), mountains::new()];
 }
