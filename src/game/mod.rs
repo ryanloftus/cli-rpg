@@ -29,6 +29,7 @@ pub fn play_game() {
                 save(&player);
                 if player.story_progress.areas_completed == areas.len() {
                     // TODO: end of game
+                    // TODO: how should completed save files be handled?
                 } else {
                     choose_class_prompt(&player.class); // TODO: use class progressions to determine which classes are available
                                                         // TODO: ask player whether they want to continue on to next area or train in a completed area
