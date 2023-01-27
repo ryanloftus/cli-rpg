@@ -11,7 +11,8 @@ It's up to you to save the world.";
 
 const TRAINING_BATTLE_TEXT: &str = "First, you should do some training. Go to the training grounds and find a Knight to spar with.";
 
-const CLOSING_TEXT: &str = "Now you are ready, go on to The Plains to start your journey, hero.";
+const CLOSING_TEXT: &str = "Now you are ready, go on to The Plains to start your journey, hero.
+And so, you begin your quest to make the world a safe place once again. On your way out of The Kingdom, you notice a cool looking rock on the ground and pick it up. It is unlike anything you have seen before so you decide to put it in your pocket.";
 
 /*
  * This is the first area in the game and acts as a tutorial.

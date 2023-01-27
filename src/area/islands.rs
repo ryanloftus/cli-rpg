@@ -20,17 +20,17 @@ fn generate_story() -> Vec<StoryComponent> {
     story.append(&mut get_warm_island_story());
     story.append(&mut get_cold_island_story());
     story.append(&mut get_stormy_island_story());
+    story.push(StoryComponent::Text(String::from(CLOSING_TEXT)));
     return story;
 }
 
 fn get_warm_island_story() -> Vec<StoryComponent> {
-    let warm_island_story = Vec::new();
-    let faction = String::from("Warm Island");
+    let mut warm_island_story = Vec::new();
     for i in 1..=30 {
         let soldier_type = get_soldier_type_at(i);
         warm_island_story.push(StoryComponent::Enemy(Enemy::new(
             EnemyType::Soldier {
-                faction,
+                faction: String::from("Warm Island"),
                 soldier_type,
             },
             ISLANDS_BASE_LEVEL,
@@ -47,13 +47,12 @@ fn get_warm_island_story() -> Vec<StoryComponent> {
 }
 
 fn get_cold_island_story() -> Vec<StoryComponent> {
-    let cold_island_story = Vec::new();
-    let faction = String::from("Cold Island");
+    let mut cold_island_story = Vec::new();
     for i in 1..=30 {
         let soldier_type = get_soldier_type_at(i);
         cold_island_story.push(StoryComponent::Enemy(Enemy::new(
             EnemyType::Soldier {
-                faction,
+                faction: String::from("Cold Island"),
                 soldier_type,
             },
             ISLANDS_BASE_LEVEL,
@@ -70,13 +69,12 @@ fn get_cold_island_story() -> Vec<StoryComponent> {
 }
 
 fn get_stormy_island_story() -> Vec<StoryComponent> {
-    let stormy_island_story = Vec::new();
-    let faction = String::from("Stormy Island");
+    let mut stormy_island_story = Vec::new();
     for i in 1..=30 {
         let soldier_type = get_soldier_type_at(i);
         stormy_island_story.push(StoryComponent::Enemy(Enemy::new(
             EnemyType::Soldier {
-                faction,
+                faction: String::from("Stormy Island"),
                 soldier_type,
             },
             ISLANDS_BASE_LEVEL,
