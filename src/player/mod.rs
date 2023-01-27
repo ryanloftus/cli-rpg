@@ -2,7 +2,7 @@ pub mod class;
 mod experience;
 mod story_progress;
 
-use crate::skill::Skill;
+use crate::{skill::Skill, stats::Stats};
 
 use self::class::Class;
 use experience::Experience;
@@ -15,6 +15,7 @@ pub struct Player {
     pub class: Class,
     pub experience: Experience,
     pub skills: Vec<Skill>,
+    pub stats: Stats,
     pub story_progress: StoryProgress,
     pub current_area_idx: usize,
     // TODO: add Attributes to determine effectiveness of attacks against the Player
@@ -30,6 +31,17 @@ impl Player {
                 experience_towards_next_level: 0,
             },
             skills: [].to_vec(),
+            stats: Stats {
+                max_health: 20,
+                max_mp: 10,
+                strength: 1,
+                magic: 1,
+                defense: 1,
+                magic_resist: 1,
+                speed: 1,
+                skill: 1,
+                luck: 1,
+            },
             story_progress: StoryProgress {
                 areas_completed: 0,
                 current_area_progress: 0,

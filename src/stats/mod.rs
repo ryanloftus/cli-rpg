@@ -1,6 +1,8 @@
+use serde::{Deserialize, Serialize};
+
 /*
  * Stats each unit has. Used for battles.
- * 
+ *
  * max_health: how much damage a unit can take before they are defeated
  * max_mp: how much magic a unit can use before running out
  * strength: increases damage dealt by physical skills
@@ -11,14 +13,15 @@
  * skill: increases hit chance, parry chance, and critical hit chance
  * luck: ???
  */
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Stats {
-    max_health: u16,
-    max_mp: u16,
-    strength: u16,
-    magic: u16,
-    defense: u16,
-    magic_resist: u16,
-    speed: u16,
-    skill: u16,
-    luck: u16,
+    pub max_health: u16,
+    pub max_mp: u16,
+    pub strength: u16,
+    pub magic: u16,
+    pub defense: u16,
+    pub magic_resist: u16,
+    pub speed: u16,
+    pub skill: u16,
+    pub luck: u16,
 }

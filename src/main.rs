@@ -7,6 +7,7 @@ mod progression;
 mod prompt;
 mod save;
 mod skill;
+mod stats;
 
 // TODO: add colored text to terminal output
 fn main() {
