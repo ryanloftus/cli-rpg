@@ -3,7 +3,7 @@ use crate::enemy::{monster::MonsterType, Enemy, EnemyDifficulty, EnemyType};
 
 const OPENING_TEXT: &str = "You look out onto The Plains and see that it has been overrun by 100 Monsters. Its up to you to stop them!";
 const CLOSING_TEXT: &str =
-    "The Demon Lord has been defeated and The Plains are safe. Well done hero.";
+    "The Villainous Mage has been defeated and The Plains are safe. Well done hero.";
 
 pub fn new() -> Area {
     Area {
@@ -32,7 +32,7 @@ fn generate_story() -> Vec<StoryComponent> {
         )));
     }
     story.push(StoryComponent::Boss(Enemy {
-        name: String::from("Demon Lord"),
+        name: String::from("Villainous Mage"),
         level: 12,
         skills: Vec::new(),
         difficulty: EnemyDifficulty::Boss,
