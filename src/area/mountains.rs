@@ -1,7 +1,7 @@
 use super::{story::StoryComponent, Area};
 use crate::enemy::{monster::MonsterType, soldier::SoldierType, Enemy, EnemyDifficulty, EnemyType};
 
-const OPENING_TEXT: &str = "You begin your climb up the tallest mountain, but your view forward is obscured by a thick black fog. You march onward into the unknown to face your destiny.";
+const OPENING_TEXT: &str = "You now enter the final region of your journey, The Mountains. You begin your climb up the tallest mountain, but your view forward is obscured by a thick black fog. You march onward into the unknown to face your destiny.";
 const CLOSING_TEXT: &str = "You have put a stop to Doom Incarnate's malicious machinations... or at least delayed them. The black fog shrouding the mountains has cleared and you look down on the world you've protected. Well done hero, you may finally rest.";
 
 pub fn new() -> Area {
