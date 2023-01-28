@@ -1,5 +1,5 @@
 use super::{story::StoryComponent, Area};
-use crate::enemy::{monster::MonsterType, Enemy, EnemyDifficulty, EnemyType};
+use crate::enemy::{monster::MonsterType, Enemy, EnemyType};
 
 const OPENING_TEXT: &str = "You look out onto The Plains and see that it has been overrun by 100 Monsters. Its up to you to stop them!";
 const CLOSING_TEXT: &str =
@@ -31,12 +31,12 @@ fn generate_story() -> Vec<StoryComponent> {
             i,
         )));
     }
-    story.push(StoryComponent::Boss(Enemy {
-        name: String::from("Villainous Mage"),
-        level: 12,
-        skills: Vec::new(),
-        difficulty: EnemyDifficulty::Boss,
-    }));
+    story.push(StoryComponent::Boss(Enemy::new_boss(
+        String::from("Villainous Mage"),
+        15,
+        Vec::new(),
+        Vec::new(),
+    )));
     story.push(StoryComponent::Text(String::from(CLOSING_TEXT)));
     return story;
 }

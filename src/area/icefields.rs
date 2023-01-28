@@ -1,5 +1,5 @@
 use super::{story::StoryComponent, Area};
-use crate::enemy::{soldier::SoldierType, Enemy, EnemyDifficulty, EnemyType};
+use crate::enemy::{soldier::SoldierType, Enemy, EnemyType};
 
 const OPENING_TEXT: &str = "An army of fiery monsters threaten to melt away The Icefields. You must stop this catastrophe and whoever is behind it.";
 const CLOSING_TEXT: &str =
@@ -19,12 +19,12 @@ fn generate_story() -> Vec<StoryComponent> {
     for i in 1..=100 {
         story.push(StoryComponent::Enemy(Enemy::new(enemy_type_at(i), 60, i)));
     }
-    story.push(StoryComponent::Boss(Enemy {
-        name: String::from("Molten Monstrosity"),
-        level: 75,
-        skills: Vec::new(),
-        difficulty: EnemyDifficulty::Boss,
-    }));
+    story.push(StoryComponent::Boss(Enemy::new_boss(
+        String::from("Molten Monstrosity"),
+        75,
+        Vec::new(),
+        Vec::new(),
+    )));
     story.push(StoryComponent::Text(String::from(CLOSING_TEXT)));
     return story;
 }

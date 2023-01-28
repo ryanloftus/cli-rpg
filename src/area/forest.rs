@@ -1,5 +1,5 @@
 use super::{story::StoryComponent, Area};
-use crate::enemy::{monster::MonsterType, Enemy, EnemyDifficulty, EnemyType};
+use crate::enemy::{monster::MonsterType, Enemy, EnemyType};
 
 const OPENING_TEXT: &str = "You enter The Forest and notice that 100 citizens of The Forest have been turned into Demons. Defeat the Demons and whoever is responsible for this tragedy!";
 const CLOSING_TEXT: &str =
@@ -19,12 +19,12 @@ fn generate_story() -> Vec<StoryComponent> {
     for i in 1..=100 {
         story.push(StoryComponent::Enemy(Enemy::new(enemy_type_at(i), 15, i)));
     }
-    story.push(StoryComponent::Boss(Enemy {
-        name: String::from("Demon Lord"),
-        level: 25,
-        skills: Vec::new(),
-        difficulty: EnemyDifficulty::Boss,
-    }));
+    story.push(StoryComponent::Boss(Enemy::new_boss(
+        String::from("Demon Lord"),
+        25,
+        Vec::new(),
+        Vec::new(),
+    )));
     story.push(StoryComponent::Text(String::from(CLOSING_TEXT)));
     return story;
 }
