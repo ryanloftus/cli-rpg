@@ -1,3 +1,5 @@
+use crate::stats::Stats;
+
 use super::Enemy;
 
 pub enum SoldierType {
@@ -8,13 +10,14 @@ pub enum SoldierType {
     Lieutenant,
 }
 
-pub fn new(soldier_type: SoldierType, faction: String, level: u8) -> Enemy {
+pub fn new(soldier_type: SoldierType, faction: String, level: u16) -> Enemy {
     // TODO: make logic more complex, (guards and lieutenants should be stronger)
     Enemy {
         name: enemy_name(soldier_type, faction),
         level,
         skills: Vec::new(),
         difficulty: super::EnemyDifficulty::Weak,
+        stats: Stats::new(level, Vec::new()),
     }
 }
 

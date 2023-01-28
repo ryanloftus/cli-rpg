@@ -3,7 +3,7 @@ pub mod soldier;
 
 use crate::{
     skill::Skill,
-    stats::{self, Stats},
+    stats::{StatMultiplier, Stats},
 };
 use rand::{self, Rng};
 
@@ -49,24 +49,14 @@ impl Enemy {
         name: String,
         level: u16,
         skills: Vec<Skill>,
-        stat_multipliers: Stats,
+        stat_multipliers: Vec<StatMultiplier>,
     ) -> Enemy {
         return Enemy {
             name,
             level,
             skills,
             difficulty: EnemyDifficulty::Boss,
-            stats: Stats {
-                max_health: stats::BASE_HEALTH + stat_multipliers.max_health * level,
-                max_mp: stats::BASE_MP + stat_multipliers.max_mp * level,
-                strength: stat_multipliers.strength * level,
-                magic: stat_multipliers.magic * level,
-                defense: stat_multipliers.defense * level,
-                magic_resist: stat_multipliers.magic_resist * level,
-                speed: stat_multipliers.speed * level,
-                skill: stat_multipliers.skill * level,
-                luck: stat_multipliers.luck * level,
-            },
+            stats: Stats::new(level, stat_multipliers),
         };
     }
 }

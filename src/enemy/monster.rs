@@ -29,17 +29,7 @@ fn new_slime(level: u16) -> Enemy {
         level,
         skills: Vec::new(),
         difficulty: super::EnemyDifficulty::Weak,
-        stats: Stats {
-            max_health: todo!(),
-            max_mp: todo!(),
-            strength: todo!(),
-            magic: todo!(),
-            defense: todo!(),
-            magic_resist: todo!(),
-            speed: todo!(),
-            skill: todo!(),
-            luck: todo!(),
-        },
+        stats: Stats::new(level, Vec::new()),
     }
 }
 
@@ -49,17 +39,7 @@ fn new_goblin(level: u16) -> Enemy {
         level,
         skills: Vec::new(),
         difficulty: super::EnemyDifficulty::Weak,
-        stats: Stats {
-            max_health: todo!(),
-            max_mp: todo!(),
-            strength: todo!(),
-            magic: todo!(),
-            defense: todo!(),
-            magic_resist: todo!(),
-            speed: todo!(),
-            skill: todo!(),
-            luck: todo!(),
-        },
+        stats: Stats::new(level, Vec::new()),
     }
 }
 
@@ -69,17 +49,7 @@ fn new_dragon(level: u16) -> Enemy {
         level,
         skills: Vec::new(),
         difficulty: super::EnemyDifficulty::Strong,
-        stats: Stats {
-            max_health: todo!(),
-            max_mp: todo!(),
-            strength: todo!(),
-            magic: todo!(),
-            defense: todo!(),
-            magic_resist: todo!(),
-            speed: todo!(),
-            skill: todo!(),
-            luck: todo!(),
-        },
+        stats: Stats::new(level, Vec::new()),
     }
 }
 
@@ -92,17 +62,7 @@ fn new_ogre(level: u16) -> Enemy {
             level: 100,
             skills: Vec::new(),
             difficulty: super::EnemyDifficulty::Special,
-            stats: Stats {
-                max_health: todo!(),
-                max_mp: todo!(),
-                strength: todo!(),
-                magic: todo!(),
-                defense: todo!(),
-                magic_resist: todo!(),
-                speed: todo!(),
-                skill: todo!(),
-                luck: todo!(),
-            },
+            stats: Stats::new(500, Vec::new()),
         }
     } else {
         Enemy {
@@ -110,17 +70,7 @@ fn new_ogre(level: u16) -> Enemy {
             level,
             skills: Vec::new(),
             difficulty: super::EnemyDifficulty::Strong,
-            stats: Stats {
-                max_health: todo!(),
-                max_mp: todo!(),
-                strength: todo!(),
-                magic: todo!(),
-                defense: todo!(),
-                magic_resist: todo!(),
-                speed: todo!(),
-                skill: todo!(),
-                luck: todo!(),
-            },
+            stats: Stats::new(level, Vec::new()),
         }
     }
 }
@@ -131,17 +81,7 @@ fn new_demon(level: u16) -> Enemy {
         level,
         skills: Vec::new(),
         difficulty: super::EnemyDifficulty::Weak,
-        stats: Stats {
-            max_health: todo!(),
-            max_mp: todo!(),
-            strength: todo!(),
-            magic: todo!(),
-            defense: todo!(),
-            magic_resist: todo!(),
-            speed: todo!(),
-            skill: todo!(),
-            luck: todo!(),
-        },
+        stats: Stats::new(level, Vec::new()),
     }
 }
 
@@ -151,16 +91,6 @@ fn new_demonic_beast(level: u16) -> Enemy {
         level,
         skills: Vec::new(),
         difficulty: super::EnemyDifficulty::Strong,
-        stats: Stats {
-            max_health: todo!(),
-            max_mp: todo!(),
-            strength: todo!(),
-            magic: todo!(),
-            defense: todo!(),
-            magic_resist: todo!(),
-            speed: todo!(),
-            skill: todo!(),
-            luck: todo!(),
-        },
+        stats: Stats::new(level, Vec::new()),
     }
 }

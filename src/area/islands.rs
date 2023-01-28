@@ -1,13 +1,10 @@
-use crate::{
-    enemy::{soldier::SoldierType, Enemy, EnemyDifficulty, EnemyType},
-    stats::Stats,
-};
+use crate::enemy::{soldier::SoldierType, Enemy, EnemyType};
 
 use super::{story::StoryComponent, Area};
 
 const OPENING_TEXT: &str = "There are three major islands, the Warm Island, the Cold Island, and the Stormy Island. The three islands have been at war with each other for 100 years. Each is ruled by a tyrannical leader who refuses to give up on the war. It is up to you to end this war quickly by defeating each of the three leaders.";
 const CLOSING_TEXT: &str = "The island's leaders have all been defeated and the war is finally over. The people of three islands have formed a democratic society, uniting all three islands. Well done hero.";
-const ISLANDS_BASE_LEVEL: u8 = 30;
+const ISLANDS_BASE_LEVEL: u16 = 30;
 
 pub fn new() -> Area {
     Area {
@@ -45,24 +42,7 @@ fn get_warm_island_story() -> Vec<StoryComponent> {
 }
 
 fn warm_island_boss() -> Enemy {
-    let level = 35;
-    return Enemy {
-        name: String::from("Warm Island King"),
-        skills: Vec::new(),
-        level,
-        difficulty: EnemyDifficulty::Boss,
-        stats: Stats {
-            max_health: 20 + level(),
-            max_mp: todo!(),
-            strength: todo!(),
-            magic: todo!(),
-            defense: todo!(),
-            magic_resist: todo!(),
-            speed: todo!(),
-            skill: todo!(),
-            luck: todo!(),
-        },
-    };
+    return Enemy::new_boss(String::from("Warm Island King"), 35, Vec::new(), Vec::new());
 }
 
 fn get_cold_island_story() -> Vec<StoryComponent> {
@@ -78,13 +58,12 @@ fn get_cold_island_story() -> Vec<StoryComponent> {
             i + 30,
         )));
     }
-    cold_island_story.push(StoryComponent::Boss(Enemy {
-        name: String::from("Cold Island King"),
-        skills: Vec::new(),
-        level: 38,
-        difficulty: EnemyDifficulty::Boss,
-    }));
+    cold_island_story.push(StoryComponent::Boss(cold_island_boss()));
     return cold_island_story;
+}
+
+fn cold_island_boss() -> Enemy {
+    return Enemy::new_boss(String::from("Cold Island King"), 40, Vec::new(), Vec::new());
 }
 
 fn get_stormy_island_story() -> Vec<StoryComponent> {
@@ -100,13 +79,17 @@ fn get_stormy_island_story() -> Vec<StoryComponent> {
             i + 60,
         )));
     }
-    stormy_island_story.push(StoryComponent::Boss(Enemy {
-        name: String::from("Stormy Island Queen"),
-        skills: Vec::new(),
-        level: 42,
-        difficulty: EnemyDifficulty::Boss,
-    }));
+    stormy_island_story.push(StoryComponent::Boss(stormy_island_boss()));
     return stormy_island_story;
+}
+
+fn stormy_island_boss() -> Enemy {
+    return Enemy::new_boss(
+        String::from("Stormy Island Queen"),
+        45,
+        Vec::new(),
+        Vec::new(),
+    );
 }
 
 fn get_soldier_type_at(i: u8) -> SoldierType {

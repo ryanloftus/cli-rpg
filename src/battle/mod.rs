@@ -38,5 +38,5 @@ pub fn battle(mut player: &Player, enemies: &Vec<Enemy>) -> BattleResult {
             );
         }
     }
-    return true;
+    return BattleResult::Victory;
 }

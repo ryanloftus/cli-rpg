@@ -38,6 +38,7 @@ pub enum StatMultiplier {
     Luck(f32),
 }
 
+// TODO: increase the player's stats when they level up
 impl Stats {
     /*
      * Creates a new Stats scaled to the given values
@@ -45,6 +46,7 @@ impl Stats {
      * stat_multiplers can be passed to increase particular stats
      */
     pub fn new(base: u16, stat_multipliers: Vec<StatMultiplier>) -> Stats {
+        // TODO: actually use stat_multipliers when calling this function
         let mut stats = Stats {
             max_health: base,
             max_mp: base,

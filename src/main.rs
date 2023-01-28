@@ -9,7 +9,7 @@ mod save;
 mod skill;
 mod stats;
 
-// TODO: add colored text to terminal output
+// TODO: [optional] add colored text to terminal output
 fn main() {
     game::play_game();
 }
