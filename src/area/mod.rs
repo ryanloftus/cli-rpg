@@ -7,6 +7,7 @@ mod mountains;
 mod plains;
 mod story;
 
+use crate::battle::BattleResult;
 use crate::player::Player;
 use crate::save;
 use crate::{battle::battle, prompt::PromptOption};
@@ -56,19 +57,17 @@ impl Area {
                     player.story_progress.current_area_progress += 1;
                 }
                 StoryComponentAction::Battle(enemies) => {
-                    if !battle(&player, &enemies) {
-                        return AreaResult::PlayerWasDefeated;
-                    } else {
-                        player.experience.enemies_defeated(&enemies);
+                    match battle(&player, &enemies) {
+                        BattleResult::Victory => player.experience.enemies_defeated(&enemies),
+                        BattleResult::Defeat => return AreaResult::PlayerWasDefeated,
                     }
                     player.story_progress.current_area_progress += enemies.len();
                 }
                 StoryComponentAction::BossBattle(boss) => {
                     let enemies = vec![boss];
-                    if !battle(&player, &enemies) {
-                        return AreaResult::PlayerWasDefeated;
-                    } else {
-                        player.experience.enemies_defeated(&enemies);
+                    match battle(&player, &enemies) {
+                        BattleResult::Victory => player.experience.enemies_defeated(&enemies),
+                        BattleResult::Defeat => return AreaResult::PlayerWasDefeated,
                     }
                     player.story_progress.current_area_progress += 1;
                 }

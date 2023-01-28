@@ -1,4 +1,7 @@
-use crate::enemy::{soldier::SoldierType, Enemy, EnemyDifficulty, EnemyType};
+use crate::{
+    enemy::{soldier::SoldierType, Enemy, EnemyDifficulty, EnemyType},
+    stats::Stats,
+};
 
 use super::{story::StoryComponent, Area};
 
@@ -37,13 +40,29 @@ fn get_warm_island_story() -> Vec<StoryComponent> {
             i,
         )));
     }
-    warm_island_story.push(StoryComponent::Boss(Enemy {
+    warm_island_story.push(StoryComponent::Boss(warm_island_boss()));
+    return warm_island_story;
+}
+
+fn warm_island_boss() -> Enemy {
+    let level = 35;
+    return Enemy {
         name: String::from("Warm Island King"),
         skills: Vec::new(),
-        level: 34,
+        level,
         difficulty: EnemyDifficulty::Boss,
-    }));
-    return warm_island_story;
+        stats: Stats {
+            max_health: 20 + level(),
+            max_mp: todo!(),
+            strength: todo!(),
+            magic: todo!(),
+            defense: todo!(),
+            magic_resist: todo!(),
+            speed: todo!(),
+            skill: todo!(),
+            luck: todo!(),
+        },
+    };
 }
 
 fn get_cold_island_story() -> Vec<StoryComponent> {

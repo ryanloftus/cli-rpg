@@ -2,7 +2,10 @@ pub mod class;
 mod experience;
 mod story_progress;
 
-use crate::{skill::Skill, stats::Stats};
+use crate::{
+    skill::Skill,
+    stats::{Stats, BASE_HEALTH, BASE_MP},
+};
 
 use self::class::Class;
 use experience::Experience;
@@ -32,8 +35,8 @@ impl Player {
             },
             skills: [].to_vec(),
             stats: Stats {
-                max_health: 20,
-                max_mp: 10,
+                max_health: BASE_HEALTH,
+                max_mp: BASE_MP,
                 strength: 1,
                 magic: 1,
                 defense: 1,

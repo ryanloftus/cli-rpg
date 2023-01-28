@@ -1,7 +1,10 @@
 pub mod monster;
 pub mod soldier;
 
-use crate::skill::Skill;
+use crate::{
+    skill::Skill,
+    stats::{self, Stats},
+};
 use rand::{self, Rng};
 
 #[derive(Debug, Clone)]
@@ -15,10 +18,10 @@ pub enum EnemyDifficulty {
 #[derive(Debug, Clone)]
 pub struct Enemy {
     pub name: String,
-    pub level: u8,
+    pub level: u16,
     pub skills: Vec<Skill>,
     pub difficulty: EnemyDifficulty,
-    // TODO: add stats
+    pub stats: Stats,
     // TODO: add Attributes to determine effectiveness of attacks against this foe
 }
 
@@ -31,7 +34,7 @@ pub enum EnemyType {
 }
 
 impl Enemy {
-    pub fn new(enemy_type: EnemyType, base_level: u8, area_progress: u8) -> Enemy {
+    pub fn new(enemy_type: EnemyType, base_level: u16, area_progress: u8) -> Enemy {
         let level = calculate_level(base_level, area_progress);
         return match enemy_type {
             EnemyType::Monster(monster_type) => monster::new(monster_type, level),
@@ -41,13 +44,38 @@ impl Enemy {
             } => soldier::new(soldier_type, faction, level),
         };
     }
+
+    pub fn new_boss(
+        name: String,
+        level: u16,
+        skills: Vec<Skill>,
+        stat_multipliers: Stats,
+    ) -> Enemy {
+        return Enemy {
+            name,
+            level,
+            skills,
+            difficulty: EnemyDifficulty::Boss,
+            stats: Stats {
+                max_health: stats::BASE_HEALTH + stat_multipliers.max_health * level,
+                max_mp: stats::BASE_MP + stat_multipliers.max_mp * level,
+                strength: stat_multipliers.strength * level,
+                magic: stat_multipliers.magic * level,
+                defense: stat_multipliers.defense * level,
+                magic_resist: stat_multipliers.magic_resist * level,
+                speed: stat_multipliers.speed * level,
+                skill: stat_multipliers.skill * level,
+                luck: stat_multipliers.luck * level,
+            },
+        };
+    }
 }
 
 const ENEMY_LEVEL_VARIANCE: f32 = 0.05;
 
-fn calculate_level(base_level: u8, area_progress: u8) -> u8 {
+fn calculate_level(base_level: u16, area_progress: u8) -> u16 {
     let avg_level: f32 = f32::from(base_level) + f32::from(area_progress) / 15.0;
-    let min_level = (avg_level * (1.0 - ENEMY_LEVEL_VARIANCE)).round() as u8;
-    let max_level = (avg_level * (1.0 + ENEMY_LEVEL_VARIANCE)).round() as u8;
+    let min_level = (avg_level * (1.0 - ENEMY_LEVEL_VARIANCE)).round() as u16;
+    let max_level = (avg_level * (1.0 + ENEMY_LEVEL_VARIANCE)).round() as u16;
     return rand::thread_rng().gen_range(min_level..=max_level);
 }
