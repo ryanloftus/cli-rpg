@@ -7,8 +7,7 @@ pub enum StoryComponent {
     Text(String),
     Enemy(Enemy),
     Boss(Enemy),
-    // TODO: GainAttribute once player attributes are added
-    // optional todo: implement prompts inside area stories and make stories dynamic (change based on prompt responses)
+    // TODO: GainAttribute once player attributes are added (i.e. DemonSlayer after progressing forest)
 }
 
 #[derive(Debug, Clone)]

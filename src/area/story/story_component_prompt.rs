@@ -6,9 +6,6 @@ const ENEMY_PROMPT: &str = "You see enemies ahead. What will you do?";
 const NUM_ENEMIES_PROMPT: &str = "How many enemies will you take on?";
 const BOSS_PROMPT: &str = "You see a boss ahead. What will you do?";
 
-// TODO: only show return to previous area option if there is a previous area to return to,
-// or add an area that the player starts in that the player will also return to if they are defeated
-
 pub fn show_enemy_prompt(upcoming_enemies: Vec<&Enemy>) -> StoryComponentAction {
     let selected_option = get_selection_from_options(
         String::from(ENEMY_PROMPT),
