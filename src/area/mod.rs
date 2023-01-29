@@ -105,6 +105,8 @@ impl Area {
     }
 }
 
+pub const NUM_AREAS: usize = 7;
+
 pub fn build_areas() -> [Area; 7] {
     return [
         kingdom::new(),

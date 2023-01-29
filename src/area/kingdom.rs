@@ -6,7 +6,7 @@ use super::StoryComponent;
 const OPENING_TEXT: &str = "You're currently in the throne room of The Kingdom's central castle.
 You're not sure why, but you seem to be speaking before the King. He says:
 The world is in need of a hero...
-Territories far and wide are in disarray wars, monster attacks, and natural disasters.
+Territories far and wide are trapped in a cycle of war, monster attacks, and natural disasters.
 It's up to you to save the world.";
 
 const TRAINING_BATTLE_TEXT: &str = "First, you should do some training. Go to the training grounds and find a Knight to spar with.";

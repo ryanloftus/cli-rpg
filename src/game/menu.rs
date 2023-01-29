@@ -33,10 +33,20 @@ impl PromptOption for SaveFileSelection {
 }
 
 pub fn start() -> Player {
-    let save_file_selection = select_from_save_file_menu();
-    match save_file_selection {
-        SaveFileSelection::ExistingSave(name) => save::load_save_file(&name).unwrap(),
-        SaveFileSelection::NewSave => create_new_save(),
+    loop {
+        let save_file_selection = select_from_save_file_menu();
+        match save_file_selection {
+            SaveFileSelection::ExistingSave(name) => {
+                let player = save::load_save_file(&name);
+                if player.is_err() {
+                    let err = player.unwrap_err();
+                    println!("{err}");
+                } else {
+                    return player.unwrap();
+                }
+            }
+            SaveFileSelection::NewSave => return create_new_save(),
+        }
     }
 }
 

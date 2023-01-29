@@ -20,8 +20,8 @@ impl Experience {
     fn add_experience(&mut self, experience: u16) {
         self.experience_towards_next_level = self.experience_towards_next_level + experience;
         while self.experience_towards_next_level >= XP_PER_LEVEL {
-            self.level = self.level + 1;
-            self.experience_towards_next_level = self.experience_towards_next_level - XP_PER_LEVEL;
+            self.level += 1;
+            self.experience_towards_next_level -= XP_PER_LEVEL;
         }
     }
 

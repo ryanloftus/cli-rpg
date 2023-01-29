@@ -1,3 +1,4 @@
+use crate::area;
 use crate::player::Player;
 use serde_json;
 use std::error::Error;
@@ -69,9 +70,31 @@ pub fn save(player: &Player) {
         .expect("Write to save file failed");
 }
 
+#[derive(Debug)]
+pub struct SaveFileCompleted {}
+
+impl std::fmt::Display for SaveFileCompleted {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "Save file cannot be opened. The game has already been completed for this save."
+        )
+    }
+}
+
+impl Error for SaveFileCompleted {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        None
+    }
+}
+
 pub fn load_save_file(player_name: &String) -> Result<Player, Box<dyn Error>> {
     let file = open_save_file_readonly(player_name);
     let reader = BufReader::new(file);
-    let player = serde_json::from_reader(reader)?;
-    Ok(player)
+    let player: Player = serde_json::from_reader(reader)?;
+    return if player.story_progress.areas_completed == area::NUM_AREAS {
+        Err(Box::new(SaveFileCompleted {}))
+    } else {
+        Ok(player)
+    };
 }

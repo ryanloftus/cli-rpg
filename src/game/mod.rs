@@ -1,6 +1,7 @@
 mod menu;
-use crate::area;
+use crate::area::{self, Area};
 use crate::player::class::choose_class_prompt;
+use crate::player::Player;
 use crate::prompt::get_selection_from_options;
 use crate::save::save;
 
@@ -10,7 +11,7 @@ pub fn play_game() {
     let mut player = menu::start();
     save(&player);
     let areas = area::build_areas();
-    let current_area = player.story_progress.areas_completed as usize;
+    let current_area = player.story_progress.areas_completed;
     loop {
         // TODO: provide a way for the player to view their stats, class, etc
         let area_result = areas[current_area].enter(&mut player);
@@ -28,8 +29,7 @@ pub fn play_game() {
                 player.story_progress.current_area_progress = 0;
                 save(&player);
                 if player.story_progress.areas_completed == areas.len() {
-                    // TODO: end of game
-                    // TODO: how should completed save files be handled?
+                    return;
                 } else {
                     choose_class_prompt(&player.class); // TODO: use class progressions to determine which classes are available
                                                         // TODO: ask player whether they want to continue on to next area or train in a completed area
@@ -40,7 +40,9 @@ pub fn play_game() {
             }
         }
     }
-    // TODO: simplify control flow so we call "open_menu" and "play_game" (should there be a menu module)
+    // TODO: simplify control flow so we call "open_menu" and "play_game"
     // TODO: handle between area logic
     // TODO: create a way to quit game when between areas or battles
 }
+
+fn return_to_previous_area(player: &mut Player, areas: &[Area]) {}
