@@ -5,7 +5,7 @@ mod islands;
 mod kingdom;
 mod mountains;
 mod plains;
-mod story;
+pub mod story;
 
 use crate::prompt::PromptOption;
 use story::StoryComponent;
@@ -34,6 +34,7 @@ pub enum AreaResult {
     ReturnToPreviousArea,
     AreaCompleted,
     PlayerWasDefeated,
+    QuitGame,
 }
 
 pub const NUM_AREAS: usize = 7;

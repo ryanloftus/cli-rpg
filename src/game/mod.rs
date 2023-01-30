@@ -1,4 +1,5 @@
 mod menu;
+use crate::area::story::{story_component_prompt, StoryComponent, StoryComponentAction};
 use crate::area::{self, Area, AreaResult};
 use crate::battle::{battle, BattleResult};
 use crate::player::class::choose_class_prompt;
@@ -27,7 +28,7 @@ pub fn play_game() {
                     return;
                 } else {
                     choose_class_prompt(&player.class);
-                    // TODO: ask player whether they want to continue on to next area or train in a completed area
+                    // TODO: ask player whether they want to continue on to next area or train in a completed area or quit game
                 }
             }
             area::AreaResult::PlayerWasDefeated => {
@@ -36,10 +37,11 @@ pub fn play_game() {
                     &areas[player.story_progress.areas_completed - 1],
                 );
             }
+            area::AreaResult::QuitGame => {
+                return;
+            }
         }
     }
-    // TODO: handle between area logic
-    // TODO: create a way to quit game when between areas or battles
 }
 
 /*
@@ -70,6 +72,7 @@ fn enter(player: &mut Player, area: &Area) -> AreaResult {
                 player.story_progress.current_area_progress += 1;
             }
             StoryComponentAction::ReturnToPreviousArea => return AreaResult::ReturnToPreviousArea,
+            StoryComponentAction::QuitGame => return AreaResult::QuitGame,
         }
         save::save(&player);
     }
