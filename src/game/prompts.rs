@@ -1,4 +1,4 @@
-use super::StoryComponentAction;
+use super::story::StoryComponentAction;
 use crate::enemy::Enemy;
 use crate::prompt::{get_selection_from_numeric_range, get_selection_from_options};
 

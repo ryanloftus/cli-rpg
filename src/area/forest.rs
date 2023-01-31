@@ -1,4 +1,4 @@
-use super::{story::StoryComponent, Area};
+use super::{Area, StoryComponent};
 use crate::enemy::{monster::MonsterType, Enemy, EnemyType};
 
 const OPENING_TEXT: &str = "You enter The Forest and notice that 100 citizens of The Forest have been turned into Demons. Defeat the Demons and whoever is responsible for this tragedy!";

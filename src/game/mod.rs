@@ -1,16 +1,29 @@
 mod menu;
-use crate::area::story::{story_component_prompt, StoryComponent, StoryComponentAction};
-use crate::area::{self, Area, AreaResult};
+mod prompts;
+mod story;
+use crate::area::{self, Area, StoryComponent};
 use crate::battle::{battle, BattleResult};
 use crate::player::class::choose_class_prompt;
 use crate::player::Player;
 use crate::prompt::{get_selection_from_options, PromptOption};
 use crate::save::{self, save};
 
+use self::story::StoryComponentAction;
+
 #[derive(Debug, Clone)]
 enum PlayerAction {
     EnterNextArea,
     ReturnToPreviousArea,
+    QuitGame,
+}
+
+/*
+ * Why is the player leaving the area
+ */
+enum AreaResult {
+    ReturnToPreviousArea,
+    AreaCompleted,
+    PlayerWasDefeated,
     QuitGame,
 }
 
@@ -36,15 +49,15 @@ pub fn play_game() {
     let mut player: &mut Player = &mut menu::start();
     save(&player);
     let areas = area::build_areas();
-    let current_area = player.story_progress.areas_completed;
+    let mut current_area = player.story_progress.areas_completed;
     loop {
         // TODO: provide a way for the player to view their stats, class, etc
         let area_result = enter(player, &areas[current_area]);
         match area_result {
-            area::AreaResult::ReturnToPreviousArea => {
-                return_to_previous_area(player, &choose_previous_area(player, &areas));
+            AreaResult::ReturnToPreviousArea => {
+                return_to_previous_area(player, &areas);
             }
-            area::AreaResult::AreaCompleted => {
+            AreaResult::AreaCompleted => {
                 player.experience.area_cleared();
                 player.story_progress.areas_completed += 1;
                 player.story_progress.current_area_progress = 0;
@@ -54,16 +67,18 @@ pub fn play_game() {
                 } else {
                     choose_class_prompt(&player.class);
                     match get_action_between_areas() {
-                        PlayerAction::EnterNextArea => todo!(),
-                        PlayerAction::ReturnToPreviousArea => todo!(),
-                        PlayerAction::QuitGame => todo!(),
+                        PlayerAction::EnterNextArea => current_area += 1,
+                        PlayerAction::ReturnToPreviousArea => {
+                            return_to_previous_area(player, &areas)
+                        }
+                        PlayerAction::QuitGame => return,
                     }
                 }
             }
-            area::AreaResult::PlayerWasDefeated => {
-                return_to_previous_area(player, &areas[player.story_progress.areas_completed - 1]);
+            AreaResult::PlayerWasDefeated => {
+                return_to_previous_area(player, &areas);
             }
-            area::AreaResult::QuitGame => {
+            AreaResult::QuitGame => {
                 return;
             }
         }
@@ -123,9 +138,9 @@ fn get_action_in_area(area: &Area, story_idx: usize) -> StoryComponentAction {
                     enemies.push(enemy);
                 }
             }
-            story_component_prompt::show_enemy_prompt(enemies)
+            prompts::show_enemy_prompt(enemies)
         }
-        StoryComponent::Boss(boss) => story_component_prompt::show_boss_prompt(&boss),
+        StoryComponent::Boss(boss) => prompts::show_boss_prompt(&boss),
     }
 }
 
@@ -140,16 +155,10 @@ fn get_action_between_areas() -> PlayerAction {
     );
 }
 
-/*
- * returns the index of the area selected
- */
-fn choose_previous_area(player: &Player, areas: &Vec<Area>) -> Area {
-    return get_selection_from_options(
+fn return_to_previous_area(player: &mut Player, areas: &Vec<Area>) {
+    let area = get_selection_from_options(
         String::from("Select an area to return to."),
         &areas[0..player.story_progress.areas_completed].to_vec(),
     );
-}
-
-fn return_to_previous_area(player: &mut Player, area: &Area) {
-    train(player, area);
+    train(player, &area);
 }

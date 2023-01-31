@@ -1,14 +1,4 @@
-pub mod story_component_prompt;
-
 use crate::{enemy::Enemy, prompt::PromptOption};
-
-#[derive(Debug, Clone)]
-pub enum StoryComponent {
-    Text(String),
-    Enemy(Enemy),
-    Boss(Enemy),
-    // TODO: GainAttribute once player attributes are added (i.e. DemonSlayer after progressing forest)
-}
 
 #[derive(Debug, Clone)]
 pub enum StoryComponentAction {

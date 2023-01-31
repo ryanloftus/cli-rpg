@@ -1,4 +1,4 @@
-use super::{story::StoryComponent, Area};
+use super::{Area, StoryComponent};
 use crate::enemy::{monster::MonsterType, Enemy, EnemyType};
 
 const OPENING_TEXT: &str = "You look out onto The Plains and see that it has been overrun by 100 Monsters. Its up to you to stop them!";

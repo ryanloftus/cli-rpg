@@ -5,10 +5,9 @@ mod islands;
 mod kingdom;
 mod mountains;
 mod plains;
-pub mod story;
 
+use crate::enemy::Enemy;
 use crate::prompt::PromptOption;
-use story::StoryComponent;
 
 #[derive(Debug, Clone)]
 pub struct Area {
@@ -27,14 +26,12 @@ impl PromptOption for Area {
     }
 }
 
-/*
- * Why is the player leaving the area
- */
-pub enum AreaResult {
-    ReturnToPreviousArea,
-    AreaCompleted,
-    PlayerWasDefeated,
-    QuitGame,
+#[derive(Debug, Clone)]
+pub enum StoryComponent {
+    Text(String),
+    Enemy(Enemy),
+    Boss(Enemy),
+    // TODO: GainAttribute once player attributes are added (i.e. DemonSlayer after progressing forest)
 }
 
 pub const NUM_AREAS: usize = 7;
