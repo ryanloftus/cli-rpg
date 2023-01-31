@@ -1,8 +1,9 @@
+mod battle;
 mod menu;
 mod prompts;
 mod story;
+use self::battle::{battle, BattleResult};
 use crate::area::{self, Area, StoryComponent};
-use crate::battle::{battle, BattleResult};
 use crate::player::class::choose_class_prompt;
 use crate::player::Player;
 use crate::prompt::{get_selection_from_options, PromptOption};

@@ -1,5 +1,4 @@
 mod area;
-mod battle;
 mod enemy;
 mod game;
 mod player;
