@@ -4,8 +4,33 @@ use crate::area::{self, Area, AreaResult};
 use crate::battle::{battle, BattleResult};
 use crate::player::class::choose_class_prompt;
 use crate::player::Player;
-use crate::prompt::get_selection_from_options;
+use crate::prompt::{get_selection_from_options, PromptOption};
 use crate::save::{self, save};
+
+#[derive(Debug, Clone)]
+enum PlayerAction {
+    EnterNextArea,
+    ReturnToPreviousArea,
+    QuitGame,
+}
+
+impl PromptOption for PlayerAction {
+    fn option_name(&self) -> String {
+        String::from(match self {
+            PlayerAction::EnterNextArea => "Enter next area",
+            PlayerAction::ReturnToPreviousArea => "Return to a previous area",
+            PlayerAction::QuitGame => "Quit game",
+        })
+    }
+
+    fn short_option_name(&self) -> Option<String> {
+        Some(String::from(match self {
+            PlayerAction::EnterNextArea => "E",
+            PlayerAction::ReturnToPreviousArea => "R",
+            PlayerAction::QuitGame => "Q",
+        }))
+    }
+}
 
 pub fn play_game() {
     let mut player: &mut Player = &mut menu::start();
@@ -28,14 +53,15 @@ pub fn play_game() {
                     return;
                 } else {
                     choose_class_prompt(&player.class);
-                    // TODO: ask player whether they want to continue on to next area or train in a completed area or quit game
+                    match get_action_between_areas() {
+                        PlayerAction::EnterNextArea => todo!(),
+                        PlayerAction::ReturnToPreviousArea => todo!(),
+                        PlayerAction::QuitGame => todo!(),
+                    }
                 }
             }
             area::AreaResult::PlayerWasDefeated => {
-                return_to_previous_area(
-                    &mut player,
-                    &areas[player.story_progress.areas_completed - 1],
-                );
+                return_to_previous_area(player, &areas[player.story_progress.areas_completed - 1]);
             }
             area::AreaResult::QuitGame => {
                 return;
@@ -50,7 +76,7 @@ pub fn play_game() {
  */
 fn enter(player: &mut Player, area: &Area) -> AreaResult {
     while player.story_progress.current_area_progress < area.story.len() {
-        let action = get_action(area, player.story_progress.current_area_progress);
+        let action = get_action_in_area(area, player.story_progress.current_area_progress);
         match action {
             StoryComponentAction::ShowText(text) => {
                 println!("{text}");
@@ -87,7 +113,7 @@ fn train(player: &mut Player, area: &Area) {
     todo!("implement training");
 }
 
-fn get_action(area: &Area, story_idx: usize) -> StoryComponentAction {
+fn get_action_in_area(area: &Area, story_idx: usize) -> StoryComponentAction {
     match &area.story[story_idx] {
         StoryComponent::Text(text) => StoryComponentAction::ShowText(text.clone()),
         StoryComponent::Enemy(_) => {
@@ -103,6 +129,17 @@ fn get_action(area: &Area, story_idx: usize) -> StoryComponentAction {
     }
 }
 
+fn get_action_between_areas() -> PlayerAction {
+    return get_selection_from_options(
+        String::from("What will you do next?"),
+        &vec![
+            PlayerAction::EnterNextArea,
+            PlayerAction::ReturnToPreviousArea,
+            PlayerAction::QuitGame,
+        ],
+    );
+}
+
 /*
  * returns the index of the area selected
  */
@@ -113,6 +150,6 @@ fn choose_previous_area(player: &Player, areas: &Vec<Area>) -> Area {
     );
 }
 
-fn return_to_previous_area(player: &Player, area: &Area) {
-    area.train(player);
+fn return_to_previous_area(player: &mut Player, area: &Area) {
+    train(player, area);
 }
