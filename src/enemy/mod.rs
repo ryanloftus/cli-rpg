@@ -26,7 +26,10 @@ pub struct Enemy {
 }
 
 pub enum EnemyType {
-    Monster(monster::MonsterType),
+    Monster {
+        name_prefix: Option<String>,
+        monster_type: monster::MonsterType,
+    },
     Soldier {
         faction: String,
         soldier_type: soldier::SoldierType,
@@ -37,7 +40,10 @@ impl Enemy {
     pub fn new(enemy_type: EnemyType, base_level: u16, area_progress: u8) -> Enemy {
         let level = calculate_level(base_level, area_progress);
         return match enemy_type {
-            EnemyType::Monster(monster_type) => monster::new(monster_type, level),
+            EnemyType::Monster {
+                name_prefix,
+                monster_type,
+            } => monster::new(monster_type, name_prefix, level),
             EnemyType::Soldier {
                 faction,
                 soldier_type,

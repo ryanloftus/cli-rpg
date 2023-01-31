@@ -18,15 +18,18 @@ fn generate_story() -> Vec<StoryComponent> {
     story.push(StoryComponent::Text(String::from(OPENING_TEXT)));
     for i in 1..=100 {
         story.push(StoryComponent::Enemy(Enemy::new(
-            EnemyType::Monster(if i % 20 == 0 {
-                MonsterType::Dragon
-            } else if i % 10 == 0 {
-                MonsterType::Ogre
-            } else if i % 3 == 0 {
-                MonsterType::Goblin
-            } else {
-                MonsterType::Slime
-            }),
+            EnemyType::Monster {
+                name_prefix: None,
+                monster_type: if i % 20 == 0 {
+                    MonsterType::Dragon
+                } else if i % 10 == 0 {
+                    MonsterType::Ogre
+                } else if i % 3 == 0 {
+                    MonsterType::Goblin
+                } else {
+                    MonsterType::Slime
+                },
+            },
             1,
             i,
         )));

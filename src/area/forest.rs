@@ -30,9 +30,12 @@ fn generate_story() -> Vec<StoryComponent> {
 }
 
 fn enemy_type_at(story_idx: u8) -> EnemyType {
-    return EnemyType::Monster(if story_idx % 5 == 0 {
-        MonsterType::DemonicBeast
-    } else {
-        MonsterType::Demon
-    });
+    return EnemyType::Monster {
+        name_prefix: None,
+        monster_type: if story_idx % 5 == 0 {
+            MonsterType::DemonicBeast
+        } else {
+            MonsterType::Demon
+        },
+    };
 }

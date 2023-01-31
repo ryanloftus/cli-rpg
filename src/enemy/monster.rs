@@ -12,15 +12,19 @@ pub enum MonsterType {
     DemonicBeast,
 }
 
-pub fn new(monster_type: MonsterType, level: u16) -> Enemy {
-    match monster_type {
+pub fn new(monster_type: MonsterType, name_prefix: Option<String>, level: u16) -> Enemy {
+    let mut monster = match monster_type {
         MonsterType::Slime => new_slime(level),
         MonsterType::Goblin => new_goblin(level),
         MonsterType::Dragon => new_dragon(level),
         MonsterType::Ogre => new_ogre(level),
         MonsterType::Demon => new_demon(level),
         MonsterType::DemonicBeast => new_demonic_beast(level),
+    };
+    if let Some(name_prefix) = name_prefix {
+        monster.name = name_prefix + &monster.name;
     }
+    return monster;
 }
 
 fn new_slime(level: u16) -> Enemy {

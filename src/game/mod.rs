@@ -3,13 +3,12 @@ mod menu;
 mod prompts;
 mod story;
 use self::battle::{battle, BattleResult};
+use self::story::StoryComponentAction;
 use crate::area::{self, Area, StoryComponent};
 use crate::player::class::choose_class_prompt;
 use crate::player::Player;
 use crate::prompt::{get_selection_from_options, PromptOption};
 use crate::save::{self, save};
-
-use self::story::StoryComponentAction;
 
 #[derive(Debug, Clone)]
 enum PlayerAction {
