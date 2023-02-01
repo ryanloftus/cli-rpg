@@ -3,6 +3,7 @@ mod experience;
 mod story_progress;
 
 use crate::{
+    prompt::PromptOption,
     skill::Skill,
     stats::{Stats, BASE_HEALTH, BASE_MP},
 };
@@ -20,8 +21,8 @@ pub struct Player {
     pub skills: Vec<Skill>,
     pub stats: Stats,
     pub story_progress: StoryProgress,
-    pub current_area_idx: usize,
-    // TODO: add Attributes to determine effectiveness of attacks against the Player
+    pub current_area_idx: usize, // TODO: actually use this in game/mod.rs
+                                 // TODO: add Attributes to determine effectiveness of attacks against the Player
 }
 
 impl Player {
@@ -51,5 +52,36 @@ impl Player {
             },
             current_area_idx: 0,
         }
+    }
+
+    pub fn print_summary(&self) {
+        println!("Name: {}", self.name);
+        println!("Class: {}", self.class.option_name());
+        println!("Level: {}", self.experience.level);
+        println!(
+            "Experience towards next level: {} / 100",
+            self.experience.experience_towards_next_level
+        );
+        println!(
+            "Stats:
+        Max Health: {}
+        Max MP: {}
+        Strength: {}
+        Magic: {}
+        Defense: {}
+        Magic Resist: {}
+        Speed: {}
+        Skill: {}
+        Luck: {}",
+            self.stats.max_health,
+            self.stats.max_mp,
+            self.stats.strength,
+            self.stats.magic,
+            self.stats.defense,
+            self.stats.magic_resist,
+            self.stats.speed,
+            self.stats.skill,
+            self.stats.luck
+        );
     }
 }

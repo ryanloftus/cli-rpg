@@ -14,7 +14,28 @@ use crate::save::{self, save};
 enum PlayerAction {
     EnterNextArea,
     ReturnToPreviousArea,
+    ShowPlayerInfo,
     QuitGame,
+}
+
+impl PromptOption for PlayerAction {
+    fn option_name(&self) -> String {
+        String::from(match self {
+            PlayerAction::EnterNextArea => "Enter next area",
+            PlayerAction::ReturnToPreviousArea => "Return to a previous area",
+            PlayerAction::QuitGame => "Quit game",
+            PlayerAction::ShowPlayerInfo => "Show player info",
+        })
+    }
+
+    fn short_option_name(&self) -> Option<String> {
+        Some(String::from(match self {
+            PlayerAction::EnterNextArea => "E",
+            PlayerAction::ReturnToPreviousArea => "R",
+            PlayerAction::QuitGame => "Q",
+            PlayerAction::ShowPlayerInfo => "P",
+        }))
+    }
 }
 
 /*
@@ -27,31 +48,13 @@ enum AreaResult {
     QuitGame,
 }
 
-impl PromptOption for PlayerAction {
-    fn option_name(&self) -> String {
-        String::from(match self {
-            PlayerAction::EnterNextArea => "Enter next area",
-            PlayerAction::ReturnToPreviousArea => "Return to a previous area",
-            PlayerAction::QuitGame => "Quit game",
-        })
-    }
-
-    fn short_option_name(&self) -> Option<String> {
-        Some(String::from(match self {
-            PlayerAction::EnterNextArea => "E",
-            PlayerAction::ReturnToPreviousArea => "R",
-            PlayerAction::QuitGame => "Q",
-        }))
-    }
-}
-
 pub fn play_game() {
     let mut player: &mut Player = &mut menu::start();
     save(&player);
     let areas = area::build_areas();
     let mut current_area = player.story_progress.areas_completed;
     loop {
-        // TODO: provide a way for the player to view their stats, class, etc
+        // TODO: break up this function
         let area_result = enter(player, &areas[current_area]);
         match area_result {
             AreaResult::ReturnToPreviousArea => {
@@ -66,12 +69,19 @@ pub fn play_game() {
                     return;
                 } else {
                     choose_class_prompt(&player.class);
-                    match get_action_between_areas() {
-                        PlayerAction::EnterNextArea => current_area += 1,
-                        PlayerAction::ReturnToPreviousArea => {
-                            return_to_previous_area(player, &areas)
+                    loop {
+                        match get_action_between_areas() {
+                            PlayerAction::EnterNextArea => {
+                                current_area += 1;
+                                break;
+                            }
+                            PlayerAction::ReturnToPreviousArea => {
+                                return_to_previous_area(player, &areas);
+                                break;
+                            }
+                            PlayerAction::ShowPlayerInfo => player.print_summary(),
+                            PlayerAction::QuitGame => return,
                         }
-                        PlayerAction::QuitGame => return,
                     }
                 }
             }
@@ -96,6 +106,9 @@ fn enter(player: &mut Player, area: &Area) -> AreaResult {
             StoryComponentAction::ShowText(text) => {
                 println!("{text}");
                 player.story_progress.current_area_progress += 1;
+            }
+            StoryComponentAction::ShowPlayerInfo => {
+                player.print_summary();
             }
             StoryComponentAction::Battle(enemies) => {
                 match battle(&player, &enemies) {
