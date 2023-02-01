@@ -11,7 +11,8 @@ pub fn show_enemy_prompt(upcoming_enemies: Vec<&Enemy>) -> StoryComponentAction 
         String::from(ENEMY_PROMPT),
         &vec![
             StoryComponentAction::Battle(Vec::new()),
-            StoryComponentAction::ReturnToPreviousArea,
+            StoryComponentAction::LeaveArea, // TODO: remove this option in tutorial
+            StoryComponentAction::ShowPlayerInfo,
         ],
     );
     return match selected_option {
@@ -28,7 +29,7 @@ pub fn show_enemy_prompt(upcoming_enemies: Vec<&Enemy>) -> StoryComponentAction 
                     .collect(),
             )
         }
-        StoryComponentAction::ReturnToPreviousArea => StoryComponentAction::ReturnToPreviousArea,
+        StoryComponentAction::LeaveArea => StoryComponentAction::LeaveArea,
         _ => panic!("Invalid option selected from enemy battle prompt"),
     };
 }
@@ -43,7 +44,8 @@ pub fn show_boss_prompt(boss: &Enemy) -> StoryComponentAction {
         ),
         &vec![
             StoryComponentAction::BossBattle(boss.clone()),
-            StoryComponentAction::ReturnToPreviousArea,
+            StoryComponentAction::LeaveArea,
+            StoryComponentAction::ShowPlayerInfo,
         ],
     )
 }

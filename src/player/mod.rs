@@ -62,17 +62,18 @@ impl Player {
             "Experience towards next level: {} / 100",
             self.experience.experience_towards_next_level
         );
-        println!(
+        print!(
             "Stats:
-        Max Health: {}
-        Max MP: {}
-        Strength: {}
-        Magic: {}
-        Defense: {}
-        Magic Resist: {}
-        Speed: {}
-        Skill: {}
-        Luck: {}",
+    Max Health: {}
+    Max MP: {}
+    Strength: {}
+    Magic: {}
+    Defense: {}
+    Magic Resist: {}
+    Speed: {}
+    Skill: {}
+    Luck: {}
+",
             self.stats.max_health,
             self.stats.max_mp,
             self.stats.strength,

@@ -26,6 +26,14 @@ impl PromptOption for Area {
     }
 }
 
+impl PartialEq for Area {
+    fn eq(&self, other: &Self) -> bool {
+        return self.short_option_name() == self.short_option_name();
+    }
+}
+
+impl Eq for Area {}
+
 #[derive(Debug, Clone)]
 pub enum StoryComponent {
     Text(String),

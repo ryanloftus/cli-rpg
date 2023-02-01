@@ -6,8 +6,7 @@ pub enum StoryComponentAction {
     ShowPlayerInfo,
     Battle(Vec<Enemy>),
     BossBattle(Enemy),
-    ReturnToPreviousArea,
-    QuitGame,
+    LeaveArea,
 }
 
 impl PromptOption for StoryComponentAction {
@@ -16,8 +15,7 @@ impl PromptOption for StoryComponentAction {
             StoryComponentAction::Battle(_) => "Fight",
             StoryComponentAction::ShowPlayerInfo => "Show player info",
             StoryComponentAction::BossBattle(_) => "Boss",
-            StoryComponentAction::ReturnToPreviousArea => "Return to a previous area to train",
-            StoryComponentAction::QuitGame => "Quit game",
+            StoryComponentAction::LeaveArea => "Leave the current area",
             _ => panic!(),
         })
     }
@@ -27,8 +25,7 @@ impl PromptOption for StoryComponentAction {
             StoryComponentAction::ShowPlayerInfo => "P",
             StoryComponentAction::Battle(_) => "F",
             StoryComponentAction::BossBattle(_) => "B",
-            StoryComponentAction::ReturnToPreviousArea => "R",
-            StoryComponentAction::QuitGame => "Q",
+            StoryComponentAction::LeaveArea => "L",
             _ => panic!(),
         }))
     }
