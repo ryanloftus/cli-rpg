@@ -54,30 +54,37 @@ pub fn play_game() {
     let player: &mut Player = &mut menu::start();
     save(&player);
     let areas = area::build_areas();
-    let mut player_action = get_player_action(player, &areas);
+    let mut player_action = get_player_action(player);
     loop {
         match player_action {
             PlayerAction::EnterNextArea => {
                 player_action = enter(player, &areas, player.story_progress.areas_completed);
             }
             PlayerAction::ReturnToCurrentArea => {
-                player_action = enter(player, &areas, player.story_progress.areas_completed)
+                player_action = enter(player, &areas, player.story_progress.areas_completed);
             }
-            PlayerAction::ReturnToPreviousArea => todo!(),
+            PlayerAction::ReturnToPreviousArea => {
+                let area_idx = select_area_to_return_to(player, &areas);
+                if let Some(idx) = area_idx {
+                    player_action = enter(player, &areas, idx);
+                } else {
+                    player_action = get_player_action(player);
+                }
+            }
             PlayerAction::ShowPlayerInfo => {
                 player.print_summary();
-                player_action = get_player_action(player, &areas);
+                player_action = get_player_action(player);
             }
             PlayerAction::QuitGame => return,
         }
     }
 }
 
-fn get_player_action(player: &Player, areas: &Vec<Area>) -> PlayerAction {
+fn get_player_action(player: &Player) -> PlayerAction {
     return if player.story_progress.current_area_progress == 0 {
-        on_area_completed(player, &areas)
+        get_action_after_area_completed()
     } else {
-        on_left_area(player, &areas)
+        get_action_after_area_left()
     };
 }
 
@@ -92,7 +99,7 @@ fn enter(player: &mut Player, areas: &Vec<Area>, area_idx: usize) -> PlayerActio
         train(player, &areas[area_idx])
     };
     return match area_result {
-        AreaResult::LeftArea => on_left_area(player, &areas),
+        AreaResult::LeftArea => get_action_after_area_left(),
         AreaResult::AreaCompleted => on_area_completed(player, &areas),
         AreaResult::PlayerWasDefeated => {
             println!("You allies rescued you and brought you back to The Kingdom.");
@@ -104,20 +111,21 @@ fn enter(player: &mut Player, areas: &Vec<Area>, area_idx: usize) -> PlayerActio
 fn do_story(player: &mut Player, area: &Area) -> AreaResult {
     while player.story_progress.current_area_progress < area.story.len() {
         let action = get_action_in_area(area, player.story_progress.current_area_progress);
-        match action {
+        let progress = match action {
             StoryComponentAction::ShowText(text) => {
                 println!("{text}");
-                player.story_progress.current_area_progress += 1;
+                1
             }
             StoryComponentAction::ShowPlayerInfo => {
                 player.print_summary();
+                0
             }
             StoryComponentAction::Battle(enemies) => {
                 match battle(&player, &enemies) {
                     BattleResult::Victory => player.experience.enemies_defeated(&enemies),
                     BattleResult::Defeat => return AreaResult::PlayerWasDefeated,
                 }
-                player.story_progress.current_area_progress += enemies.len();
+                enemies.len()
             }
             StoryComponentAction::BossBattle(boss) => {
                 let enemies = vec![boss];
@@ -125,10 +133,11 @@ fn do_story(player: &mut Player, area: &Area) -> AreaResult {
                     BattleResult::Victory => player.experience.enemies_defeated(&enemies),
                     BattleResult::Defeat => return AreaResult::PlayerWasDefeated,
                 }
-                player.story_progress.current_area_progress += 1;
+                1
             }
             StoryComponentAction::LeaveArea => return AreaResult::LeftArea,
-        }
+        };
+        player.story_progress.current_area_progress += progress;
         save::save(&player);
     }
     return AreaResult::AreaCompleted;
@@ -142,11 +151,7 @@ fn train(player: &mut Player, area: &Area) -> AreaResult {
     todo!("implement training");
 }
 
-fn on_left_area(player: &Player, areas: &Vec<Area>) -> PlayerAction {
-    get_action_after_area_completed()
-}
-
-fn on_area_completed(player: &Player, areas: &Vec<Area>) -> PlayerAction {
+fn on_area_completed(player: &mut Player, areas: &Vec<Area>) -> PlayerAction {
     player.experience.area_cleared();
     player.story_progress.areas_completed += 1;
     player.story_progress.current_area_progress = 0;
@@ -199,10 +204,11 @@ fn get_action_after_area_completed() -> PlayerAction {
     );
 }
 
-fn return_to_previous_area(player: &mut Player, areas: &Vec<Area>) {
+fn select_area_to_return_to(player: &mut Player, areas: &Vec<Area>) -> Option<usize> {
     let area = get_selection_from_options(
         String::from("Select an area to return to."),
         &areas[0..player.story_progress.areas_completed].to_vec(),
-    );
-    train(player, &area);
+    ); // TODO: create another function in prompt that allows the user to 'cancel', returning None
+    let idx = areas.iter().position(|a| area == *a);
+    return idx;
 }
