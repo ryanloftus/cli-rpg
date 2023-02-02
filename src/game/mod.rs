@@ -7,7 +7,9 @@ use self::story::StoryComponentAction;
 use crate::area::{self, Area, StoryComponent};
 use crate::player::class::choose_class_prompt;
 use crate::player::Player;
-use crate::prompt::{get_selection_from_options, PromptOption};
+use crate::prompt::{
+    get_optional_selection_from_options, get_selection_from_options, PromptOption,
+};
 use crate::save::{self, save};
 
 #[derive(Debug, Clone)]
@@ -205,10 +207,14 @@ fn get_action_after_area_completed() -> PlayerAction {
 }
 
 fn select_area_to_return_to(player: &mut Player, areas: &Vec<Area>) -> Option<usize> {
-    let area = get_selection_from_options(
+    let area = get_optional_selection_from_options(
         String::from("Select an area to return to."),
         &areas[0..player.story_progress.areas_completed].to_vec(),
-    ); // TODO: create another function in prompt that allows the user to 'cancel', returning None
-    let idx = areas.iter().position(|a| area == *a);
-    return idx;
+    );
+    if let Some(area) = area {
+        let idx = areas.iter().position(|a| area == *a);
+        return idx; // idx should always be Some since the area must be in the vector areas
+    } else {
+        return None;
+    }
 }

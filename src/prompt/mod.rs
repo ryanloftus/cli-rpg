@@ -3,6 +3,7 @@ mod io_util;
 use std::option::Option;
 
 const REPROMPT_OPTION: &str = "reprompt";
+const CANCEL_OPTION: &str = "cancel";
 
 /// Prints the prompt and reads in a number from the user
 pub fn get_selection_from_numeric_range(prompt: &str, min: i32, max: i32) -> i32 {
@@ -44,6 +45,35 @@ pub fn get_selection_from_options<T: PromptOption + Clone>(prompt: String, optio
             .find(|option| is_option_selected((*option).clone(), answer.clone()));
         if let Some(selection) = selection {
             return selection.clone();
+        }
+
+        answer = io_util::request_input(&reprompt).to_lowercase();
+    }
+}
+
+/// Prints the prompt and options, including a cancel option, and reads in an option from the user returning None
+/// if cancel is entered
+pub fn get_optional_selection_from_options<T: PromptOption + Clone>(
+    prompt: String,
+    options: &Vec<T>,
+) -> Option<T> {
+    let mut prompt = generate_prompt_with_options(prompt, options);
+    prompt.push_str("Cancel\n");
+    let reprompt = generate_reprompt();
+    let mut answer = io_util::request_input(&prompt).to_lowercase();
+    loop {
+        if answer == REPROMPT_OPTION {
+            answer = io_util::request_input(&prompt);
+            continue;
+        } else if answer == CANCEL_OPTION {
+            return None;
+        }
+
+        let selection = options
+            .iter()
+            .find(|option| is_option_selected((*option).clone(), answer.clone()));
+        if selection.is_some() {
+            return selection.cloned();
         }
 
         answer = io_util::request_input(&reprompt).to_lowercase();
