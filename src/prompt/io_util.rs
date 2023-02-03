@@ -36,25 +36,25 @@ pub fn request_input_with_validation(
     return input;
 }
 
-fn _is_yes(answer: &String) -> bool {
+fn is_yes(answer: &String) -> bool {
     answer.to_ascii_lowercase().starts_with("y")
 }
 
-fn _is_no(answer: &String) -> bool {
+fn is_no(answer: &String) -> bool {
     answer.to_ascii_lowercase().starts_with("n")
 }
 
-fn _is_valid_yes_or_no(answer: String) -> bool {
-    _is_yes(&answer) || _is_no(&answer)
+fn is_valid_yes_or_no(answer: String) -> bool {
+    is_yes(&answer) || is_no(&answer)
 }
 
-pub fn _request_yes_or_no(prompt: &str) -> bool {
+pub fn request_yes_or_no(prompt: &str) -> bool {
     let answer = request_input_with_validation(
         prompt,
-        _is_valid_yes_or_no,
+        is_valid_yes_or_no,
         "Please enter yes (Y) or no (N).",
     );
-    return _is_yes(&answer);
+    return is_yes(&answer);
 }
 
 pub fn request_num(prompt: &str, min: i32, max: i32) -> i32 {

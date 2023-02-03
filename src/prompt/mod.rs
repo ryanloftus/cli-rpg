@@ -11,8 +11,8 @@ pub fn get_selection_from_numeric_range(prompt: &str, min: i32, max: i32) -> i32
 }
 
 /// Prints the prompt and reads in a yes or no from the user, yes equates to true, and no equates to false
-pub fn _get_selection_from_boolean(prompt: &str) -> bool {
-    return io_util::_request_yes_or_no(prompt);
+pub fn get_boolean_selection(prompt: &str) -> bool {
+    return io_util::request_yes_or_no(prompt);
 }
 
 /// Prints the prompt and reads in a string that meets the validation requirements

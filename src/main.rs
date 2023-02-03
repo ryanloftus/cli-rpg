@@ -2,7 +2,6 @@ mod area;
 mod enemy;
 mod game;
 mod player;
-mod progression;
 mod prompt;
 mod save;
 mod skill;

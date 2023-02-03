@@ -6,6 +6,7 @@ use crate::prompt::PromptOption;
 pub enum OverpoweredClass {
     GodOfExplosions,
     DemonLord,
+    ArchitectOfChaos,
     // TODO: add more
 }
 

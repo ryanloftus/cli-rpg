@@ -28,7 +28,7 @@ impl PromptOption for Area {
 
 impl PartialEq for Area {
     fn eq(&self, other: &Self) -> bool {
-        return self.short_option_name() == self.short_option_name();
+        return self.short_option_name() == other.short_option_name();
     }
 }
 

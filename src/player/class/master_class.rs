@@ -5,6 +5,12 @@ use crate::prompt::PromptOption;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum MasterClass {
     MasterOfExplosions,
+    PsychoSorcerer,
+    ChosenAngel,
+    FallenAngel,
+    MasterOfTheDarkArts,
+    UltimateSwordmaster,
+    BladeConjurer,
     // TODO: add more
 }
 
