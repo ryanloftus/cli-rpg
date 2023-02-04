@@ -16,7 +16,6 @@ pub enum AdvancedClass {
     DarkKnight,
     Centaur,
     PegasusKnight,
-    DragonKnight,
 }
 
 impl PromptOption for AdvancedClass {
@@ -34,7 +33,6 @@ impl PromptOption for AdvancedClass {
             AdvancedClass::DarkKnight => "Dark Knight",
             AdvancedClass::Centaur => "Centaur",
             AdvancedClass::PegasusKnight => "Pegasus Knight",
-            AdvancedClass::DragonKnight => "Dragon Knight",
         })
     }
 
@@ -52,7 +50,6 @@ impl PromptOption for AdvancedClass {
             AdvancedClass::DarkKnight => "DK",
             AdvancedClass::Centaur => "C",
             AdvancedClass::PegasusKnight => "PK",
-            AdvancedClass::DragonKnight => "DR",
         }))
     }
 }

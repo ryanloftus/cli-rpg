@@ -15,8 +15,7 @@ pub enum ExpertClass {
     DarkCentaur,
     HolyPegasusKnight,
     DarkPegasusKnight,
-    MagicWieldingDragonKnight,
-    BowWieldingDragonKnight,
+    WyvernKnight,
 }
 
 impl PromptOption for ExpertClass {
@@ -33,8 +32,7 @@ impl PromptOption for ExpertClass {
             ExpertClass::DarkCentaur => "Dark Centaur",
             ExpertClass::HolyPegasusKnight => "Holy Pegasus Knight",
             ExpertClass::DarkPegasusKnight => "Dark Pegasus Knight",
-            ExpertClass::MagicWieldingDragonKnight => "Magic Wielding Dragon Knight",
-            ExpertClass::BowWieldingDragonKnight => "Magic Wielding Dragon Knight",
+            ExpertClass::WyvernKnight => "Wyvern Knight",
         })
     }
 
@@ -51,8 +49,7 @@ impl PromptOption for ExpertClass {
             ExpertClass::DarkCentaur => "DC",
             ExpertClass::HolyPegasusKnight => "HP",
             ExpertClass::DarkPegasusKnight => "DP",
-            ExpertClass::MagicWieldingDragonKnight => "MDK",
-            ExpertClass::BowWieldingDragonKnight => "BDK",
+            ExpertClass::WyvernKnight => "WK",
         }))
     }
 }
