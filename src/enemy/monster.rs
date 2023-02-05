@@ -1,4 +1,4 @@
-use crate::stats::Stats;
+use crate::stats::{StatMultiplier, Stats};
 
 use super::Enemy;
 use rand::{self, Rng};
@@ -12,6 +12,7 @@ pub enum MonsterType {
     DemonicBeast,
 }
 
+// TODO: give strong monsters skills
 pub fn new(monster_type: MonsterType, name_prefix: Option<String>, level: u16) -> Enemy {
     let mut monster = match monster_type {
         MonsterType::Slime => new_slime(level),
@@ -33,7 +34,7 @@ fn new_slime(level: u16) -> Enemy {
         level,
         skills: Vec::new(),
         difficulty: super::EnemyDifficulty::Weak,
-        stats: Stats::new(level, Vec::new()),
+        stats: Stats::new(level, vec![StatMultiplier::MagicResist(1.25)]),
     }
 }
 
@@ -43,7 +44,14 @@ fn new_goblin(level: u16) -> Enemy {
         level,
         skills: Vec::new(),
         difficulty: super::EnemyDifficulty::Weak,
-        stats: Stats::new(level, Vec::new()),
+        stats: Stats::new(
+            level,
+            vec![
+                StatMultiplier::MaxHealth(0.75),
+                StatMultiplier::Strength(1.25),
+                StatMultiplier::Skill(0.75),
+            ],
+        ),
     }
 }
 
@@ -53,7 +61,17 @@ fn new_dragon(level: u16) -> Enemy {
         level,
         skills: Vec::new(),
         difficulty: super::EnemyDifficulty::Strong,
-        stats: Stats::new(level, Vec::new()),
+        stats: Stats::new(
+            level,
+            vec![
+                StatMultiplier::MaxHealth(2.0),
+                StatMultiplier::Strength(1.75),
+                StatMultiplier::Magic(1.25),
+                StatMultiplier::Defense(2.0),
+                StatMultiplier::MagicResist(1.5),
+                StatMultiplier::Speed(1.25),
+            ],
+        ),
     }
 }
 
@@ -66,7 +84,20 @@ fn new_ogre(level: u16) -> Enemy {
             level: 100,
             skills: Vec::new(),
             difficulty: super::EnemyDifficulty::Special,
-            stats: Stats::new(500, Vec::new()),
+            stats: Stats::new(
+                level,
+                vec![
+                    StatMultiplier::MaxHealth(2.0),
+                    StatMultiplier::MaxMp(2.0),
+                    StatMultiplier::Strength(2.0),
+                    StatMultiplier::Magic(2.0),
+                    StatMultiplier::Defense(2.0),
+                    StatMultiplier::MagicResist(2.0),
+                    StatMultiplier::Speed(2.0),
+                    StatMultiplier::Skill(2.0),
+                    StatMultiplier::Luck(2.0),
+                ],
+            ),
         }
     } else {
         Enemy {
@@ -74,7 +105,17 @@ fn new_ogre(level: u16) -> Enemy {
             level,
             skills: Vec::new(),
             difficulty: super::EnemyDifficulty::Strong,
-            stats: Stats::new(level, Vec::new()),
+            stats: Stats::new(
+                level,
+                vec![
+                    StatMultiplier::MaxHealth(2.0),
+                    StatMultiplier::Strength(2.0),
+                    StatMultiplier::Magic(0.0),
+                    StatMultiplier::Defense(2.0),
+                    StatMultiplier::Skill(0.5),
+                    StatMultiplier::Speed(0.5),
+                ],
+            ),
         }
     }
 }
@@ -85,7 +126,14 @@ fn new_demon(level: u16) -> Enemy {
         level,
         skills: Vec::new(),
         difficulty: super::EnemyDifficulty::Weak,
-        stats: Stats::new(level, Vec::new()),
+        stats: Stats::new(
+            level,
+            vec![
+                StatMultiplier::MaxHealth(0.75),
+                StatMultiplier::Strength(1.25),
+                StatMultiplier::Speed(1.5),
+            ],
+        ),
     }
 }
 
@@ -95,6 +143,15 @@ fn new_demonic_beast(level: u16) -> Enemy {
         level,
         skills: Vec::new(),
         difficulty: super::EnemyDifficulty::Strong,
-        stats: Stats::new(level, Vec::new()),
+        stats: Stats::new(
+            level,
+            vec![
+                StatMultiplier::MaxHealth(2.0),
+                StatMultiplier::Strength(2.0),
+                StatMultiplier::Defense(1.75),
+                StatMultiplier::MagicResist(1.75),
+                StatMultiplier::Speed(0.25),
+            ],
+        ),
     }
 }
