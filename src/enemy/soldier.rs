@@ -1,4 +1,4 @@
-use crate::stats::Stats;
+use crate::stats::{StatMultiplier, Stats};
 
 use super::Enemy;
 
@@ -12,7 +12,6 @@ pub enum SoldierType {
 }
 
 pub fn new(soldier_type: SoldierType, faction: String, level: u16) -> Enemy {
-    // TODO: make logic more complex, (guards and lieutenants should be stronger)
     Enemy {
         name: enemy_name(soldier_type, faction),
         level,
@@ -22,7 +21,7 @@ pub fn new(soldier_type: SoldierType, faction: String, level: u16) -> Enemy {
         } else {
             super::EnemyDifficulty::Weak
         },
-        stats: Stats::new(level, Vec::new()),
+        stats: Stats::new(level, get_stat_mult(soldier_type)),
     }
 }
 
@@ -42,4 +41,39 @@ fn soldier_type_to_string(soldier_type: SoldierType) -> String {
         SoldierType::Guard => "Guard",
         SoldierType::Lieutenant => "Lieutenant",
     })
+}
+
+fn get_stat_mult(soldier_type: SoldierType) -> Vec<StatMultiplier> {
+    return match soldier_type {
+        SoldierType::Footsoldier => vec![StatMultiplier::Magic(0.0)],
+        SoldierType::Archer => vec![
+            StatMultiplier::MaxHealth(0.5),
+            StatMultiplier::Defense(0.5),
+            StatMultiplier::Skill(2.0),
+            StatMultiplier::Speed(1.5),
+            StatMultiplier::Magic(0.0),
+        ],
+        SoldierType::Knight => vec![
+            StatMultiplier::Strength(1.5),
+            StatMultiplier::Defense(1.5),
+            StatMultiplier::Magic(0.0),
+        ],
+        SoldierType::Guard => vec![
+            StatMultiplier::MaxHealth(1.75),
+            StatMultiplier::Strength(1.5),
+            StatMultiplier::Defense(2.0),
+            StatMultiplier::MagicResist(1.5),
+            StatMultiplier::Speed(0.75),
+            StatMultiplier::Magic(0.0),
+        ],
+        SoldierType::Lieutenant => vec![
+            StatMultiplier::MaxHealth(2.0),
+            StatMultiplier::Strength(1.75),
+            StatMultiplier::Skill(1.5),
+            StatMultiplier::Defense(1.5),
+            StatMultiplier::MagicResist(1.5),
+            StatMultiplier::Magic(0.0),
+            StatMultiplier::Luck(1.25),
+        ],
+    };
 }
