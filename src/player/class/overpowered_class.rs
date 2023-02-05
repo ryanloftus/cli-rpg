@@ -4,7 +4,7 @@ use crate::prompt::PromptOption;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum OverpoweredClass {
-    DemonLord,
+    LegendaryHero,
     GodOfWeather,
     GodOfExplosions,
     ArchitectOfChaos,
@@ -17,10 +17,28 @@ pub enum OverpoweredClass {
     DraconianHero,
 }
 
+impl OverpoweredClass {
+    pub fn description(&self) -> String {
+        String::from(match self {
+            OverpoweredClass::LegendaryHero => "A being of unrivaled power, this title is bestowed only upon those who have conquered the greatest evils this world has to offer",
+            OverpoweredClass::GodOfWeather => "A being with godlike power over the elements and weather itself",
+            OverpoweredClass::GodOfExplosions => "A being with godlike explosive powers",
+            OverpoweredClass::ArchitectOfChaos => "A being capable controlling chaos itself",
+            OverpoweredClass::BenevolentDeity => "A being with godlike power over light magic",
+            OverpoweredClass::GrimReaper => "A being whose purpose in this world is too collect the souls of the villains plaguing this world",
+            OverpoweredClass::GodOfSwords => "A being who has surpassed perfection in the art of swordsmanship",
+            OverpoweredClass::HolyCentaurianKing => "A being revered as the \"King of Beasts\" for their powerful light magic",
+            OverpoweredClass::DarkCentaurianKing => "A being revered as the \"King of Beasts\" for their powerful dark magic",
+            OverpoweredClass::GodOfTheSky => "A being with godlike authority over the sky and its inhabitants",
+            OverpoweredClass::DraconianHero => "A being with unrivaled strength and the ability to call upon powerful draconian allies",
+        })
+    }
+}
+
 impl PromptOption for OverpoweredClass {
     fn option_name(&self) -> String {
         String::from(match self {
-            OverpoweredClass::DemonLord => "Demon Lord",
+            OverpoweredClass::LegendaryHero => "Demon Lord",
             OverpoweredClass::GodOfWeather => "God of Weather",
             OverpoweredClass::GodOfExplosions => "God of Explosions",
             OverpoweredClass::ArchitectOfChaos => "Architect of Chaos",
@@ -36,7 +54,7 @@ impl PromptOption for OverpoweredClass {
 
     fn short_option_name(&self) -> Option<String> {
         Some(String::from(match self {
-            OverpoweredClass::DemonLord => "DL",
+            OverpoweredClass::LegendaryHero => "DL",
             OverpoweredClass::GodOfWeather => "GW",
             OverpoweredClass::GodOfExplosions => "GE",
             OverpoweredClass::ArchitectOfChaos => "AC",

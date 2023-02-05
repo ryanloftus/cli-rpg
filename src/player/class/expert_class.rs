@@ -18,6 +18,27 @@ pub enum ExpertClass {
     WyvernKnight,
 }
 
+impl ExpertClass {
+    pub fn description(&self) -> String {
+        return String::from(match self {
+            ExpertClass::StormSummoner => "Mage with incredible elemental spells",
+            ExpertClass::ExplosionExpert => "Mage with incredible explosion magic",
+            ExpertClass::InsaneIncanter => "Mage that mumbles bizarre incantations",
+            ExpertClass::Angel => "Powerful light magic user",
+            ExpertClass::DarkAngel => "Powerful dark magic user",
+            ExpertClass::Swordmaster => "Sword user who has truly mastered the weapon",
+            ExpertClass::MagicDuelWielder => {
+                "Duel-wielding swordsman who enhances their weapons with magic"
+            }
+            ExpertClass::HolyCentaur => "Centaurian knight that is able to use light magic",
+            ExpertClass::DarkCentaur => "Centaurian knight that is able to use dark magic",
+            ExpertClass::HolyPegasusKnight => "Pegasus knight that is able to use light magic",
+            ExpertClass::DarkPegasusKnight => "Pegasus knight that is able to use dark magic",
+            ExpertClass::WyvernKnight => "Knight that fights atop a wyvern",
+        });
+    }
+}
+
 impl PromptOption for ExpertClass {
     fn option_name(&self) -> String {
         String::from(match self {

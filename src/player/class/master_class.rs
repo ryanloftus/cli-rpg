@@ -18,6 +18,39 @@ pub enum MasterClass {
     DraconianKnight,
 }
 
+impl MasterClass {
+    pub fn description(&self) -> String {
+        String::from(match self {
+            MasterClass::MasterOfTheElements => "Mage with masterful control over elemental magic",
+            MasterClass::MasterOfExplosions => {
+                "Mage who has mastered explosion magic nearly to perfection"
+            }
+            MasterClass::PsychoSorcerer => {
+                "Mage with a tendency to perform uncontrolably powerful spells"
+            }
+            MasterClass::ChosenAngel => {
+                "Mage with powerful light magic bestowed upon them by the heavens"
+            }
+            MasterClass::FallenAngel => "Mage with powerful dark and light magic",
+            MasterClass::MasterOfTheDarkArts => "Mage with masterful control of dark magic",
+            MasterClass::UltimateSwordmaster => "Swordsman who has perfected their technique",
+            MasterClass::BladeConjurer => {
+                "Swordsman who uses magic to fight with an infinite number of blades"
+            }
+            MasterClass::BlessedCentaurianHero => {
+                "Centaurian knight who has received power from above"
+            }
+            MasterClass::CursedCentaurianSpecter => {
+                "Centaurian knight who has received power from below"
+            }
+            MasterClass::EnlightenedPegasusKnight => {
+                "Pegasus knight able to wield both light and dark magic"
+            }
+            MasterClass::DraconianKnight => "Knight that fights atop a dragon",
+        })
+    }
+}
+
 impl PromptOption for MasterClass {
     fn option_name(&self) -> String {
         String::from(match self {

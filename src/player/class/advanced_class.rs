@@ -18,6 +18,29 @@ pub enum AdvancedClass {
     PegasusKnight,
 }
 
+impl AdvancedClass {
+    pub fn description(&self) -> String {
+        return String::from(match self {
+            AdvancedClass::PowerfulElementalMage => "Mage that casts a variety of powerful spells",
+            AdvancedClass::ExplosiveMage => "Mage specializing in explosive spells",
+            AdvancedClass::ErraticEnchanter => {
+                "Mage that casts spells with unpredictable and confusing effects"
+            }
+            AdvancedClass::StudentOfTheLight => "Mage training to wield powerful light magic",
+            AdvancedClass::AcolyteOfDarkness => "Mage training to wield powerful dark magic",
+            AdvancedClass::ImprovingSwordsman => "Swordsman training to hone his fighting skills",
+            AdvancedClass::DuelWielder => "Swordsman that fights with two swords",
+            AdvancedClass::EnchantedBladeWielder => {
+                "Swordsman that uses magic to enhance their weapon"
+            }
+            AdvancedClass::HolyKnight => "Knight that can cast light magic",
+            AdvancedClass::DarkKnight => "Knight that can cast dark magic",
+            AdvancedClass::Centaur => "Knight that has truly become one with their steed",
+            AdvancedClass::PegasusKnight => "Knight that fights atop a powerful winged horse",
+        });
+    }
+}
+
 impl PromptOption for AdvancedClass {
     fn option_name(&self) -> String {
         String::from(match self {

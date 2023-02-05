@@ -35,10 +35,10 @@ impl Class {
             }
             Class::Starter(starter_class) => starter_class.description(),
             Class::Intermediate(intermediate_class) => intermediate_class.description(),
-            Class::Advanced(_) => todo!(),
-            Class::Expert(_) => todo!(),
-            Class::Master(_) => todo!(),
-            Class::Overpowered(_) => todo!(),
+            Class::Advanced(advanced_class) => advanced_class.description(),
+            Class::Expert(expert_class) => expert_class.description(),
+            Class::Master(master_class) => master_class.description(),
+            Class::Overpowered(overpowered_class) => overpowered_class.description(),
         };
     }
 
