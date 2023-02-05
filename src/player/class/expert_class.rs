@@ -2,7 +2,9 @@ use serde::{Deserialize, Serialize};
 
 use crate::prompt::PromptOption;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+use super::master_class::MasterClass;
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum ExpertClass {
     StormSummoner,
     ExplosionExpert,
@@ -36,6 +38,25 @@ impl ExpertClass {
             ExpertClass::DarkPegasusKnight => "Pegasus knight that is able to use dark magic",
             ExpertClass::WyvernKnight => "Knight that fights atop a wyvern",
         });
+    }
+
+    pub fn progressions(&self) -> Vec<MasterClass> {
+        return match self {
+            ExpertClass::StormSummoner => vec![MasterClass::MasterOfNaturalDisaster],
+            ExpertClass::ExplosionExpert => vec![MasterClass::MasterOfExplosions],
+            ExpertClass::InsaneIncanter => vec![MasterClass::PsychoSorcerer],
+            ExpertClass::Angel => vec![MasterClass::ChosenAngel, MasterClass::FallenAngel],
+            ExpertClass::DarkAngel => {
+                vec![MasterClass::FallenAngel, MasterClass::MasterOfTheDarkArts]
+            }
+            ExpertClass::Swordmaster => vec![MasterClass::UltimateSwordmaster],
+            ExpertClass::MagicDuelWielder => vec![MasterClass::BladeConjurer],
+            ExpertClass::HolyCentaur => vec![MasterClass::BlessedCentaurianHero],
+            ExpertClass::DarkCentaur => vec![MasterClass::CursedCentaurianSpecter],
+            ExpertClass::HolyPegasusKnight => vec![MasterClass::EnlightenedPegasusKnight],
+            ExpertClass::DarkPegasusKnight => vec![MasterClass::EnlightenedPegasusKnight],
+            ExpertClass::WyvernKnight => vec![MasterClass::DraconianKnight],
+        };
     }
 }
 

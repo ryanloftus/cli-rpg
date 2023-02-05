@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::prompt::PromptOption;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum OverpoweredClass {
     LegendaryHero,
     GodOfWeather,
@@ -11,8 +11,7 @@ pub enum OverpoweredClass {
     BenevolentDeity,
     GrimReaper,
     GodOfSwords,
-    HolyCentaurianKing,
-    DarkCentaurianKing,
+    CentaurianKing,
     GodOfTheSky,
     DraconianHero,
 }
@@ -27,8 +26,7 @@ impl OverpoweredClass {
             OverpoweredClass::BenevolentDeity => "A being with godlike power over light magic",
             OverpoweredClass::GrimReaper => "A being whose purpose in this world is too collect the souls of the villains plaguing this world",
             OverpoweredClass::GodOfSwords => "A being who has surpassed perfection in the art of swordsmanship",
-            OverpoweredClass::HolyCentaurianKing => "A being revered as the \"King of Beasts\" for their powerful light magic",
-            OverpoweredClass::DarkCentaurianKing => "A being revered as the \"King of Beasts\" for their powerful dark magic",
+            OverpoweredClass::CentaurianKing => "A being revered as the \"King of Beasts\" for their strength and magic ability",
             OverpoweredClass::GodOfTheSky => "A being with godlike authority over the sky and its inhabitants",
             OverpoweredClass::DraconianHero => "A being with unrivaled strength and the ability to call upon powerful draconian allies",
         })
@@ -45,8 +43,7 @@ impl PromptOption for OverpoweredClass {
             OverpoweredClass::BenevolentDeity => "Benevolent Deity",
             OverpoweredClass::GrimReaper => "Grim Reaper",
             OverpoweredClass::GodOfSwords => "God of Swords",
-            OverpoweredClass::HolyCentaurianKing => "Holy Centaurian King",
-            OverpoweredClass::DarkCentaurianKing => "Dark Centaurian King",
+            OverpoweredClass::CentaurianKing => "Centaurian King",
             OverpoweredClass::GodOfTheSky => "God of the Sky",
             OverpoweredClass::DraconianHero => "Draconian Hero",
         })
@@ -61,8 +58,7 @@ impl PromptOption for OverpoweredClass {
             OverpoweredClass::BenevolentDeity => "BD",
             OverpoweredClass::GrimReaper => "GR",
             OverpoweredClass::GodOfSwords => "GS",
-            OverpoweredClass::HolyCentaurianKing => "HC",
-            OverpoweredClass::DarkCentaurianKing => "DC",
+            OverpoweredClass::CentaurianKing => "CK",
             OverpoweredClass::GodOfTheSky => "SK",
             OverpoweredClass::DraconianHero => "DH",
         }))

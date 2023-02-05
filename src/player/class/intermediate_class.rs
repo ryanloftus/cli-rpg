@@ -2,6 +2,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::prompt::PromptOption;
 
+use super::advanced_class::AdvancedClass;
+
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum IntermediateClass {
     ElementalMage,
@@ -28,6 +30,26 @@ impl IntermediateClass {
             IntermediateClass::SavageKnight => "Knight that values victory at all costs",
             IntermediateClass::MountedKnight => "Knight that rides a horse",
         });
+    }
+
+    pub fn progressions(&self) -> Vec<AdvancedClass> {
+        return match self {
+            IntermediateClass::ElementalMage => vec![
+                AdvancedClass::PowerfulElementalMage,
+                AdvancedClass::ExplosiveMage,
+            ],
+            IntermediateClass::HolyMage => vec![AdvancedClass::StudentOfTheLight],
+            IntermediateClass::DarkMage => vec![AdvancedClass::AcolyteOfDarkness],
+            IntermediateClass::WackyWizard => vec![AdvancedClass::ErraticEnchanter],
+            IntermediateClass::Duelist => vec![
+                AdvancedClass::ImprovingSwordsman,
+                AdvancedClass::DuelWielder,
+            ],
+            IntermediateClass::MagicSwordsman => vec![AdvancedClass::EnchantedBladeWielder],
+            IntermediateClass::HonourableKnight => vec![AdvancedClass::HolyKnight],
+            IntermediateClass::SavageKnight => vec![AdvancedClass::DarkKnight],
+            IntermediateClass::MountedKnight => vec![AdvancedClass::Centaur],
+        };
     }
 }
 

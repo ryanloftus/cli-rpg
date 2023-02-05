@@ -15,9 +15,9 @@ use self::{
     overpowered_class::OverpoweredClass, starter_class::StarterClass,
 };
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum Class {
-    // TODO: create functions for getting each classes class progression, create functions for getting the stat boosts, skills, and attributes that come with the class
+    // TODO: create functions for getting stat boosts, skills, and attributes that come with the class
     FutureHero,
     Starter(StarterClass),
     Intermediate(IntermediateClass),
@@ -50,14 +50,30 @@ impl Class {
                 Class::Starter(StarterClass::Mage),
             ],
             Class::Starter(starter_class) => starter_class
-                .get_progressions()
+                .progressions()
                 .iter()
                 .map(|c| Class::Intermediate(*c))
                 .collect(),
-            Class::Intermediate(_) => todo!(),
-            Class::Advanced(_) => todo!(),
-            Class::Expert(_) => todo!(),
-            Class::Master(_) => todo!(),
+            Class::Intermediate(intermediate_class) => intermediate_class
+                .progressions()
+                .iter()
+                .map(|c| Class::Advanced(*c))
+                .collect(),
+            Class::Advanced(advanced_class) => advanced_class
+                .progressions()
+                .iter()
+                .map(|c| Class::Expert(*c))
+                .collect(),
+            Class::Expert(expert_class) => expert_class
+                .progressions()
+                .iter()
+                .map(|c| Class::Master(*c))
+                .collect(),
+            Class::Master(master_class) => master_class
+                .progressions()
+                .iter()
+                .map(|c| Class::Overpowered(*c))
+                .collect(),
             Class::Overpowered(_) => panic!("Cannot progress past OverpoweredClass"),
         }
     }
@@ -90,8 +106,15 @@ impl PromptOption for Class {
 }
 
 pub fn choose_class_prompt(current_class: &Class) -> Class {
+    let class_options = current_class.get_progressions();
+    if class_options.len() == 1 {
+        println!(
+            "You were advanced to the {} class!",
+            class_options[0].option_name()
+        );
+        return class_options[0].clone();
+    }
     loop {
-        let class_options = current_class.get_progressions();
         let selected =
             prompt::get_selection_from_options(String::from("Choose a class."), &class_options);
         println!("{}", selected.description());

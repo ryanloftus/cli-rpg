@@ -2,6 +2,7 @@ use crate::stats::Stats;
 
 use super::Enemy;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SoldierType {
     Footsoldier,
     Archer,
@@ -16,7 +17,11 @@ pub fn new(soldier_type: SoldierType, faction: String, level: u16) -> Enemy {
         name: enemy_name(soldier_type, faction),
         level,
         skills: Vec::new(),
-        difficulty: super::EnemyDifficulty::Weak,
+        difficulty: if soldier_type == SoldierType::Lieutenant {
+            super::EnemyDifficulty::Strong
+        } else {
+            super::EnemyDifficulty::Weak
+        },
         stats: Stats::new(level, Vec::new()),
     }
 }

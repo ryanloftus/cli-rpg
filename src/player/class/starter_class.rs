@@ -22,14 +22,23 @@ impl StarterClass {
         });
     }
 
-    pub fn get_progressions(&self) -> Vec<IntermediateClass> {
+    pub fn progressions(&self) -> Vec<IntermediateClass> {
         return match self {
             StarterClass::Swordsman => vec![
                 IntermediateClass::Duelist,
                 IntermediateClass::MagicSwordsman,
             ],
-            StarterClass::Knight => todo!(),
-            StarterClass::Mage => todo!(),
+            StarterClass::Knight => vec![
+                IntermediateClass::HonourableKnight,
+                IntermediateClass::SavageKnight,
+                IntermediateClass::MountedKnight,
+            ],
+            StarterClass::Mage => vec![
+                IntermediateClass::ElementalMage,
+                IntermediateClass::HolyMage,
+                IntermediateClass::DarkMage,
+                IntermediateClass::WackyWizard,
+            ],
         };
     }
 }

@@ -2,9 +2,11 @@ use serde::{Deserialize, Serialize};
 
 use crate::prompt::PromptOption;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+use super::overpowered_class::OverpoweredClass;
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum MasterClass {
-    MasterOfTheElements,
+    MasterOfNaturalDisaster,
     MasterOfExplosions,
     PsychoSorcerer,
     ChosenAngel,
@@ -21,7 +23,9 @@ pub enum MasterClass {
 impl MasterClass {
     pub fn description(&self) -> String {
         String::from(match self {
-            MasterClass::MasterOfTheElements => "Mage with masterful control over elemental magic",
+            MasterClass::MasterOfNaturalDisaster => {
+                "Mage with masterful control over elemental magic"
+            }
             MasterClass::MasterOfExplosions => {
                 "Mage who has mastered explosion magic nearly to perfection"
             }
@@ -49,12 +53,34 @@ impl MasterClass {
             MasterClass::DraconianKnight => "Knight that fights atop a dragon",
         })
     }
+
+    pub fn progressions(&self) -> Vec<OverpoweredClass> {
+        let mut progressions = match self {
+            MasterClass::MasterOfNaturalDisaster => vec![OverpoweredClass::GodOfWeather],
+            MasterClass::MasterOfExplosions => vec![OverpoweredClass::GodOfExplosions],
+            MasterClass::PsychoSorcerer => vec![OverpoweredClass::ArchitectOfChaos],
+            MasterClass::ChosenAngel => vec![OverpoweredClass::BenevolentDeity],
+            MasterClass::FallenAngel => vec![
+                OverpoweredClass::BenevolentDeity,
+                OverpoweredClass::GrimReaper,
+            ],
+            MasterClass::MasterOfTheDarkArts => vec![OverpoweredClass::GrimReaper],
+            MasterClass::UltimateSwordmaster => vec![OverpoweredClass::GodOfSwords],
+            MasterClass::BladeConjurer => vec![OverpoweredClass::GodOfSwords],
+            MasterClass::BlessedCentaurianHero => vec![OverpoweredClass::CentaurianKing],
+            MasterClass::CursedCentaurianSpecter => vec![OverpoweredClass::CentaurianKing],
+            MasterClass::EnlightenedPegasusKnight => vec![OverpoweredClass::GodOfTheSky],
+            MasterClass::DraconianKnight => vec![OverpoweredClass::DraconianHero],
+        };
+        progressions.push(OverpoweredClass::LegendaryHero);
+        return progressions;
+    }
 }
 
 impl PromptOption for MasterClass {
     fn option_name(&self) -> String {
         String::from(match self {
-            MasterClass::MasterOfTheElements => "Master of the Elements",
+            MasterClass::MasterOfNaturalDisaster => "Master of Natural Disaster",
             MasterClass::MasterOfExplosions => "Master of Explosions",
             MasterClass::PsychoSorcerer => "Psycho Sorcerer",
             MasterClass::ChosenAngel => "Chosen Angel",
@@ -71,7 +97,7 @@ impl PromptOption for MasterClass {
 
     fn short_option_name(&self) -> Option<String> {
         Some(String::from(match self {
-            MasterClass::MasterOfTheElements => "ME",
+            MasterClass::MasterOfNaturalDisaster => "ME",
             MasterClass::MasterOfExplosions => "EX",
             MasterClass::PsychoSorcerer => "PS",
             MasterClass::ChosenAngel => "CA",

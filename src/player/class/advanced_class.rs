@@ -2,7 +2,9 @@ use serde::{Deserialize, Serialize};
 
 use crate::prompt::PromptOption;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+use super::expert_class::ExpertClass;
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum AdvancedClass {
     PowerfulElementalMage,
     ExplosiveMage,
@@ -38,6 +40,30 @@ impl AdvancedClass {
             AdvancedClass::Centaur => "Knight that has truly become one with their steed",
             AdvancedClass::PegasusKnight => "Knight that fights atop a powerful winged horse",
         });
+    }
+
+    pub fn progressions(&self) -> Vec<ExpertClass> {
+        return match self {
+            AdvancedClass::PowerfulElementalMage => vec![ExpertClass::StormSummoner],
+            AdvancedClass::ExplosiveMage => vec![ExpertClass::ExplosionExpert],
+            AdvancedClass::ErraticEnchanter => vec![ExpertClass::InsaneIncanter],
+            AdvancedClass::StudentOfTheLight => vec![ExpertClass::Angel],
+            AdvancedClass::AcolyteOfDarkness => vec![ExpertClass::DarkAngel],
+            AdvancedClass::ImprovingSwordsman => vec![ExpertClass::Swordmaster],
+            AdvancedClass::DuelWielder => vec![ExpertClass::MagicDuelWielder],
+            AdvancedClass::EnchantedBladeWielder => vec![ExpertClass::MagicDuelWielder],
+            AdvancedClass::HolyKnight => {
+                vec![ExpertClass::HolyCentaur, ExpertClass::HolyPegasusKnight]
+            }
+            AdvancedClass::DarkKnight => {
+                vec![ExpertClass::DarkCentaur, ExpertClass::DarkPegasusKnight]
+            }
+            AdvancedClass::Centaur => vec![ExpertClass::DarkCentaur, ExpertClass::HolyCentaur],
+            AdvancedClass::PegasusKnight => vec![
+                ExpertClass::HolyPegasusKnight,
+                ExpertClass::DarkPegasusKnight,
+            ],
+        };
     }
 }
 
