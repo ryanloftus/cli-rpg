@@ -5,15 +5,7 @@ const OPENING_TEXT: &str = "An army of fiery monsters threaten to melt away The 
 const CLOSING_TEXT: &str =
     "The volcanic villains have been defeated and The Icefields remain frozen. Well done hero.";
 
-pub fn new() -> Area {
-    Area {
-        name: "The Icefields",
-        unique_id: "I",
-        story: generate_story(),
-    }
-}
-
-fn generate_story() -> Vec<StoryComponent> {
+pub fn story() -> Vec<StoryComponent> {
     let mut story = Vec::new();
     story.push(StoryComponent::Text(String::from(OPENING_TEXT)));
     for i in 1..=100 {

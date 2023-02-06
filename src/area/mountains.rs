@@ -5,15 +5,7 @@ const OPENING_TEXT: &str = "You now enter the final region of your journey, The 
 const CLOSING_TEXT: &str = "You have put a stop to Doom Incarnate's malicious machinations... or at least delayed them. The black fog shrouding the mountains has cleared and you look down on the world you've protected. Well done hero, you may finally rest.";
 const ENEMY_PREFIX: &str = "Shadow";
 
-pub fn new() -> Area {
-    Area {
-        name: "The Mountains",
-        unique_id: "M",
-        story: generate_story(),
-    }
-}
-
-fn generate_story() -> Vec<StoryComponent> {
+pub fn story() -> Vec<StoryComponent> {
     let mut story = Vec::new();
     story.push(StoryComponent::Text(String::from(OPENING_TEXT)));
     for i in 1..=100 {

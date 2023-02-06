@@ -4,7 +4,7 @@ mod prompts;
 mod story;
 use self::battle::{battle, BattleResult};
 use self::story::StoryComponentAction;
-use crate::area::{self, Area, StoryComponent};
+use crate::area::{Area, StoryComponent, NUM_AREAS};
 use crate::player::class::choose_class_prompt;
 use crate::player::Player;
 use crate::prompt::{
@@ -55,20 +55,18 @@ enum AreaResult {
 pub fn play_game() {
     let player: &mut Player = &mut menu::start();
     save(&player);
-    let areas = area::build_areas();
     let mut player_action = get_player_action(player);
     loop {
         match player_action {
             PlayerAction::EnterNextArea => {
-                player_action = enter(player, &areas, player.story_progress.areas_completed);
+                player_action = enter(player, Area::area_at(player.story_progress.areas_completed));
             }
             PlayerAction::ReturnToCurrentArea => {
-                player_action = enter(player, &areas, player.story_progress.areas_completed);
+                player_action = enter(player, Area::area_at(player.story_progress.areas_completed));
             }
             PlayerAction::ReturnToPreviousArea => {
-                let area_idx = select_area_to_return_to(player, &areas);
-                if let Some(idx) = area_idx {
-                    player_action = enter(player, &areas, idx);
+                if let Some(area) = select_area_to_return_to(player) {
+                    player_action = enter(player, area);
                 } else {
                     player_action = get_player_action(player);
                 }
@@ -94,25 +92,26 @@ fn get_player_action(player: &Player) -> PlayerAction {
  * Starts or continues players progress in an area from the given entry point
  * entry_point is an idx in area.story
  */
-fn enter(player: &mut Player, areas: &Vec<Area>, area_idx: usize) -> PlayerAction {
-    let area_result = if player.story_progress.areas_completed == area_idx {
-        do_story(player, &areas[area_idx])
+fn enter(player: &mut Player, area: Area) -> PlayerAction {
+    let area_result = if Area::area_at(player.story_progress.areas_completed) == area {
+        do_story(player, area)
     } else {
-        train(player, &areas[area_idx])
+        train(player, area)
     };
     return match area_result {
         AreaResult::LeftArea => get_action_after_area_left(),
-        AreaResult::AreaCompleted => on_area_completed(player, &areas),
+        AreaResult::AreaCompleted => on_area_completed(player),
         AreaResult::PlayerWasDefeated => {
             println!("You allies rescued you and brought you back to The Kingdom.");
-            enter(player, areas, 0)
+            enter(player, Area::Kingdom)
         }
     };
 }
 
-fn do_story(player: &mut Player, area: &Area) -> AreaResult {
-    while player.story_progress.current_area_progress < area.story.len() {
-        let action = get_action_in_area(area, player.story_progress.current_area_progress);
+fn do_story(player: &mut Player, area: Area) -> AreaResult {
+    let story = area.story();
+    while player.story_progress.current_area_progress < story.len() {
+        let action = get_action_in_area(&story, player.story_progress.current_area_progress);
         let progress = match action {
             StoryComponentAction::ShowText(text) => {
                 println!("{text}");
@@ -149,16 +148,16 @@ fn do_story(player: &mut Player, area: &Area) -> AreaResult {
  * Should only be called once the player has completed this areas story
  * Player returns to the area to train by fighting practice battles
  */
-fn train(player: &mut Player, area: &Area) -> AreaResult {
+fn train(player: &mut Player, area: Area) -> AreaResult {
     todo!("implement training");
 }
 
-fn on_area_completed(player: &mut Player, areas: &Vec<Area>) -> PlayerAction {
+fn on_area_completed(player: &mut Player) -> PlayerAction {
     player.experience.area_cleared();
     player.story_progress.areas_completed += 1;
     player.story_progress.current_area_progress = 0;
     save(&player);
-    if player.story_progress.areas_completed == areas.len() {
+    if player.story_progress.areas_completed == NUM_AREAS {
         return PlayerAction::QuitGame;
     } else {
         choose_class_prompt(&player.class);
@@ -166,20 +165,20 @@ fn on_area_completed(player: &mut Player, areas: &Vec<Area>) -> PlayerAction {
     }
 }
 
-fn get_action_in_area(area: &Area, story_idx: usize) -> StoryComponentAction {
-    match &area.story[story_idx] {
+fn get_action_in_area(story: &Vec<StoryComponent>, story_idx: usize) -> StoryComponentAction {
+    return match story[story_idx] {
         StoryComponent::Text(text) => StoryComponentAction::ShowText(text.clone()),
         StoryComponent::Enemy(_) => {
-            let mut enemies = Vec::new();
-            for j in story_idx..area.story.len() {
-                if let StoryComponent::Enemy(enemy) = &area.story[j] {
-                    enemies.push(enemy);
+            let mut enemies: Vec<&crate::enemy::Enemy> = Vec::new();
+            for j in story_idx..story.len() {
+                if let StoryComponent::Enemy(enemy) = story[j] {
+                    enemies.push(&enemy);
                 }
             }
             prompts::show_enemy_prompt(enemies)
         }
         StoryComponent::Boss(boss) => prompts::show_boss_prompt(&boss),
-    }
+    };
 }
 
 fn get_action_after_area_left() -> PlayerAction {
@@ -206,15 +205,13 @@ fn get_action_after_area_completed() -> PlayerAction {
     );
 }
 
-fn select_area_to_return_to(player: &mut Player, areas: &Vec<Area>) -> Option<usize> {
-    let area = get_optional_selection_from_options(
-        String::from("Select an area to return to."),
-        &areas[0..player.story_progress.areas_completed].to_vec(),
-    );
-    if let Some(area) = area {
-        let idx = areas.iter().position(|a| area == *a);
-        return idx; // idx should always be Some since the area must be in the vector areas
-    } else {
-        return None;
+fn select_area_to_return_to(player: &mut Player) -> Option<Area> {
+    let mut completed_areas = Vec::new();
+    for i in 0..player.story_progress.areas_completed {
+        completed_areas.push(Area::area_at(i));
     }
+    return get_optional_selection_from_options(
+        String::from("Select an area to return to."),
+        &completed_areas,
+    );
 }

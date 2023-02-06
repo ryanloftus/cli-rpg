@@ -3,6 +3,7 @@ mod experience;
 mod story_progress;
 
 use crate::{
+    area::Area,
     prompt::PromptOption,
     skill::Skill,
     stats::{Stats, BASE_HEALTH, BASE_MP},
@@ -21,8 +22,8 @@ pub struct Player {
     pub skills: Vec<Skill>,
     pub stats: Stats,
     pub story_progress: StoryProgress,
-    pub current_area_idx: usize, // TODO: actually use this in game/mod.rs
-                                 // TODO: add Attributes to determine effectiveness of attacks against the Player
+    pub current_area: Area, // TODO: actually use this in game/mod.rs
+                            // TODO: add Attributes to determine effectiveness of attacks against the Player
 }
 
 impl Player {
@@ -50,7 +51,7 @@ impl Player {
                 areas_completed: 0,
                 current_area_progress: 0,
             },
-            current_area_idx: 0,
+            current_area: Area::Kingdom,
         }
     }
 

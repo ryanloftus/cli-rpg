@@ -5,15 +5,7 @@ const OPENING_TEXT: &str = "You enter The Forest and notice that 100 citizens of
 const CLOSING_TEXT: &str =
     "The Demon Lord has been defeated and The Forest is safe. Well done hero.";
 
-pub fn new() -> Area {
-    Area {
-        name: "The Forest",
-        unique_id: "F",
-        story: generate_story(),
-    }
-}
-
-fn generate_story() -> Vec<StoryComponent> {
+pub fn story() -> Vec<StoryComponent> {
     let mut story = Vec::new();
     story.push(StoryComponent::Text(String::from(OPENING_TEXT)));
     for i in 1..=100 {

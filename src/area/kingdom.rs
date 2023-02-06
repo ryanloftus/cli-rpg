@@ -1,6 +1,5 @@
 use crate::enemy::{soldier::SoldierType, Enemy, EnemyType};
 
-use super::Area;
 use super::StoryComponent;
 
 const OPENING_TEXT: &str = "You're currently in the throne room of The Kingdom's central castle.
@@ -18,15 +17,7 @@ And so, you begin your quest to make the world a safe place once again. On your 
  * This is the first area in the game and acts as a tutorial.
  * The player leaves this area to begin their quest and may return at any time to train.
  */
-pub fn new() -> Area {
-    Area {
-        name: "The Kingdom",
-        unique_id: "K",
-        story: generate_story(),
-    }
-}
-
-fn generate_story() -> Vec<StoryComponent> {
+pub fn story() -> Vec<StoryComponent> {
     return vec![
         StoryComponent::Text(String::from(OPENING_TEXT)),
         StoryComponent::Text(String::from(TRAINING_BATTLE_TEXT)),

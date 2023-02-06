@@ -1,19 +1,11 @@
-use super::{Area, StoryComponent};
+use super::StoryComponent;
 use crate::enemy::{monster::MonsterType, Enemy, EnemyType};
 
 const OPENING_TEXT: &str = "You look out onto The Plains and see that it has been overrun by 100 Monsters. Its up to you to stop them!";
 const CLOSING_TEXT: &str =
     "The Villainous Mage has been defeated and The Plains are safe. Well done hero.";
 
-pub fn new() -> Area {
-    Area {
-        name: "The Plains",
-        unique_id: "P",
-        story: generate_story(),
-    }
-}
-
-fn generate_story() -> Vec<StoryComponent> {
+pub fn story() -> Vec<StoryComponent> {
     let mut story = Vec::new();
     story.push(StoryComponent::Text(String::from(OPENING_TEXT)));
     for i in 1..=100 {

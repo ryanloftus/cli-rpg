@@ -6,15 +6,7 @@ const OPENING_TEXT: &str = "There are three major islands, the Warm Island, the 
 const CLOSING_TEXT: &str = "The island's leaders have all been defeated and the war is finally over. The people of three islands have formed a democratic society, uniting all three islands. Well done hero.";
 const ISLANDS_BASE_LEVEL: u16 = 30;
 
-pub fn new() -> Area {
-    Area {
-        name: "The Islands",
-        unique_id: "I",
-        story: generate_story(),
-    }
-}
-
-fn generate_story() -> Vec<StoryComponent> {
+pub fn story() -> Vec<StoryComponent> {
     let mut story = Vec::new();
     story.push(StoryComponent::Text(String::from(OPENING_TEXT)));
     story.append(&mut get_warm_island_story());

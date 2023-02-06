@@ -5,15 +5,7 @@ const OPENING_TEXT: &str = "You enter Mole City in The Caves and speak to The Mo
 const CLOSING_TEXT: &str =
     "The Lizard King has been defeated and Mole City is once again safe. Well done hero.";
 
-pub fn new() -> Area {
-    Area {
-        name: "The Caves",
-        unique_id: "C",
-        story: generate_story(),
-    }
-}
-
-fn generate_story() -> Vec<StoryComponent> {
+pub fn story() -> Vec<StoryComponent> {
     let mut story = Vec::new();
     story.push(StoryComponent::Text(String::from(OPENING_TEXT)));
     for i in 1..=100 {
