@@ -99,7 +99,7 @@ fn enter(player: &mut Player, area: Area) -> PlayerAction {
         train(player, area)
     };
     return match area_result {
-        AreaResult::LeftArea => get_action_after_area_left(),
+        AreaResult::LeftArea => get_player_action(player),
         AreaResult::AreaCompleted => on_area_completed(player),
         AreaResult::PlayerWasDefeated => {
             println!("You allies rescued you and brought you back to The Kingdom.");
@@ -121,9 +121,18 @@ fn do_story(player: &mut Player, area: Area) -> AreaResult {
                 player.print_summary();
                 0
             }
-            StoryComponentAction::Battle(enemies) => {
-                match battle(&player, &enemies) {
-                    BattleResult::Victory => player.experience.enemies_defeated(&enemies),
+            StoryComponentAction::Battle(num_enemies) => {
+                let start_idx = player.story_progress.current_area_progress;
+                let end_idx = player.story_progress.current_area_progress + num_enemies;
+                let enemies = &story[start_idx..end_idx]
+                    .iter()
+                    .map(|sc| match sc {
+                        StoryComponent::Enemy(enemy) => *enemy,
+                        _ => panic!(),
+                    })
+                    .collect();
+                match battle(&player, enemies) {
+                    BattleResult::Victory => player.experience.enemies_defeated(enemies),
                     BattleResult::Defeat => return AreaResult::PlayerWasDefeated,
                 }
                 enemies.len()
@@ -149,7 +158,21 @@ fn do_story(player: &mut Player, area: Area) -> AreaResult {
  * Player returns to the area to train by fighting practice battles
  */
 fn train(player: &mut Player, area: Area) -> AreaResult {
-    todo!("implement training");
+    loop {
+        // TODO: maybe have a training enemy prompt
+        match prompts::show_enemy_prompt(10) {
+            StoryComponentAction::ShowPlayerInfo => player.print_summary(),
+            StoryComponentAction::Battle(num_enemies) => {
+                let enemies = &area.generate_training_enemies(num_enemies, player.experience.level);
+                match battle(player, enemies) {
+                    BattleResult::Victory => player.experience.enemies_defeated(enemies),
+                    BattleResult::Defeat => {}
+                }
+            }
+            StoryComponentAction::LeaveArea => return AreaResult::LeftArea,
+            _ => panic!("Invalid action occurred in training"),
+        }
+    }
 }
 
 fn on_area_completed(player: &mut Player) -> PlayerAction {
@@ -169,13 +192,15 @@ fn get_action_in_area(story: &Vec<StoryComponent>, story_idx: usize) -> StoryCom
     return match story[story_idx] {
         StoryComponent::Text(text) => StoryComponentAction::ShowText(text.clone()),
         StoryComponent::Enemy(_) => {
-            let mut enemies: Vec<&crate::enemy::Enemy> = Vec::new();
+            let mut num_enemies: usize = 0;
             for j in story_idx..story.len() {
                 if let StoryComponent::Enemy(enemy) = story[j] {
-                    enemies.push(&enemy);
+                    num_enemies += 1;
+                } else {
+                    break;
                 }
             }
-            prompts::show_enemy_prompt(enemies)
+            prompts::show_enemy_prompt(num_enemies)
         }
         StoryComponent::Boss(boss) => prompts::show_boss_prompt(&boss),
     };

@@ -6,11 +6,11 @@ const ENEMY_PROMPT: &str = "You see enemies ahead. What will you do?";
 const NUM_ENEMIES_PROMPT: &str = "How many enemies will you take on?";
 const BOSS_PROMPT: &str = "You see a boss ahead. What will you do?";
 
-pub fn show_enemy_prompt(upcoming_enemies: Vec<&Enemy>) -> StoryComponentAction {
+pub fn show_enemy_prompt(max_upcoming_enemies: usize) -> StoryComponentAction {
     let selected_option = get_selection_from_options(
         String::from(ENEMY_PROMPT),
         &vec![
-            StoryComponentAction::Battle(Vec::new()),
+            StoryComponentAction::Battle(max_upcoming_enemies),
             StoryComponentAction::LeaveArea, // TODO: remove this option in tutorial
             StoryComponentAction::ShowPlayerInfo,
         ],
@@ -20,16 +20,12 @@ pub fn show_enemy_prompt(upcoming_enemies: Vec<&Enemy>) -> StoryComponentAction 
             let num_enemies = get_selection_from_numeric_range(
                 NUM_ENEMIES_PROMPT,
                 1,
-                upcoming_enemies.len() as i32,
+                max_upcoming_enemies as i32,
             ) as usize;
-            StoryComponentAction::Battle(
-                upcoming_enemies[0..num_enemies]
-                    .iter()
-                    .map(|e| (**e).clone())
-                    .collect(),
-            )
+            StoryComponentAction::Battle(num_enemies)
         }
         StoryComponentAction::LeaveArea => StoryComponentAction::LeaveArea,
+        StoryComponentAction::ShowPlayerInfo => StoryComponentAction::ShowPlayerInfo,
         _ => panic!("Invalid option selected from enemy battle prompt"),
     };
 }

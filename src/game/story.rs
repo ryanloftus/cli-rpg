@@ -4,7 +4,7 @@ use crate::{enemy::Enemy, prompt::PromptOption};
 pub enum StoryComponentAction {
     ShowText(String),
     ShowPlayerInfo,
-    Battle(Vec<Enemy>),
+    Battle(usize),
     BossBattle(Enemy),
     LeaveArea,
 }

@@ -8,8 +8,11 @@ mod plains;
 
 use serde::{Deserialize, Serialize};
 
-use crate::enemy::Enemy;
+use crate::enemy::soldier::SoldierType;
+use crate::enemy::{Enemy, EnemyType};
 use crate::prompt::PromptOption;
+
+use rand::{self, Rng};
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
 pub enum Area {
@@ -47,6 +50,31 @@ impl Area {
             Area::Icefields => icefields::story(),
             Area::Mountains => mountains::story(),
         };
+    }
+
+    pub fn generate_training_enemies(&self, num_enemies: usize, player_level: u16) -> Vec<Enemy> {
+        let training_enemies = Vec::new();
+        let faction = self.option_name();
+        let level = std::cmp::max(6, player_level) - 5;
+        for _ in 0..num_enemies {
+            let soldier_type = match rand::thread_rng().gen_range(0..=4) {
+                0 => SoldierType::Footsoldier,
+                1 => SoldierType::Archer,
+                2 => SoldierType::Knight,
+                3 => SoldierType::Guard,
+                4 => SoldierType::Lieutenant,
+                _ => panic!(),
+            };
+            training_enemies.push(Enemy::new(
+                EnemyType::Soldier {
+                    faction,
+                    soldier_type,
+                },
+                level,
+                0,
+            ));
+        }
+        return training_enemies;
     }
 }
 
