@@ -1,4 +1,4 @@
-use super::{Area, StoryComponent};
+use super::StoryComponent;
 use crate::enemy::{monster::MonsterType, soldier::SoldierType, Enemy, EnemyType};
 
 const OPENING_TEXT: &str = "You now enter the final region of your journey, The Mountains. You begin your climb up the tallest mountain, but your view forward is obscured by a thick black fog. You march onward into the unknown to face your destiny.";
