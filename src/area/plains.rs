@@ -1,5 +1,8 @@
 use super::StoryComponent;
-use crate::enemy::{monster::MonsterType, Enemy, EnemyType};
+use crate::{
+    enemy::{monster::MonsterType, Enemy, EnemyType},
+    stats::StatMultiplier,
+};
 
 const OPENING_TEXT: &str = "You look out onto The Plains and see that it has been overrun by 100 Monsters. Its up to you to stop them!";
 const CLOSING_TEXT: &str =
@@ -30,7 +33,13 @@ pub fn story() -> Vec<StoryComponent> {
         String::from("Villainous Mage"),
         15,
         Vec::new(),
-        Vec::new(),
+        vec![
+            StatMultiplier::MaxHealth(4.0),
+            StatMultiplier::MaxMp(4.0),
+            StatMultiplier::Magic(2.0),
+            StatMultiplier::Defense(0.75),
+            StatMultiplier::MagicResist(2.0),
+        ],
     )));
     story.push(StoryComponent::Text(String::from(CLOSING_TEXT)));
     return story;

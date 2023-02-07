@@ -1,4 +1,7 @@
-use crate::enemy::{soldier::SoldierType, Enemy, EnemyType};
+use crate::{
+    enemy::{soldier::SoldierType, Enemy, EnemyType},
+    stats::StatMultiplier,
+};
 
 use super::StoryComponent;
 
@@ -34,7 +37,18 @@ fn get_warm_island_story() -> Vec<StoryComponent> {
 }
 
 fn warm_island_boss() -> Enemy {
-    return Enemy::new_boss(String::from("Warm Island King"), 35, Vec::new(), Vec::new());
+    return Enemy::new_boss(
+        String::from("Warm Island King"),
+        35,
+        Vec::new(),
+        vec![
+            StatMultiplier::MaxHealth(4.0),
+            StatMultiplier::Strength(1.25),
+            StatMultiplier::Magic(2.0),
+            StatMultiplier::Defense(1.25),
+            StatMultiplier::MagicResist(1.5),
+        ],
+    );
 }
 
 fn get_cold_island_story() -> Vec<StoryComponent> {
@@ -55,7 +69,18 @@ fn get_cold_island_story() -> Vec<StoryComponent> {
 }
 
 fn cold_island_boss() -> Enemy {
-    return Enemy::new_boss(String::from("Cold Island King"), 40, Vec::new(), Vec::new());
+    return Enemy::new_boss(
+        String::from("Cold Island King"),
+        40,
+        Vec::new(),
+        vec![
+            StatMultiplier::MaxHealth(4.0),
+            StatMultiplier::Strength(1.25),
+            StatMultiplier::Magic(2.0),
+            StatMultiplier::Defense(1.25),
+            StatMultiplier::MagicResist(1.5),
+        ],
+    );
 }
 
 fn get_stormy_island_story() -> Vec<StoryComponent> {
@@ -80,7 +105,13 @@ fn stormy_island_boss() -> Enemy {
         String::from("Stormy Island Queen"),
         45,
         Vec::new(),
-        Vec::new(),
+        vec![
+            StatMultiplier::MaxHealth(4.0),
+            StatMultiplier::Strength(1.25),
+            StatMultiplier::Magic(2.0),
+            StatMultiplier::Defense(1.25),
+            StatMultiplier::MagicResist(1.5),
+        ],
     );
 }
 

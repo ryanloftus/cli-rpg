@@ -39,7 +39,6 @@ impl Area {
         };
     }
 
-    // TODO: add stat multipliers for bosses in each area
     pub fn story(&self) -> Vec<StoryComponent> {
         return match self {
             Area::Kingdom => kingdom::story(),

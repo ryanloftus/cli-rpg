@@ -1,5 +1,8 @@
 use super::StoryComponent;
-use crate::enemy::{soldier::SoldierType, Enemy, EnemyType};
+use crate::{
+    enemy::{soldier::SoldierType, Enemy, EnemyType},
+    stats::StatMultiplier,
+};
 
 const OPENING_TEXT: &str = "An army of fiery monsters threaten to melt away The Icefields. You must stop this catastrophe and whoever is behind it.";
 const CLOSING_TEXT: &str =
@@ -15,7 +18,12 @@ pub fn story() -> Vec<StoryComponent> {
         String::from("Molten Monstrosity"),
         75,
         Vec::new(),
-        Vec::new(),
+        vec![
+            StatMultiplier::MaxHealth(4.0),
+            StatMultiplier::Strength(2.5),
+            StatMultiplier::Defense(3.0),
+            StatMultiplier::Speed(0.25),
+        ],
     )));
     story.push(StoryComponent::Text(String::from(CLOSING_TEXT)));
     return story;

@@ -23,7 +23,7 @@ pub struct Enemy {
     pub difficulty: EnemyDifficulty,
     pub stats: Stats,
     // TODO: add Attributes to determine effectiveness of attacks against this foe
-    // TODO: actually give enemies unique stat modifiers, skills and attributes
+    // TODO: actually give enemies unique skills and attributes
 }
 
 pub enum EnemyType {
