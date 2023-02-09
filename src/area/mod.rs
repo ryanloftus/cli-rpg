@@ -8,9 +8,9 @@ mod plains;
 
 use serde::{Deserialize, Serialize};
 
-use crate::enemy::soldier::SoldierType;
-use crate::enemy::{Enemy, EnemyType};
 use crate::prompt::PromptOption;
+use crate::unit::enemy::soldier::SoldierType;
+use crate::unit::enemy::{Enemy, EnemyType};
 
 use rand::{self, Rng};
 
@@ -52,8 +52,7 @@ impl Area {
     }
 
     pub fn generate_training_enemies(&self, num_enemies: usize, player_level: u16) -> Vec<Enemy> {
-        let training_enemies = Vec::new();
-        let faction = self.option_name();
+        let mut training_enemies = Vec::new();
         let level = std::cmp::max(6, player_level) - 5;
         for _ in 0..num_enemies {
             let soldier_type = match rand::thread_rng().gen_range(0..=4) {
@@ -66,7 +65,7 @@ impl Area {
             };
             training_enemies.push(Enemy::new(
                 EnemyType::Soldier {
-                    faction,
+                    faction: self.option_name(),
                     soldier_type,
                 },
                 level,

@@ -1,4 +1,4 @@
-use crate::{enemy::Enemy, prompt::PromptOption};
+use crate::{prompt::PromptOption, unit::enemy::Enemy};
 
 #[derive(Debug, Clone)]
 pub enum StoryComponentAction {

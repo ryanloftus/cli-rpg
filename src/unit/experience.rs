@@ -1,4 +1,4 @@
-use crate::enemy::{Enemy, EnemyDifficulty};
+use crate::unit::enemy::{Enemy, EnemyDifficulty};
 use serde::{Deserialize, Serialize};
 
 const XP_PER_LEVEL: u16 = 100;

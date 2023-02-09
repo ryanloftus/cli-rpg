@@ -1,11 +1,10 @@
 mod area;
-mod enemy;
+mod attribute;
 mod game;
-mod player;
 mod prompt;
 mod save;
-mod skill;
 mod stats;
+mod unit;
 
 fn main() {
     game::play_game();

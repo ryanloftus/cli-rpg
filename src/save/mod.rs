@@ -1,5 +1,5 @@
 use crate::area;
-use crate::player::Player;
+use crate::unit::player::Player;
 use serde_json;
 use std::error::Error;
 use std::fs::File;

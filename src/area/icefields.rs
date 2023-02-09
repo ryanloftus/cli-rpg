@@ -1,7 +1,7 @@
 use super::StoryComponent;
 use crate::{
-    enemy::{soldier::SoldierType, Enemy, EnemyType},
     stats::StatMultiplier,
+    unit::enemy::{soldier::SoldierType, Enemy, EnemyType},
 };
 
 const OPENING_TEXT: &str = "An army of fiery monsters threaten to melt away The Icefields. You must stop this catastrophe and whoever is behind it.";

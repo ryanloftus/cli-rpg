@@ -1,7 +1,7 @@
 use super::StoryComponent;
 use crate::{
-    enemy::{soldier::SoldierType, Enemy, EnemyType},
     stats::StatMultiplier,
+    unit::enemy::{soldier::SoldierType, Enemy, EnemyType},
 };
 
 const OPENING_TEXT: &str = "You enter Mole City in The Caves and speak to The Moleman, leader of the Mole People. He tells you that his people and territory are being ruthlessly attacked by the Lizard People. Defend Mole City from the Lizard People.";

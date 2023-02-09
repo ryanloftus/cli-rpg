@@ -1,18 +1,18 @@
 pub mod class;
-mod experience;
 mod story_progress;
 
 use crate::{
     area::Area,
     prompt::PromptOption,
-    skill::Skill,
     stats::{Stats, BASE_HEALTH, BASE_MP},
+    unit::skill::Skill,
 };
 
 use self::class::Class;
-use experience::Experience;
 use serde::{Deserialize, Serialize};
 use story_progress::StoryProgress;
+
+use super::experience::Experience;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Player {

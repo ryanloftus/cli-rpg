@@ -1,6 +1,6 @@
 use crate::{
-    enemy::{soldier::SoldierType, Enemy, EnemyType},
     stats::StatMultiplier,
+    unit::enemy::{soldier::SoldierType, Enemy, EnemyType},
 };
 
 use super::StoryComponent;

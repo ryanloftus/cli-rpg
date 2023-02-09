@@ -1,6 +1,6 @@
 use super::story::StoryComponentAction;
-use crate::enemy::Enemy;
 use crate::prompt::{get_selection_from_numeric_range, get_selection_from_options};
+use crate::unit::enemy::Enemy;
 
 const TRAINING_BATTLE_PROMPT: &str = "You see a knight in the training grounds. What will you do?";
 const ENEMY_PROMPT: &str = "You see enemies ahead. What will you do?";

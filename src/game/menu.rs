@@ -1,6 +1,6 @@
-use crate::player::Player;
 use crate::prompt::{self, PromptOption};
 use crate::save;
+use crate::unit::player::Player;
 
 const NEW_SAVE_OPTION: &str = "New";
 const NEW_SAVE_SHORT_OPTION: &str = "N";

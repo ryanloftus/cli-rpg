@@ -5,12 +5,11 @@ mod story;
 use self::battle::{battle, BattleResult};
 use self::story::StoryComponentAction;
 use crate::area::{Area, StoryComponent, NUM_AREAS};
-use crate::player::class::choose_class_prompt;
-use crate::player::Player;
 use crate::prompt::{
     get_optional_selection_from_options, get_selection_from_options, PromptOption,
 };
 use crate::save::{self, save};
+use crate::unit::player::{class::choose_class_prompt, Player};
 
 #[derive(Debug, Clone)]
 enum PlayerAction {
@@ -127,7 +126,7 @@ fn do_story(player: &mut Player, area: Area) -> AreaResult {
                 let enemies = &story[start_idx..end_idx]
                     .iter()
                     .map(|sc| match sc {
-                        StoryComponent::Enemy(enemy) => *enemy,
+                        StoryComponent::Enemy(enemy) => enemy.clone(),
                         _ => panic!(),
                     })
                     .collect();
@@ -188,12 +187,12 @@ fn on_area_completed(player: &mut Player) -> PlayerAction {
 }
 
 fn get_action_in_area(story: &Vec<StoryComponent>, story_idx: usize) -> StoryComponentAction {
-    return match story[story_idx] {
+    return match &story[story_idx] {
         StoryComponent::Text(text) => StoryComponentAction::ShowText(text.clone()),
         StoryComponent::Enemy(_) => {
             let mut num_enemies: usize = 0;
             for j in story_idx..story.len() {
-                if let StoryComponent::Enemy(enemy) = story[j] {
+                if let StoryComponent::Enemy(_) = &story[j] {
                     num_enemies += 1;
                 } else {
                     break;
@@ -202,7 +201,7 @@ fn get_action_in_area(story: &Vec<StoryComponent>, story_idx: usize) -> StoryCom
             prompts::show_enemy_prompt(num_enemies)
         }
         StoryComponent::Boss(boss) => prompts::show_boss_prompt(&boss),
-        StoryComponent::TutorialBattle(enemy) => prompts::show_tutorial_battle_prompt(),
+        StoryComponent::TutorialBattle(_) => prompts::show_tutorial_battle_prompt(),
     };
 }
 

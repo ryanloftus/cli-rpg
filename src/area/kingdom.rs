@@ -1,4 +1,4 @@
-use crate::enemy::{soldier::SoldierType, Enemy, EnemyType};
+use crate::unit::enemy::{soldier::SoldierType, Enemy, EnemyType};
 
 use super::StoryComponent;
 

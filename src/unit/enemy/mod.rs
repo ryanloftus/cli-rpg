@@ -2,8 +2,8 @@ pub mod monster;
 pub mod soldier;
 
 use crate::{
-    skill::Skill,
     stats::{StatMultiplier, Stats},
+    unit::skill::Skill,
 };
 use rand::{self, Rng};
 

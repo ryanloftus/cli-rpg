@@ -1,5 +1,4 @@
-use crate::enemy::Enemy;
-use crate::player::Player;
+use crate::unit::{enemy::Enemy, player::Player};
 
 pub enum BattleResult {
     Victory,
