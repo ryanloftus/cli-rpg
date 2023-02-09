@@ -159,8 +159,7 @@ fn do_story(player: &mut Player, area: Area) -> AreaResult {
  */
 fn train(player: &mut Player, area: Area) -> AreaResult {
     loop {
-        // TODO: maybe have a training enemy prompt
-        match prompts::show_enemy_prompt(10) {
+        match prompts::show_training_battle_prompt() {
             StoryComponentAction::ShowPlayerInfo => player.print_summary(),
             StoryComponentAction::Battle(num_enemies) => {
                 let enemies = &area.generate_training_enemies(num_enemies, player.experience.level);
