@@ -1,8 +1,5 @@
 use super::StoryComponent;
-use crate::{
-    stats::StatMultiplier,
-    unit::enemy::{monster::MonsterType, Enemy, EnemyType},
-};
+use crate::unit::enemy::{boss, monster::MonsterType, Enemy, EnemyType};
 
 const OPENING_TEXT: &str = "You enter The Forest and notice that 100 citizens of The Forest have been turned into Demons. Defeat the Demons and whoever is responsible for this tragedy!";
 const CLOSING_TEXT: &str =
@@ -14,20 +11,7 @@ pub fn story() -> Vec<StoryComponent> {
     for i in 1..=100 {
         story.push(StoryComponent::Enemy(Enemy::new(enemy_type_at(i), 15, i)));
     }
-    story.push(StoryComponent::Boss(Enemy::new_boss(
-        String::from("Demon Lord"),
-        25,
-        Vec::new(),
-        vec![
-            StatMultiplier::MaxHealth(4.0),
-            StatMultiplier::MaxMp(2.0),
-            StatMultiplier::Magic(2.0),
-            StatMultiplier::MagicResist(2.0),
-            StatMultiplier::Speed(1.5),
-            StatMultiplier::Skill(2.0),
-            StatMultiplier::Luck(1.5),
-        ],
-    )));
+    story.push(StoryComponent::Boss(boss::demon_lord()));
     story.push(StoryComponent::Text(String::from(CLOSING_TEXT)));
     return story;
 }

@@ -10,6 +10,8 @@ const STRONG_ENEMY_XP_MULTIPLIER: u16 = 2;
 const BOSS_ENEMY_XP_MULTIPLIER: u16 = 20;
 const SPECIAL_ENEMY_XP_MULTIPLIER: u16 = 50;
 
+const XP_FOR_SKILL_USED: u16 = 10;
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Experience {
     pub level: u16,
@@ -44,5 +46,9 @@ impl Experience {
 
     pub fn area_cleared(&mut self) {
         self.add_experience(XP_FOR_AREA_CLEARED);
+    }
+
+    pub fn skill_used(&mut self) {
+        self.add_experience(XP_FOR_SKILL_USED);
     }
 }

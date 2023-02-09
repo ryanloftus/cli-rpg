@@ -1,7 +1,4 @@
-use crate::{
-    stats::StatMultiplier,
-    unit::enemy::{soldier::SoldierType, Enemy, EnemyType},
-};
+use crate::unit::enemy::{boss, soldier::SoldierType, Enemy, EnemyType};
 
 use super::StoryComponent;
 
@@ -32,23 +29,8 @@ fn get_warm_island_story() -> Vec<StoryComponent> {
             i,
         )));
     }
-    warm_island_story.push(StoryComponent::Boss(warm_island_boss()));
+    warm_island_story.push(StoryComponent::Boss(boss::warm_island_king()));
     return warm_island_story;
-}
-
-fn warm_island_boss() -> Enemy {
-    return Enemy::new_boss(
-        String::from("Warm Island King"),
-        35,
-        Vec::new(),
-        vec![
-            StatMultiplier::MaxHealth(4.0),
-            StatMultiplier::Strength(1.25),
-            StatMultiplier::Magic(2.0),
-            StatMultiplier::Defense(1.25),
-            StatMultiplier::MagicResist(1.5),
-        ],
-    );
 }
 
 fn get_cold_island_story() -> Vec<StoryComponent> {
@@ -64,23 +46,8 @@ fn get_cold_island_story() -> Vec<StoryComponent> {
             i + 30,
         )));
     }
-    cold_island_story.push(StoryComponent::Boss(cold_island_boss()));
+    cold_island_story.push(StoryComponent::Boss(boss::cold_island_king()));
     return cold_island_story;
-}
-
-fn cold_island_boss() -> Enemy {
-    return Enemy::new_boss(
-        String::from("Cold Island King"),
-        40,
-        Vec::new(),
-        vec![
-            StatMultiplier::MaxHealth(4.0),
-            StatMultiplier::Strength(1.25),
-            StatMultiplier::Magic(2.0),
-            StatMultiplier::Defense(1.25),
-            StatMultiplier::MagicResist(1.5),
-        ],
-    );
 }
 
 fn get_stormy_island_story() -> Vec<StoryComponent> {
@@ -96,23 +63,8 @@ fn get_stormy_island_story() -> Vec<StoryComponent> {
             i + 60,
         )));
     }
-    stormy_island_story.push(StoryComponent::Boss(stormy_island_boss()));
+    stormy_island_story.push(StoryComponent::Boss(boss::stormy_island_queen()));
     return stormy_island_story;
-}
-
-fn stormy_island_boss() -> Enemy {
-    return Enemy::new_boss(
-        String::from("Stormy Island Queen"),
-        45,
-        Vec::new(),
-        vec![
-            StatMultiplier::MaxHealth(4.0),
-            StatMultiplier::Strength(1.25),
-            StatMultiplier::Magic(2.0),
-            StatMultiplier::Defense(1.25),
-            StatMultiplier::MagicResist(1.5),
-        ],
-    );
 }
 
 fn get_soldier_type_at(i: u8) -> SoldierType {

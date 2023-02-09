@@ -4,8 +4,8 @@ mod story_progress;
 use crate::{
     area::Area,
     prompt::PromptOption,
-    stats::{Stats, BASE_HEALTH, BASE_MP},
     unit::skill::Skill,
+    unit::stats::{Stats, BASE_HEALTH, BASE_MP},
 };
 
 use self::class::Class;

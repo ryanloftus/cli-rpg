@@ -1,5 +1,5 @@
+use super::attribute::Attribute;
 use super::experience::Experience;
-use crate::attribute::Attribute;
 use crate::prompt::PromptOption;
 use serde::{Deserialize, Serialize};
 

@@ -1,8 +1,5 @@
 use super::StoryComponent;
-use crate::{
-    stats::StatMultiplier,
-    unit::enemy::{soldier::SoldierType, Enemy, EnemyType},
-};
+use crate::unit::enemy::{boss, soldier::SoldierType, Enemy, EnemyType};
 
 const OPENING_TEXT: &str = "You enter Mole City in The Caves and speak to The Moleman, leader of the Mole People. He tells you that his people and territory are being ruthlessly attacked by the Lizard People. Defend Mole City from the Lizard People.";
 const CLOSING_TEXT: &str =
@@ -14,17 +11,7 @@ pub fn story() -> Vec<StoryComponent> {
     for i in 1..=100 {
         story.push(StoryComponent::Enemy(Enemy::new(enemy_type_at(i), 45, i)));
     }
-    story.push(StoryComponent::Boss(Enemy::new_boss(
-        String::from("Lizard King"),
-        60,
-        Vec::new(),
-        vec![
-            StatMultiplier::MaxHealth(5.0),
-            StatMultiplier::Strength(2.0),
-            StatMultiplier::Defense(1.5),
-            StatMultiplier::Luck(1.5),
-        ],
-    )));
+    story.push(StoryComponent::Boss(boss::lizard_king()));
     story.push(StoryComponent::Text(String::from(CLOSING_TEXT)));
     return story;
 }

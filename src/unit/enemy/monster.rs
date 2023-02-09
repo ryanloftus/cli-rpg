@@ -1,5 +1,4 @@
-use crate::stats::{StatMultiplier, Stats};
-
+use super::super::stats::{StatMultiplier, Stats};
 use super::Enemy;
 use rand::{self, Rng};
 

@@ -1,11 +1,11 @@
+pub mod boss;
 pub mod monster;
 pub mod soldier;
 
-use crate::{
-    stats::{StatMultiplier, Stats},
-    unit::skill::Skill,
-};
+use crate::unit::skill::Skill;
 use rand::{self, Rng};
+
+use super::stats::{StatMultiplier, Stats};
 
 #[derive(Debug, Clone)]
 pub enum EnemyDifficulty {
