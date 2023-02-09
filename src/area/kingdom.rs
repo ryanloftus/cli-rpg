@@ -21,7 +21,7 @@ pub fn story() -> Vec<StoryComponent> {
     return vec![
         StoryComponent::Text(String::from(OPENING_TEXT)),
         StoryComponent::Text(String::from(TRAINING_BATTLE_TEXT)),
-        StoryComponent::Enemy(Enemy::new(
+        StoryComponent::TutorialBattle(Enemy::new(
             EnemyType::Soldier {
                 faction: String::from("Kingdom"),
                 soldier_type: SoldierType::Knight,

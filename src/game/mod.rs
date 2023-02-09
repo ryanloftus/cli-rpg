@@ -203,6 +203,7 @@ fn get_action_in_area(story: &Vec<StoryComponent>, story_idx: usize) -> StoryCom
             prompts::show_enemy_prompt(num_enemies)
         }
         StoryComponent::Boss(boss) => prompts::show_boss_prompt(&boss),
+        StoryComponent::TutorialBattle(enemy) => prompts::show_tutorial_battle_prompt(),
     };
 }
 

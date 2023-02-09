@@ -2,16 +2,24 @@ use super::story::StoryComponentAction;
 use crate::enemy::Enemy;
 use crate::prompt::{get_selection_from_numeric_range, get_selection_from_options};
 
+const TUTORIAL_BATTLE_PROMPT: &str = "You see a knight in the training grounds. What will you do?";
 const ENEMY_PROMPT: &str = "You see enemies ahead. What will you do?";
 const NUM_ENEMIES_PROMPT: &str = "How many enemies will you take on?";
 const BOSS_PROMPT: &str = "You see a boss ahead. What will you do?";
+
+pub fn show_tutorial_battle_prompt() -> StoryComponentAction {
+    return get_selection_from_options(
+        String::from(TUTORIAL_BATTLE_PROMPT),
+        &vec![StoryComponentAction::Battle(1)],
+    );
+}
 
 pub fn show_enemy_prompt(max_upcoming_enemies: usize) -> StoryComponentAction {
     let selected_option = get_selection_from_options(
         String::from(ENEMY_PROMPT),
         &vec![
             StoryComponentAction::Battle(max_upcoming_enemies),
-            StoryComponentAction::LeaveArea, // TODO: remove this option in tutorial
+            StoryComponentAction::LeaveArea,
             StoryComponentAction::ShowPlayerInfo,
         ],
     );

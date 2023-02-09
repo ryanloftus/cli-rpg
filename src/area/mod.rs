@@ -108,6 +108,7 @@ pub enum StoryComponent {
     Text(String),
     Enemy(Enemy),
     Boss(Enemy),
+    TutorialBattle(Enemy),
     // TODO: GainAttribute once player attributes are added (i.e. DemonSlayer after progressing forest)
 }
 
