@@ -19,6 +19,13 @@ pub struct Experience {
 }
 
 impl Experience {
+    pub fn new() -> Experience {
+        return Experience {
+            level: 1,
+            experience_towards_next_level: 0,
+        };
+    }
+
     fn add_experience(&mut self, experience: u16) {
         self.experience_towards_next_level = self.experience_towards_next_level + experience;
         while self.experience_towards_next_level >= XP_PER_LEVEL {

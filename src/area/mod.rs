@@ -108,7 +108,6 @@ pub enum StoryComponent {
     Enemy(Enemy),
     Boss(Enemy),
     TutorialBattle(Enemy),
-    // TODO: GainAttribute once player attributes are added (i.e. DemonSlayer after progressing forest)
 }
 
 pub const NUM_AREAS: usize = 7;

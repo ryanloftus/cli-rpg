@@ -2,10 +2,9 @@ pub mod class;
 mod story_progress;
 
 use crate::{
-    area::Area,
     prompt::PromptOption,
     unit::skill::Skill,
-    unit::stats::{Stats, BASE_HEALTH, BASE_MP},
+    unit::stats::{Stats, BASE_HEALTH},
 };
 
 use self::class::Class;
@@ -22,8 +21,6 @@ pub struct Player {
     pub skills: Vec<Skill>,
     pub stats: Stats,
     pub story_progress: StoryProgress,
-    pub current_area: Area, // TODO: actually use this in game/mod.rs
-                            // TODO: add Attributes to determine effectiveness of attacks against the Player
 }
 
 impl Player {
@@ -31,14 +28,10 @@ impl Player {
         Player {
             name,
             class: Class::FutureHero,
-            experience: Experience {
-                level: 1,
-                experience_towards_next_level: 0,
-            },
-            skills: [].to_vec(),
+            experience: Experience::new(),
+            skills: Vec::new(),
             stats: Stats {
                 max_health: BASE_HEALTH,
-                max_mp: BASE_MP,
                 strength: 1,
                 magic: 1,
                 defense: 1,
@@ -51,7 +44,6 @@ impl Player {
                 areas_completed: 0,
                 current_area_progress: 0,
             },
-            current_area: Area::Kingdom,
         }
     }
 
@@ -66,7 +58,6 @@ impl Player {
         print!(
             "Stats:
     Max Health: {}
-    Max MP: {}
     Strength: {}
     Magic: {}
     Defense: {}
@@ -76,7 +67,6 @@ impl Player {
     Luck: {}
 ",
             self.stats.max_health,
-            self.stats.max_mp,
             self.stats.strength,
             self.stats.magic,
             self.stats.defense,

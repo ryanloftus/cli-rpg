@@ -87,7 +87,6 @@ fn new_ogre(level: u16) -> Enemy {
                 level,
                 vec![
                     StatMultiplier::MaxHealth(2.0),
-                    StatMultiplier::MaxMp(2.0),
                     StatMultiplier::Strength(2.0),
                     StatMultiplier::Magic(2.0),
                     StatMultiplier::Defense(2.0),

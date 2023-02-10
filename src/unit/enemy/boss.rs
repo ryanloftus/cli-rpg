@@ -10,7 +10,6 @@ pub fn villainous_mage() -> Enemy {
         Vec::new(),
         vec![
             StatMultiplier::MaxHealth(4.0),
-            StatMultiplier::MaxMp(4.0),
             StatMultiplier::Magic(2.0),
             StatMultiplier::Defense(0.75),
             StatMultiplier::MagicResist(2.0),
@@ -26,7 +25,6 @@ pub fn demon_lord() -> Enemy {
         Vec::new(),
         vec![
             StatMultiplier::MaxHealth(4.0),
-            StatMultiplier::MaxMp(2.0),
             StatMultiplier::Magic(2.0),
             StatMultiplier::MagicResist(2.0),
             StatMultiplier::Speed(1.5),
