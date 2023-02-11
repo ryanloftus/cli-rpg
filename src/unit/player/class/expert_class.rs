@@ -1,6 +1,9 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{prompt::PromptOption, unit::stats::StatMultiplier};
+use crate::{
+    prompt::PromptOption,
+    unit::{skill::SkillType, stats::StatMultiplier},
+};
 
 use super::master_class::MasterClass;
 
@@ -42,10 +45,8 @@ impl ExpertClass {
         return match self {
             ExpertClass::StormSummoner => vec![MasterClass::MasterOfNaturalDisaster],
             ExpertClass::ExplosionExpert => vec![MasterClass::MasterOfExplosions],
-            ExpertClass::Angel => vec![MasterClass::ChosenAngel, MasterClass::FallenAngel],
-            ExpertClass::DarkAngel => {
-                vec![MasterClass::FallenAngel, MasterClass::MasterOfTheDarkArts]
-            }
+            ExpertClass::Angel => vec![MasterClass::FallenAngel],
+            ExpertClass::DarkAngel => vec![MasterClass::FallenAngel],
             ExpertClass::Swordmaster => vec![MasterClass::UltimateSwordmaster],
             ExpertClass::MagicDuelWielder => vec![MasterClass::BladeConjurer],
             ExpertClass::HolyCentaur => vec![MasterClass::BlessedCentaurianHero],
@@ -136,6 +137,56 @@ impl ExpertClass {
                 StatMultiplier::Defense(2.0),
                 StatMultiplier::Speed(2.0),
                 StatMultiplier::Skill(1.5),
+            ],
+        };
+    }
+
+    pub fn skills(&self) -> Vec<SkillType> {
+        return match self {
+            ExpertClass::StormSummoner => vec![SkillType::WeatherForecast],
+            ExpertClass::ExplosionExpert => vec![SkillType::ExplosionMagic],
+            ExpertClass::Angel => vec![SkillType::LightMagic, SkillType::DivineBlessing],
+            ExpertClass::DarkAngel => vec![SkillType::DarkMagic, SkillType::UnholyCurse],
+            ExpertClass::Swordmaster => vec![SkillType::SwordStrike, SkillType::DefensiveForm],
+            ExpertClass::MagicDuelWielder => vec![
+                SkillType::TempestStrike,
+                SkillType::FlamingStrike,
+                SkillType::FrozenStrike,
+                SkillType::DuelStrike,
+            ],
+            ExpertClass::HolyCentaur => vec![
+                SkillType::LightMagic,
+                SkillType::LanceOfLight,
+                SkillType::DivineBlessing,
+                SkillType::PiercingStrike,
+                SkillType::Shield,
+            ],
+            ExpertClass::DarkCentaur => vec![
+                SkillType::DarkMagic,
+                SkillType::DarkSpear,
+                SkillType::UnholyCurse,
+                SkillType::PiercingStrike,
+                SkillType::Shield,
+            ],
+            ExpertClass::HolyPegasusKnight => vec![
+                SkillType::LightMagic,
+                SkillType::LanceOfLight,
+                SkillType::DivineBlessing,
+                SkillType::PiercingStrike,
+                SkillType::Shield,
+            ],
+            ExpertClass::DarkPegasusKnight => vec![
+                SkillType::DarkMagic,
+                SkillType::DarkSpear,
+                SkillType::UnholyCurse,
+                SkillType::PiercingStrike,
+                SkillType::Shield,
+                SkillType::DeathFromAbove,
+            ],
+            ExpertClass::WyvernKnight => vec![
+                SkillType::Shield,
+                SkillType::PiercingStrike,
+                SkillType::DeathFromAbove,
             ],
         };
     }

@@ -1,13 +1,15 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{prompt::PromptOption, unit::stats::StatMultiplier};
+use crate::{
+    prompt::PromptOption,
+    unit::{skill::SkillType, stats::StatMultiplier},
+};
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum OverpoweredClass {
     LegendaryHero,
     GodOfWeather,
     GodOfExplosions,
-    BenevolentDeity,
     GrimReaper,
     GodOfSwords,
     CentaurianKing,
@@ -21,7 +23,6 @@ impl OverpoweredClass {
             OverpoweredClass::LegendaryHero => "A being of unrivaled power, this title is bestowed only upon those who have conquered the greatest evils this world has to offer",
             OverpoweredClass::GodOfWeather => "A being with godlike power over the elements and weather itself",
             OverpoweredClass::GodOfExplosions => "A being with godlike explosive powers",
-            OverpoweredClass::BenevolentDeity => "A being with godlike power over light magic",
             OverpoweredClass::GrimReaper => "A being whose purpose in this world is too collect the souls of the villains plaguing this world",
             OverpoweredClass::GodOfSwords => "A being who has surpassed perfection in the art of swordsmanship",
             OverpoweredClass::CentaurianKing => "A being revered as the \"King of Beasts\" for their strength and magic ability",
@@ -51,12 +52,6 @@ impl OverpoweredClass {
             OverpoweredClass::GodOfExplosions => {
                 vec![StatMultiplier::Magic(12.0), StatMultiplier::Skill(6.0)]
             }
-            OverpoweredClass::BenevolentDeity => vec![
-                StatMultiplier::MaxHealth(5.0),
-                StatMultiplier::Magic(10.0),
-                StatMultiplier::Skill(5.0),
-                StatMultiplier::MagicResist(10.0),
-            ],
             OverpoweredClass::GrimReaper => vec![
                 StatMultiplier::MaxHealth(5.0),
                 StatMultiplier::Magic(10.0),
@@ -101,6 +96,54 @@ impl OverpoweredClass {
             ],
         };
     }
+
+    pub fn skills(&self) -> Vec<SkillType> {
+        return match self {
+            OverpoweredClass::LegendaryHero => vec![],
+            OverpoweredClass::GodOfWeather => vec![
+                SkillType::WeatherForecast,
+                SkillType::FireMagic,
+                SkillType::WaterMagic,
+                SkillType::WindMagic,
+                SkillType::IceMagic,
+                SkillType::LightningMagic,
+                SkillType::ExplosionMagic,
+            ],
+            OverpoweredClass::GodOfExplosions => vec![SkillType::ExplosionMagic],
+            OverpoweredClass::GrimReaper => vec![
+                SkillType::DarkMagic,
+                SkillType::UnholyCurse,
+                SkillType::DarkSpear,
+            ],
+            OverpoweredClass::GodOfSwords => vec![SkillType::SwordSummoning],
+            OverpoweredClass::CentaurianKing => vec![
+                SkillType::PiercingStrike,
+                SkillType::Shield,
+                SkillType::LightMagic,
+                SkillType::LanceOfLight,
+                SkillType::DivineBlessing,
+                SkillType::DarkMagic,
+                SkillType::DarkSpear,
+                SkillType::UnholyCurse,
+            ],
+            OverpoweredClass::GodOfTheSky => vec![
+                SkillType::DeathFromAbove,
+                SkillType::PiercingStrike,
+                SkillType::Shield,
+                SkillType::LightMagic,
+                SkillType::LanceOfLight,
+                SkillType::DivineBlessing,
+                SkillType::DarkMagic,
+                SkillType::DarkSpear,
+                SkillType::UnholyCurse,
+            ],
+            OverpoweredClass::DraconianHero => vec![
+                SkillType::DeathFromAbove,
+                SkillType::PiercingStrike,
+                SkillType::Shield,
+            ],
+        };
+    }
 }
 
 impl PromptOption for OverpoweredClass {
@@ -109,7 +152,6 @@ impl PromptOption for OverpoweredClass {
             OverpoweredClass::LegendaryHero => "Demon Lord",
             OverpoweredClass::GodOfWeather => "God of Weather",
             OverpoweredClass::GodOfExplosions => "God of Explosions",
-            OverpoweredClass::BenevolentDeity => "Benevolent Deity",
             OverpoweredClass::GrimReaper => "Grim Reaper",
             OverpoweredClass::GodOfSwords => "God of Swords",
             OverpoweredClass::CentaurianKing => "Centaurian King",
@@ -123,7 +165,6 @@ impl PromptOption for OverpoweredClass {
             OverpoweredClass::LegendaryHero => "DL",
             OverpoweredClass::GodOfWeather => "GW",
             OverpoweredClass::GodOfExplosions => "GE",
-            OverpoweredClass::BenevolentDeity => "BD",
             OverpoweredClass::GrimReaper => "GR",
             OverpoweredClass::GodOfSwords => "GS",
             OverpoweredClass::CentaurianKing => "CK",

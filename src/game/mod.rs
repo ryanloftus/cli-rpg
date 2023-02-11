@@ -182,6 +182,7 @@ fn on_area_completed(player: &mut Player) -> PlayerAction {
         return PlayerAction::QuitGame;
     } else {
         choose_class_prompt(&player.class);
+        // TODO: add new skills/upgrade existing skills when new class acquired
         return get_action_after_area_completed();
     }
 }

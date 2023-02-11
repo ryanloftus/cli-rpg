@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     prompt::{self, PromptOption},
-    unit::{skill::Skill, stats::StatMultiplier},
+    unit::{skill::SkillType, stats::StatMultiplier},
 };
 
 use self::{
@@ -92,15 +92,15 @@ impl Class {
         };
     }
 
-    pub fn skills(&self) -> Vec<Skill> {
+    pub fn skills(&self) -> Vec<SkillType> {
         return match self {
             Class::FutureHero => Vec::new(),
-            Class::Starter(starter_class) => todo!(),
-            Class::Intermediate(intermediate_class) => todo!(),
-            Class::Advanced(advanced_class) => todo!(),
-            Class::Expert(expert_class) => todo!(),
-            Class::Master(master_class) => todo!(),
-            Class::Overpowered(overpowered_class) => todo!(),
+            Class::Starter(starter_class) => starter_class.skills(),
+            Class::Intermediate(intermediate_class) => intermediate_class.skills(),
+            Class::Advanced(advanced_class) => advanced_class.skills(),
+            Class::Expert(expert_class) => expert_class.skills(),
+            Class::Master(master_class) => master_class.skills(),
+            Class::Overpowered(overpowered_class) => overpowered_class.skills(),
         };
     }
 }

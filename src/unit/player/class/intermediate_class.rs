@@ -1,6 +1,9 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{prompt::PromptOption, unit::stats::StatMultiplier};
+use crate::{
+    prompt::PromptOption,
+    unit::{skill::SkillType, stats::StatMultiplier},
+};
 
 use super::advanced_class::AdvancedClass;
 
@@ -103,6 +106,25 @@ impl IntermediateClass {
                 StatMultiplier::Magic(0.75),
                 StatMultiplier::Speed(1.5),
             ],
+        };
+    }
+
+    pub fn skills(&self) -> Vec<SkillType> {
+        return match self {
+            IntermediateClass::ElementalMage => vec![
+                SkillType::FireMagic,
+                SkillType::WaterMagic,
+                SkillType::WindMagic,
+                SkillType::LightningMagic,
+                SkillType::IceMagic,
+            ],
+            IntermediateClass::HolyMage => vec![SkillType::LightMagic],
+            IntermediateClass::DarkMage => vec![SkillType::DarkMagic],
+            IntermediateClass::Duelist => vec![SkillType::SwordStrike, SkillType::DuelStrike],
+            IntermediateClass::MagicSwordsman => vec![SkillType::SwordStrike, SkillType::FireMagic],
+            IntermediateClass::HonourableKnight => vec![SkillType::Shield],
+            IntermediateClass::SavageKnight => vec![SkillType::PiercingStrike],
+            IntermediateClass::MountedKnight => vec![SkillType::Shield],
         };
     }
 }

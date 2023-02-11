@@ -1,6 +1,9 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{prompt::PromptOption, unit::stats::StatMultiplier};
+use crate::{
+    prompt::PromptOption,
+    unit::{skill::SkillType, stats::StatMultiplier},
+};
 
 use super::overpowered_class::OverpoweredClass;
 
@@ -8,9 +11,7 @@ use super::overpowered_class::OverpoweredClass;
 pub enum MasterClass {
     MasterOfNaturalDisaster,
     MasterOfExplosions,
-    ChosenAngel,
     FallenAngel,
-    MasterOfTheDarkArts,
     UltimateSwordmaster,
     BladeConjurer,
     BlessedCentaurianHero,
@@ -28,11 +29,7 @@ impl MasterClass {
             MasterClass::MasterOfExplosions => {
                 "Mage who has mastered explosion magic nearly to perfection"
             }
-            MasterClass::ChosenAngel => {
-                "Mage with powerful light magic bestowed upon them by the heavens"
-            }
             MasterClass::FallenAngel => "Mage with powerful dark and light magic",
-            MasterClass::MasterOfTheDarkArts => "Mage with masterful control of dark magic",
             MasterClass::UltimateSwordmaster => "Swordsman who has perfected their technique",
             MasterClass::BladeConjurer => {
                 "Swordsman who uses magic to fight with an infinite number of blades"
@@ -54,12 +51,7 @@ impl MasterClass {
         let mut progressions = match self {
             MasterClass::MasterOfNaturalDisaster => vec![OverpoweredClass::GodOfWeather],
             MasterClass::MasterOfExplosions => vec![OverpoweredClass::GodOfExplosions],
-            MasterClass::ChosenAngel => vec![OverpoweredClass::BenevolentDeity],
-            MasterClass::FallenAngel => vec![
-                OverpoweredClass::BenevolentDeity,
-                OverpoweredClass::GrimReaper,
-            ],
-            MasterClass::MasterOfTheDarkArts => vec![OverpoweredClass::GrimReaper],
+            MasterClass::FallenAngel => vec![OverpoweredClass::GrimReaper],
             MasterClass::UltimateSwordmaster => vec![OverpoweredClass::GodOfSwords],
             MasterClass::BladeConjurer => vec![OverpoweredClass::GodOfSwords],
             MasterClass::BlessedCentaurianHero => vec![OverpoweredClass::CentaurianKing],
@@ -85,20 +77,7 @@ impl MasterClass {
                 StatMultiplier::Defense(0.5),
                 StatMultiplier::Strength(0.5),
             ],
-            MasterClass::ChosenAngel => vec![
-                StatMultiplier::MaxHealth(2.5),
-                StatMultiplier::Strength(0.5),
-                StatMultiplier::Magic(2.5),
-                StatMultiplier::Skill(2.0),
-                StatMultiplier::MagicResist(2.5),
-            ],
             MasterClass::FallenAngel => vec![
-                StatMultiplier::MaxHealth(2.0),
-                StatMultiplier::Magic(2.5),
-                StatMultiplier::Skill(2.5),
-                StatMultiplier::MagicResist(2.5),
-            ],
-            MasterClass::MasterOfTheDarkArts => vec![
                 StatMultiplier::MaxHealth(2.0),
                 StatMultiplier::Magic(2.5),
                 StatMultiplier::Skill(2.5),
@@ -154,6 +133,55 @@ impl MasterClass {
             ],
         };
     }
+
+    pub fn skills(&self) -> Vec<SkillType> {
+        return match self {
+            MasterClass::MasterOfNaturalDisaster => {
+                vec![SkillType::WeatherForecast, SkillType::ExplosionMagic]
+            }
+            MasterClass::MasterOfExplosions => vec![SkillType::ExplosionMagic],
+            MasterClass::FallenAngel => vec![
+                SkillType::LightMagic,
+                SkillType::DarkMagic,
+                SkillType::DivineBlessing,
+                SkillType::UnholyCurse,
+            ],
+            MasterClass::UltimateSwordmaster => {
+                vec![SkillType::SwordStrike, SkillType::DefensiveForm]
+            }
+            MasterClass::BladeConjurer => vec![SkillType::SwordSummoning],
+            MasterClass::BlessedCentaurianHero => vec![
+                SkillType::LightMagic,
+                SkillType::LanceOfLight,
+                SkillType::DivineBlessing,
+                SkillType::PiercingStrike,
+                SkillType::Shield,
+            ],
+            MasterClass::CursedCentaurianSpecter => vec![
+                SkillType::DarkMagic,
+                SkillType::DarkSpear,
+                SkillType::UnholyCurse,
+                SkillType::PiercingStrike,
+                SkillType::Shield,
+            ],
+            MasterClass::EnlightenedPegasusKnight => vec![
+                SkillType::LightMagic,
+                SkillType::DivineBlessing,
+                SkillType::DarkMagic,
+                SkillType::UnholyCurse,
+                SkillType::PiercingStrike,
+                SkillType::Shield,
+                SkillType::DeathFromAbove,
+                SkillType::LanceOfLight,
+                SkillType::DarkSpear,
+            ],
+            MasterClass::DraconianKnight => vec![
+                SkillType::PiercingStrike,
+                SkillType::Shield,
+                SkillType::DeathFromAbove,
+            ],
+        };
+    }
 }
 
 impl PromptOption for MasterClass {
@@ -161,9 +189,7 @@ impl PromptOption for MasterClass {
         String::from(match self {
             MasterClass::MasterOfNaturalDisaster => "Master of Natural Disaster",
             MasterClass::MasterOfExplosions => "Master of Explosions",
-            MasterClass::ChosenAngel => "Chosen Angel",
             MasterClass::FallenAngel => "Fallen Angel",
-            MasterClass::MasterOfTheDarkArts => "Master of the Dark Arts",
             MasterClass::UltimateSwordmaster => "Ultimate Swordmaster",
             MasterClass::BladeConjurer => "Blade Conjurer",
             MasterClass::BlessedCentaurianHero => "Blessed Centaurian Hero",
@@ -177,9 +203,7 @@ impl PromptOption for MasterClass {
         Some(String::from(match self {
             MasterClass::MasterOfNaturalDisaster => "ME",
             MasterClass::MasterOfExplosions => "EX",
-            MasterClass::ChosenAngel => "CA",
             MasterClass::FallenAngel => "FA",
-            MasterClass::MasterOfTheDarkArts => "DA",
             MasterClass::UltimateSwordmaster => "US",
             MasterClass::BladeConjurer => "BL",
             MasterClass::BlessedCentaurianHero => "BC",

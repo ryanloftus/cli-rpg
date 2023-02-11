@@ -1,6 +1,9 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{prompt::PromptOption, unit::stats::StatMultiplier};
+use crate::{
+    prompt::PromptOption,
+    unit::{skill::SkillType, stats::StatMultiplier},
+};
 
 use super::intermediate_class::IntermediateClass;
 
@@ -63,6 +66,14 @@ impl StarterClass {
                 StatMultiplier::Skill(1.25),
                 StatMultiplier::MagicResist(1.5),
             ],
+        };
+    }
+
+    pub fn skills(&self) -> Vec<SkillType> {
+        return match self {
+            StarterClass::Swordsman => vec![SkillType::SwordStrike],
+            StarterClass::Knight => vec![SkillType::Shield],
+            StarterClass::Mage => vec![SkillType::FireMagic],
         };
     }
 }

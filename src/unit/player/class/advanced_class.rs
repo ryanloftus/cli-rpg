@@ -1,6 +1,9 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{prompt::PromptOption, unit::stats::StatMultiplier};
+use crate::{
+    prompt::PromptOption,
+    unit::{skill::SkillType, stats::StatMultiplier},
+};
 
 use super::expert_class::ExpertClass;
 
@@ -132,6 +135,44 @@ impl AdvancedClass {
                 StatMultiplier::Defense(1.5),
                 StatMultiplier::Speed(2.0),
             ],
+        };
+    }
+
+    pub fn skills(&self) -> Vec<SkillType> {
+        return match self {
+            AdvancedClass::PowerfulElementalMage => vec![
+                SkillType::FireMagic,
+                SkillType::WaterMagic,
+                SkillType::WindMagic,
+                SkillType::LightningMagic,
+                SkillType::IceMagic,
+            ],
+            AdvancedClass::ExplosiveMage => vec![SkillType::ExplosionMagic],
+            AdvancedClass::StudentOfTheLight => {
+                vec![SkillType::LightMagic, SkillType::DivineBlessing]
+            }
+            AdvancedClass::AcolyteOfDarkness => vec![SkillType::DarkMagic, SkillType::UnholyCurse],
+            AdvancedClass::ImprovingSwordsman => {
+                vec![SkillType::SwordStrike, SkillType::DefensiveForm]
+            }
+            AdvancedClass::DuelWielder => vec![SkillType::DuelStrike, SkillType::DefensiveForm],
+            AdvancedClass::EnchantedBladeWielder => vec![
+                SkillType::TempestStrike,
+                SkillType::FlamingStrike,
+                SkillType::FrozenStrike,
+            ],
+            AdvancedClass::HolyKnight => vec![
+                SkillType::LightMagic,
+                SkillType::LanceOfLight,
+                SkillType::Shield,
+            ],
+            AdvancedClass::DarkKnight => vec![
+                SkillType::DarkMagic,
+                SkillType::DarkSpear,
+                SkillType::PiercingStrike,
+            ],
+            AdvancedClass::Centaur => vec![SkillType::PiercingStrike, SkillType::Shield],
+            AdvancedClass::PegasusKnight => vec![SkillType::PiercingStrike, SkillType::Shield],
         };
     }
 }

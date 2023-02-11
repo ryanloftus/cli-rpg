@@ -85,6 +85,7 @@ impl SkillType {
                 Attribute::Physical,
                 Attribute::Magic,
                 Attribute::AreaOfEffect,
+                Attribute::MultiHit(5),
             ],
             SkillType::TempestStrike => {
                 vec![Attribute::Physical, Attribute::Magic, Attribute::Wind]
