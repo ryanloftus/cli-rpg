@@ -8,7 +8,6 @@ use super::overpowered_class::OverpoweredClass;
 pub enum MasterClass {
     MasterOfNaturalDisaster,
     MasterOfExplosions,
-    PsychoSorcerer,
     ChosenAngel,
     FallenAngel,
     MasterOfTheDarkArts,
@@ -28,9 +27,6 @@ impl MasterClass {
             }
             MasterClass::MasterOfExplosions => {
                 "Mage who has mastered explosion magic nearly to perfection"
-            }
-            MasterClass::PsychoSorcerer => {
-                "Mage with a tendency to perform uncontrolably powerful spells"
             }
             MasterClass::ChosenAngel => {
                 "Mage with powerful light magic bestowed upon them by the heavens"
@@ -58,7 +54,6 @@ impl MasterClass {
         let mut progressions = match self {
             MasterClass::MasterOfNaturalDisaster => vec![OverpoweredClass::GodOfWeather],
             MasterClass::MasterOfExplosions => vec![OverpoweredClass::GodOfExplosions],
-            MasterClass::PsychoSorcerer => vec![OverpoweredClass::ArchitectOfChaos],
             MasterClass::ChosenAngel => vec![OverpoweredClass::BenevolentDeity],
             MasterClass::FallenAngel => vec![
                 OverpoweredClass::BenevolentDeity,
@@ -82,7 +77,6 @@ impl PromptOption for MasterClass {
         String::from(match self {
             MasterClass::MasterOfNaturalDisaster => "Master of Natural Disaster",
             MasterClass::MasterOfExplosions => "Master of Explosions",
-            MasterClass::PsychoSorcerer => "Psycho Sorcerer",
             MasterClass::ChosenAngel => "Chosen Angel",
             MasterClass::FallenAngel => "Fallen Angel",
             MasterClass::MasterOfTheDarkArts => "Master of the Dark Arts",
@@ -99,7 +93,6 @@ impl PromptOption for MasterClass {
         Some(String::from(match self {
             MasterClass::MasterOfNaturalDisaster => "ME",
             MasterClass::MasterOfExplosions => "EX",
-            MasterClass::PsychoSorcerer => "PS",
             MasterClass::ChosenAngel => "CA",
             MasterClass::FallenAngel => "FA",
             MasterClass::MasterOfTheDarkArts => "DA",

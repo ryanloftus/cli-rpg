@@ -8,7 +8,6 @@ use super::master_class::MasterClass;
 pub enum ExpertClass {
     StormSummoner,
     ExplosionExpert,
-    InsaneIncanter,
     Angel,
     DarkAngel,
     Swordmaster,
@@ -25,7 +24,6 @@ impl ExpertClass {
         return String::from(match self {
             ExpertClass::StormSummoner => "Mage with incredible elemental spells",
             ExpertClass::ExplosionExpert => "Mage with incredible explosion magic",
-            ExpertClass::InsaneIncanter => "Mage that mumbles bizarre incantations",
             ExpertClass::Angel => "Powerful light magic user",
             ExpertClass::DarkAngel => "Powerful dark magic user",
             ExpertClass::Swordmaster => "Sword user who has truly mastered the weapon",
@@ -44,7 +42,6 @@ impl ExpertClass {
         return match self {
             ExpertClass::StormSummoner => vec![MasterClass::MasterOfNaturalDisaster],
             ExpertClass::ExplosionExpert => vec![MasterClass::MasterOfExplosions],
-            ExpertClass::InsaneIncanter => vec![MasterClass::PsychoSorcerer],
             ExpertClass::Angel => vec![MasterClass::ChosenAngel, MasterClass::FallenAngel],
             ExpertClass::DarkAngel => {
                 vec![MasterClass::FallenAngel, MasterClass::MasterOfTheDarkArts]
@@ -65,7 +62,6 @@ impl PromptOption for ExpertClass {
         String::from(match self {
             ExpertClass::StormSummoner => "Storm Summoner",
             ExpertClass::ExplosionExpert => "Explosion Expert",
-            ExpertClass::InsaneIncanter => "Insane Incanter",
             ExpertClass::Angel => "Angel",
             ExpertClass::DarkAngel => "Dark Angel",
             ExpertClass::Swordmaster => "Swordmaster",
@@ -82,7 +78,6 @@ impl PromptOption for ExpertClass {
         Some(String::from(match self {
             ExpertClass::StormSummoner => "SS",
             ExpertClass::ExplosionExpert => "EE",
-            ExpertClass::InsaneIncanter => "II",
             ExpertClass::Angel => "A",
             ExpertClass::DarkAngel => "DA",
             ExpertClass::Swordmaster => "S",

@@ -8,7 +8,6 @@ use super::expert_class::ExpertClass;
 pub enum AdvancedClass {
     PowerfulElementalMage,
     ExplosiveMage,
-    ErraticEnchanter,
     StudentOfTheLight,
     AcolyteOfDarkness,
     ImprovingSwordsman,
@@ -25,9 +24,6 @@ impl AdvancedClass {
         return String::from(match self {
             AdvancedClass::PowerfulElementalMage => "Mage that casts a variety of powerful spells",
             AdvancedClass::ExplosiveMage => "Mage specializing in explosive spells",
-            AdvancedClass::ErraticEnchanter => {
-                "Mage that casts spells with unpredictable and confusing effects"
-            }
             AdvancedClass::StudentOfTheLight => "Mage training to wield powerful light magic",
             AdvancedClass::AcolyteOfDarkness => "Mage training to wield powerful dark magic",
             AdvancedClass::ImprovingSwordsman => "Swordsman training to hone his fighting skills",
@@ -46,7 +42,6 @@ impl AdvancedClass {
         return match self {
             AdvancedClass::PowerfulElementalMage => vec![ExpertClass::StormSummoner],
             AdvancedClass::ExplosiveMage => vec![ExpertClass::ExplosionExpert],
-            AdvancedClass::ErraticEnchanter => vec![ExpertClass::InsaneIncanter],
             AdvancedClass::StudentOfTheLight => vec![ExpertClass::Angel],
             AdvancedClass::AcolyteOfDarkness => vec![ExpertClass::DarkAngel],
             AdvancedClass::ImprovingSwordsman => vec![ExpertClass::Swordmaster],
@@ -72,7 +67,6 @@ impl PromptOption for AdvancedClass {
         String::from(match self {
             AdvancedClass::PowerfulElementalMage => "Powerful Elemental Mage",
             AdvancedClass::ExplosiveMage => "Explosive Mage",
-            AdvancedClass::ErraticEnchanter => "Erratic Enchanter",
             AdvancedClass::StudentOfTheLight => "Student of the Light",
             AdvancedClass::AcolyteOfDarkness => "Acolyte of Darkness",
             AdvancedClass::ImprovingSwordsman => "Improving Swordsman",
@@ -89,7 +83,6 @@ impl PromptOption for AdvancedClass {
         Some(String::from(match self {
             AdvancedClass::PowerfulElementalMage => "PM",
             AdvancedClass::ExplosiveMage => "EM",
-            AdvancedClass::ErraticEnchanter => "EE",
             AdvancedClass::StudentOfTheLight => "SL",
             AdvancedClass::AcolyteOfDarkness => "AD",
             AdvancedClass::ImprovingSwordsman => "IS",

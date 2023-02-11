@@ -37,7 +37,6 @@ impl StarterClass {
                 IntermediateClass::ElementalMage,
                 IntermediateClass::HolyMage,
                 IntermediateClass::DarkMage,
-                IntermediateClass::WackyWizard,
             ],
         };
     }

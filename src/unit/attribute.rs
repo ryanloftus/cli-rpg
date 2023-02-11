@@ -7,14 +7,13 @@ use crate::prompt::PromptOption;
  */
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum Attribute {
-    Ranged,
-    Melee,
     Magic,
     Physical,
     Fire,
     Ice,
     Electric,
     Water,
+    Wind,
     Dark,
     Light,
     Healing,
@@ -23,20 +22,19 @@ pub enum Attribute {
     DamageOverTime,
     AreaOfEffect,
     ArmorPiercing,
-    MagicResistancePiercing,
+    MultiHit(u16),
 }
 
 impl PromptOption for Attribute {
     fn option_name(&self) -> String {
         return String::from(match self {
-            Attribute::Ranged => "Ranged",
-            Attribute::Melee => "Melee",
             Attribute::Magic => "Magic",
             Attribute::Physical => "Physical",
             Attribute::Fire => "Fire",
             Attribute::Ice => "Ice",
             Attribute::Electric => "Electric",
             Attribute::Water => "Water",
+            Attribute::Wind => "Wind",
             Attribute::Dark => "Dark",
             Attribute::Light => "Light",
             Attribute::Healing => "Healing",
@@ -45,7 +43,7 @@ impl PromptOption for Attribute {
             Attribute::DamageOverTime => "Damage Over Time",
             Attribute::AreaOfEffect => "Area of Effect",
             Attribute::ArmorPiercing => "Armor Piercing",
-            Attribute::MagicResistancePiercing => "Magic Resist Piercing",
+            Attribute::MultiHit(_) => "Multi-Hit",
         });
     }
 

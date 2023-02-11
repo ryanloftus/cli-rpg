@@ -11,7 +11,6 @@ pub enum MonsterType {
     DemonicBeast,
 }
 
-// TODO: give strong monsters skills
 pub fn new(monster_type: MonsterType, name_prefix: Option<String>, level: u16) -> Enemy {
     let mut monster = match monster_type {
         MonsterType::Slime => new_slime(level),
