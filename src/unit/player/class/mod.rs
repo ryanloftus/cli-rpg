@@ -7,7 +7,10 @@ pub mod starter_class;
 
 use serde::{Deserialize, Serialize};
 
-use crate::prompt::{self, PromptOption};
+use crate::{
+    prompt::{self, PromptOption},
+    unit::{skill::Skill, stats::StatMultiplier},
+};
 
 use self::{
     advanced_class::AdvancedClass, expert_class::ExpertClass,
@@ -17,7 +20,6 @@ use self::{
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum Class {
-    // TODO: create functions for getting stat boosts, skills, and attributes that come with the class
     FutureHero,
     Starter(StarterClass),
     Intermediate(IntermediateClass),
@@ -42,7 +44,7 @@ impl Class {
         };
     }
 
-    pub fn get_progressions(&self) -> Vec<Self> {
+    pub fn progressions(&self) -> Vec<Self> {
         match self {
             Class::FutureHero => vec![
                 Class::Starter(StarterClass::Swordsman),
@@ -77,6 +79,30 @@ impl Class {
             Class::Overpowered(_) => panic!("Cannot progress past OverpoweredClass"),
         }
     }
+
+    pub fn stat_gain_multipliers(&self) -> Vec<StatMultiplier> {
+        return match self {
+            Class::FutureHero => Vec::new(),
+            Class::Starter(starter_class) => starter_class.stat_gain_multipliers(),
+            Class::Intermediate(intermediate_class) => intermediate_class.stat_gain_multipliers(),
+            Class::Advanced(advanced_class) => advanced_class.stat_gain_multipliers(),
+            Class::Expert(expert_class) => expert_class.stat_gain_multipliers(),
+            Class::Master(master_class) => master_class.stat_gain_multipliers(),
+            Class::Overpowered(overpowered_class) => overpowered_class.stat_gain_multipliers(),
+        };
+    }
+
+    pub fn skills(&self) -> Vec<Skill> {
+        return match self {
+            Class::FutureHero => Vec::new(),
+            Class::Starter(starter_class) => todo!(),
+            Class::Intermediate(intermediate_class) => todo!(),
+            Class::Advanced(advanced_class) => todo!(),
+            Class::Expert(expert_class) => todo!(),
+            Class::Master(master_class) => todo!(),
+            Class::Overpowered(overpowered_class) => todo!(),
+        };
+    }
 }
 
 impl PromptOption for Class {
@@ -106,7 +132,7 @@ impl PromptOption for Class {
 }
 
 pub fn choose_class_prompt(current_class: &Class) -> Class {
-    let class_options = current_class.get_progressions();
+    let class_options = current_class.progressions();
     if class_options.len() == 1 {
         println!(
             "You were advanced to the {} class!",

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::prompt::PromptOption;
+use crate::{prompt::PromptOption, unit::stats::StatMultiplier};
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum OverpoweredClass {
@@ -28,6 +28,78 @@ impl OverpoweredClass {
             OverpoweredClass::GodOfTheSky => "A being with godlike authority over the sky and its inhabitants",
             OverpoweredClass::DraconianHero => "A being with unrivaled strength and the ability to call upon powerful draconian allies",
         })
+    }
+
+    pub fn stat_gain_multipliers(&self) -> Vec<StatMultiplier> {
+        return match self {
+            OverpoweredClass::LegendaryHero => vec![
+                StatMultiplier::MaxHealth(5.0),
+                StatMultiplier::Strength(5.0),
+                StatMultiplier::Magic(5.0),
+                StatMultiplier::Defense(5.0),
+                StatMultiplier::MagicResist(5.0),
+                StatMultiplier::Speed(5.0),
+                StatMultiplier::Skill(5.0),
+                StatMultiplier::Luck(5.0),
+            ],
+            OverpoweredClass::GodOfWeather => vec![
+                StatMultiplier::MaxHealth(5.0),
+                StatMultiplier::Magic(10.0),
+                StatMultiplier::Skill(6.0),
+                StatMultiplier::MagicResist(10.0),
+            ],
+            OverpoweredClass::GodOfExplosions => {
+                vec![StatMultiplier::Magic(12.0), StatMultiplier::Skill(6.0)]
+            }
+            OverpoweredClass::BenevolentDeity => vec![
+                StatMultiplier::MaxHealth(5.0),
+                StatMultiplier::Magic(10.0),
+                StatMultiplier::Skill(5.0),
+                StatMultiplier::MagicResist(10.0),
+            ],
+            OverpoweredClass::GrimReaper => vec![
+                StatMultiplier::MaxHealth(5.0),
+                StatMultiplier::Magic(10.0),
+                StatMultiplier::Skill(8.0),
+                StatMultiplier::MagicResist(10.0),
+            ],
+            OverpoweredClass::GodOfSwords => vec![
+                StatMultiplier::MaxHealth(5.0),
+                StatMultiplier::Strength(8.0),
+                StatMultiplier::Magic(8.0),
+                StatMultiplier::Defense(4.0),
+                StatMultiplier::MagicResist(4.0),
+                StatMultiplier::Speed(8.0),
+                StatMultiplier::Skill(8.0),
+            ],
+            OverpoweredClass::CentaurianKing => vec![
+                StatMultiplier::MaxHealth(8.0),
+                StatMultiplier::Strength(8.0),
+                StatMultiplier::Magic(8.0),
+                StatMultiplier::Defense(8.0),
+                StatMultiplier::MagicResist(8.0),
+                StatMultiplier::Speed(8.0),
+                StatMultiplier::Skill(2.0),
+            ],
+            OverpoweredClass::GodOfTheSky => vec![
+                StatMultiplier::MaxHealth(8.0),
+                StatMultiplier::Strength(8.0),
+                StatMultiplier::Magic(8.0),
+                StatMultiplier::Defense(8.0),
+                StatMultiplier::MagicResist(8.0),
+                StatMultiplier::Speed(8.0),
+                StatMultiplier::Skill(2.0),
+            ],
+            OverpoweredClass::DraconianHero => vec![
+                StatMultiplier::MaxHealth(8.0),
+                StatMultiplier::Strength(8.0),
+                StatMultiplier::Magic(8.0),
+                StatMultiplier::Defense(8.0),
+                StatMultiplier::MagicResist(8.0),
+                StatMultiplier::Speed(8.0),
+                StatMultiplier::Skill(2.0),
+            ],
+        };
     }
 }
 

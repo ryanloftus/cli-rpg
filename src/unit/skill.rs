@@ -54,7 +54,9 @@ impl SkillType {
             SkillType::WaterMagic => vec![Attribute::Magic, Attribute::Water],
             SkillType::LightningMagic => vec![Attribute::Magic, Attribute::Electric],
             SkillType::IceMagic => vec![Attribute::Magic, Attribute::Ice],
-            SkillType::ExplosionMagic => vec![Attribute::Magic, Attribute::Fire],
+            SkillType::ExplosionMagic => {
+                vec![Attribute::Magic, Attribute::Fire, Attribute::AreaOfEffect]
+            }
             SkillType::WindMagic => vec![Attribute::Magic, Attribute::Wind],
             SkillType::DarkMagic => vec![Attribute::Magic, Attribute::Dark],
             SkillType::UnholyCurse => {

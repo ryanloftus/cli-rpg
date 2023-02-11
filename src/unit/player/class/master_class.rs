@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::prompt::PromptOption;
+use crate::{prompt::PromptOption, unit::stats::StatMultiplier};
 
 use super::overpowered_class::OverpoweredClass;
 
@@ -69,6 +69,90 @@ impl MasterClass {
         };
         progressions.push(OverpoweredClass::LegendaryHero);
         return progressions;
+    }
+
+    pub fn stat_gain_multipliers(&self) -> Vec<StatMultiplier> {
+        return match self {
+            MasterClass::MasterOfNaturalDisaster => vec![
+                StatMultiplier::MaxHealth(2.0),
+                StatMultiplier::Magic(3.0),
+                StatMultiplier::Skill(2.5),
+                StatMultiplier::MagicResist(2.5),
+            ],
+            MasterClass::MasterOfExplosions => vec![
+                StatMultiplier::Magic(4.0),
+                StatMultiplier::Skill(2.5),
+                StatMultiplier::Defense(0.5),
+                StatMultiplier::Strength(0.5),
+            ],
+            MasterClass::ChosenAngel => vec![
+                StatMultiplier::MaxHealth(2.5),
+                StatMultiplier::Strength(0.5),
+                StatMultiplier::Magic(2.5),
+                StatMultiplier::Skill(2.0),
+                StatMultiplier::MagicResist(2.5),
+            ],
+            MasterClass::FallenAngel => vec![
+                StatMultiplier::MaxHealth(2.0),
+                StatMultiplier::Magic(2.5),
+                StatMultiplier::Skill(2.5),
+                StatMultiplier::MagicResist(2.5),
+            ],
+            MasterClass::MasterOfTheDarkArts => vec![
+                StatMultiplier::MaxHealth(2.0),
+                StatMultiplier::Magic(2.5),
+                StatMultiplier::Skill(2.5),
+                StatMultiplier::MagicResist(2.5),
+            ],
+            MasterClass::UltimateSwordmaster => vec![
+                StatMultiplier::MaxHealth(2.0),
+                StatMultiplier::Strength(3.0),
+                StatMultiplier::Speed(3.0),
+                StatMultiplier::Skill(3.0),
+                StatMultiplier::Defense(2.0),
+                StatMultiplier::Magic(0.5),
+            ],
+            MasterClass::BladeConjurer => vec![
+                StatMultiplier::MaxHealth(2.0),
+                StatMultiplier::Strength(2.0),
+                StatMultiplier::Skill(2.0),
+                StatMultiplier::Defense(1.5),
+                StatMultiplier::MagicResist(1.5),
+                StatMultiplier::Magic(2.5),
+            ],
+            MasterClass::BlessedCentaurianHero => vec![
+                StatMultiplier::MaxHealth(3.0),
+                StatMultiplier::Strength(2.0),
+                StatMultiplier::Defense(2.0),
+                StatMultiplier::Magic(2.0),
+                StatMultiplier::MagicResist(1.5),
+                StatMultiplier::Speed(2.0),
+            ],
+            MasterClass::CursedCentaurianSpecter => vec![
+                StatMultiplier::MaxHealth(3.0),
+                StatMultiplier::Strength(2.0),
+                StatMultiplier::Defense(2.0),
+                StatMultiplier::Magic(2.0),
+                StatMultiplier::MagicResist(1.5),
+                StatMultiplier::Speed(2.0),
+            ],
+            MasterClass::EnlightenedPegasusKnight => vec![
+                StatMultiplier::MaxHealth(3.0),
+                StatMultiplier::Strength(1.75),
+                StatMultiplier::Defense(1.75),
+                StatMultiplier::Magic(2.0),
+                StatMultiplier::Skill(2.0),
+                StatMultiplier::MagicResist(1.5),
+                StatMultiplier::Speed(2.0),
+            ],
+            MasterClass::DraconianKnight => vec![
+                StatMultiplier::MaxHealth(4.0),
+                StatMultiplier::Strength(3.0),
+                StatMultiplier::Defense(2.0),
+                StatMultiplier::Speed(2.0),
+                StatMultiplier::Skill(1.5),
+            ],
+        };
     }
 }
 

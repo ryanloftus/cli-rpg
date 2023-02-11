@@ -44,7 +44,7 @@ impl Stats {
      */
     pub fn new(base: u16, stat_multipliers: Vec<StatMultiplier>) -> Stats {
         let mut stats = Stats {
-            max_health: base,
+            max_health: base * BASE_HEALTH_MULTIPLIER,
             strength: base,
             magic: base,
             defense: base,
@@ -94,3 +94,4 @@ impl Stats {
 }
 
 pub const BASE_HEALTH: u16 = 20;
+pub const BASE_HEALTH_MULTIPLIER: u16 = 2; // Health should grow at roughly double the rate of all other stats

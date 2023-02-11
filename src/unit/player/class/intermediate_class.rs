@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::prompt::PromptOption;
+use crate::{prompt::PromptOption, unit::stats::StatMultiplier};
 
 use super::advanced_class::AdvancedClass;
 
@@ -46,6 +46,63 @@ impl IntermediateClass {
             IntermediateClass::HonourableKnight => vec![AdvancedClass::HolyKnight],
             IntermediateClass::SavageKnight => vec![AdvancedClass::DarkKnight],
             IntermediateClass::MountedKnight => vec![AdvancedClass::Centaur],
+        };
+    }
+
+    pub fn stat_gain_multipliers(&self) -> Vec<StatMultiplier> {
+        return match self {
+            IntermediateClass::ElementalMage => vec![
+                StatMultiplier::Strength(0.75),
+                StatMultiplier::Defense(0.75),
+                StatMultiplier::Magic(1.75),
+                StatMultiplier::Skill(1.25),
+                StatMultiplier::MagicResist(1.5),
+            ],
+            IntermediateClass::HolyMage => vec![
+                StatMultiplier::Strength(0.75),
+                StatMultiplier::Magic(1.5),
+                StatMultiplier::Skill(1.25),
+                StatMultiplier::MagicResist(1.75),
+            ],
+            IntermediateClass::DarkMage => vec![
+                StatMultiplier::Magic(1.75),
+                StatMultiplier::Skill(1.5),
+                StatMultiplier::MagicResist(1.75),
+            ],
+            IntermediateClass::Duelist => vec![
+                StatMultiplier::Strength(1.5),
+                StatMultiplier::Speed(2.0),
+                StatMultiplier::Skill(2.0),
+                StatMultiplier::Defense(1.5),
+                StatMultiplier::Magic(0.5),
+            ],
+            IntermediateClass::MagicSwordsman => vec![
+                StatMultiplier::Strength(1.25),
+                StatMultiplier::Speed(1.25),
+                StatMultiplier::Skill(1.5),
+                StatMultiplier::Defense(1.25),
+                StatMultiplier::MagicResist(1.25),
+                StatMultiplier::Magic(1.25),
+            ],
+            IntermediateClass::HonourableKnight => vec![
+                StatMultiplier::MaxHealth(2.0),
+                StatMultiplier::Strength(1.75),
+                StatMultiplier::Defense(1.75),
+                StatMultiplier::Magic(0.75),
+            ],
+            IntermediateClass::SavageKnight => vec![
+                StatMultiplier::MaxHealth(1.5),
+                StatMultiplier::Strength(2.0),
+                StatMultiplier::Defense(1.5),
+                StatMultiplier::Magic(0.75),
+            ],
+            IntermediateClass::MountedKnight => vec![
+                StatMultiplier::MaxHealth(2.0),
+                StatMultiplier::Strength(1.5),
+                StatMultiplier::Defense(1.5),
+                StatMultiplier::Magic(0.75),
+                StatMultiplier::Speed(1.5),
+            ],
         };
     }
 }

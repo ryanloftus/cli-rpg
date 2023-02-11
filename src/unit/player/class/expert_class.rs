@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::prompt::PromptOption;
+use crate::{prompt::PromptOption, unit::stats::StatMultiplier};
 
 use super::master_class::MasterClass;
 
@@ -53,6 +53,90 @@ impl ExpertClass {
             ExpertClass::HolyPegasusKnight => vec![MasterClass::EnlightenedPegasusKnight],
             ExpertClass::DarkPegasusKnight => vec![MasterClass::EnlightenedPegasusKnight],
             ExpertClass::WyvernKnight => vec![MasterClass::DraconianKnight],
+        };
+    }
+
+    pub fn stat_gain_multipliers(&self) -> Vec<StatMultiplier> {
+        return match self {
+            ExpertClass::StormSummoner => vec![
+                StatMultiplier::Magic(2.5),
+                StatMultiplier::Skill(2.0),
+                StatMultiplier::MagicResist(2.0),
+            ],
+            ExpertClass::ExplosionExpert => vec![
+                StatMultiplier::Magic(3.0),
+                StatMultiplier::Skill(2.0),
+                StatMultiplier::Defense(0.5),
+                StatMultiplier::Strength(0.5),
+            ],
+            ExpertClass::Angel => vec![
+                StatMultiplier::MaxHealth(1.5),
+                StatMultiplier::Strength(0.5),
+                StatMultiplier::Magic(2.0),
+                StatMultiplier::Skill(2.0),
+                StatMultiplier::MagicResist(2.0),
+            ],
+            ExpertClass::DarkAngel => vec![
+                StatMultiplier::Magic(2.0),
+                StatMultiplier::Skill(2.25),
+                StatMultiplier::MagicResist(2.0),
+            ],
+            ExpertClass::Swordmaster => vec![
+                StatMultiplier::MaxHealth(1.5),
+                StatMultiplier::Strength(2.0),
+                StatMultiplier::Speed(2.0),
+                StatMultiplier::Skill(2.5),
+                StatMultiplier::Defense(1.5),
+                StatMultiplier::Magic(0.5),
+            ],
+            ExpertClass::MagicDuelWielder => vec![
+                StatMultiplier::MaxHealth(1.5),
+                StatMultiplier::Strength(1.5),
+                StatMultiplier::Speed(1.5),
+                StatMultiplier::Skill(1.5),
+                StatMultiplier::Defense(1.5),
+                StatMultiplier::MagicResist(1.5),
+                StatMultiplier::Magic(1.5),
+            ],
+            ExpertClass::HolyCentaur => vec![
+                StatMultiplier::MaxHealth(3.0),
+                StatMultiplier::Strength(1.75),
+                StatMultiplier::Defense(1.75),
+                StatMultiplier::Magic(1.5),
+                StatMultiplier::MagicResist(1.5),
+                StatMultiplier::Speed(2.0),
+            ],
+            ExpertClass::DarkCentaur => vec![
+                StatMultiplier::MaxHealth(3.0),
+                StatMultiplier::Strength(1.75),
+                StatMultiplier::Defense(1.75),
+                StatMultiplier::Magic(1.5),
+                StatMultiplier::MagicResist(1.5),
+                StatMultiplier::Speed(2.0),
+            ],
+            ExpertClass::HolyPegasusKnight => vec![
+                StatMultiplier::MaxHealth(3.0),
+                StatMultiplier::Strength(1.75),
+                StatMultiplier::Defense(1.75),
+                StatMultiplier::Magic(1.5),
+                StatMultiplier::MagicResist(1.5),
+                StatMultiplier::Speed(2.0),
+            ],
+            ExpertClass::DarkPegasusKnight => vec![
+                StatMultiplier::MaxHealth(3.0),
+                StatMultiplier::Strength(1.75),
+                StatMultiplier::Defense(1.75),
+                StatMultiplier::Magic(1.5),
+                StatMultiplier::MagicResist(1.5),
+                StatMultiplier::Speed(2.0),
+            ],
+            ExpertClass::WyvernKnight => vec![
+                StatMultiplier::MaxHealth(3.5),
+                StatMultiplier::Strength(2.5),
+                StatMultiplier::Defense(2.0),
+                StatMultiplier::Speed(2.0),
+                StatMultiplier::Skill(1.5),
+            ],
         };
     }
 }

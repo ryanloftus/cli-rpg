@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::prompt::PromptOption;
+use crate::{prompt::PromptOption, unit::stats::StatMultiplier};
 
 use super::expert_class::ExpertClass;
 
@@ -57,6 +57,80 @@ impl AdvancedClass {
             AdvancedClass::PegasusKnight => vec![
                 ExpertClass::HolyPegasusKnight,
                 ExpertClass::DarkPegasusKnight,
+            ],
+        };
+    }
+
+    pub fn stat_gain_multipliers(&self) -> Vec<StatMultiplier> {
+        return match self {
+            AdvancedClass::PowerfulElementalMage => vec![
+                StatMultiplier::Magic(2.0),
+                StatMultiplier::Skill(1.25),
+                StatMultiplier::MagicResist(1.5),
+            ],
+            AdvancedClass::ExplosiveMage => vec![
+                StatMultiplier::Magic(2.5),
+                StatMultiplier::Skill(1.75),
+                StatMultiplier::Defense(0.5),
+            ],
+            AdvancedClass::StudentOfTheLight => vec![
+                StatMultiplier::Strength(0.5),
+                StatMultiplier::Magic(1.75),
+                StatMultiplier::Skill(2.0),
+                StatMultiplier::MagicResist(1.75),
+            ],
+            AdvancedClass::AcolyteOfDarkness => vec![
+                StatMultiplier::Magic(1.75),
+                StatMultiplier::Skill(1.5),
+                StatMultiplier::MagicResist(1.75),
+            ],
+            AdvancedClass::ImprovingSwordsman => vec![
+                StatMultiplier::Strength(2.0),
+                StatMultiplier::Speed(2.0),
+                StatMultiplier::Skill(2.5),
+                StatMultiplier::Defense(1.5),
+                StatMultiplier::Magic(0.5),
+            ],
+            AdvancedClass::DuelWielder => vec![
+                StatMultiplier::Strength(1.5),
+                StatMultiplier::Speed(2.0),
+                StatMultiplier::Skill(2.0),
+                StatMultiplier::Defense(1.5),
+                StatMultiplier::Magic(0.5),
+            ],
+            AdvancedClass::EnchantedBladeWielder => vec![
+                StatMultiplier::Strength(1.5),
+                StatMultiplier::Speed(1.25),
+                StatMultiplier::Skill(1.25),
+                StatMultiplier::Defense(1.25),
+                StatMultiplier::MagicResist(1.25),
+                StatMultiplier::Magic(1.5),
+            ],
+            AdvancedClass::HolyKnight => vec![
+                StatMultiplier::MaxHealth(2.0),
+                StatMultiplier::Strength(1.75),
+                StatMultiplier::Defense(1.75),
+                StatMultiplier::Magic(1.5),
+                StatMultiplier::MagicResist(1.5),
+            ],
+            AdvancedClass::DarkKnight => vec![
+                StatMultiplier::MaxHealth(2.0),
+                StatMultiplier::Strength(1.75),
+                StatMultiplier::Defense(1.75),
+                StatMultiplier::Magic(1.5),
+                StatMultiplier::MagicResist(1.5),
+            ],
+            AdvancedClass::Centaur => vec![
+                StatMultiplier::MaxHealth(2.5),
+                StatMultiplier::Strength(2.0),
+                StatMultiplier::Defense(1.5),
+                StatMultiplier::Speed(2.0),
+            ],
+            AdvancedClass::PegasusKnight => vec![
+                StatMultiplier::MaxHealth(2.5),
+                StatMultiplier::Strength(2.0),
+                StatMultiplier::Defense(1.5),
+                StatMultiplier::Speed(2.0),
             ],
         };
     }

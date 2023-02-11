@@ -1,11 +1,7 @@
 pub mod class;
 mod story_progress;
 
-use crate::{
-    prompt::PromptOption,
-    unit::skill::Skill,
-    unit::stats::{Stats, BASE_HEALTH},
-};
+use crate::{prompt::PromptOption, unit::skill::Skill, unit::stats::Stats};
 
 use self::class::Class;
 use serde::{Deserialize, Serialize};
@@ -30,16 +26,7 @@ impl Player {
             class: Class::FutureHero,
             experience: Experience::new(),
             skills: Vec::new(),
-            stats: Stats {
-                max_health: BASE_HEALTH,
-                strength: 1,
-                magic: 1,
-                defense: 1,
-                magic_resist: 1,
-                speed: 1,
-                skill: 1,
-                luck: 1,
-            },
+            stats: Stats::new(5, Vec::new()),
             story_progress: StoryProgress {
                 areas_completed: 0,
                 current_area_progress: 0,

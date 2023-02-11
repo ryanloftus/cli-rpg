@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::prompt::PromptOption;
+use crate::{prompt::PromptOption, unit::stats::StatMultiplier};
 
 use super::intermediate_class::IntermediateClass;
 
@@ -37,6 +37,31 @@ impl StarterClass {
                 IntermediateClass::ElementalMage,
                 IntermediateClass::HolyMage,
                 IntermediateClass::DarkMage,
+            ],
+        };
+    }
+
+    pub fn stat_gain_multipliers(&self) -> Vec<StatMultiplier> {
+        return match self {
+            StarterClass::Swordsman => vec![
+                StatMultiplier::Strength(1.25),
+                StatMultiplier::Speed(1.5),
+                StatMultiplier::Skill(1.5),
+                StatMultiplier::Defense(1.25),
+                StatMultiplier::Magic(0.75),
+            ],
+            StarterClass::Knight => vec![
+                StatMultiplier::MaxHealth(1.5),
+                StatMultiplier::Strength(1.5),
+                StatMultiplier::Defense(1.5),
+                StatMultiplier::Magic(0.75),
+            ],
+            StarterClass::Mage => vec![
+                StatMultiplier::Strength(0.75),
+                StatMultiplier::Defense(0.75),
+                StatMultiplier::Magic(1.5),
+                StatMultiplier::Skill(1.25),
+                StatMultiplier::MagicResist(1.5),
             ],
         };
     }
