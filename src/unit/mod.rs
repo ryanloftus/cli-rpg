@@ -1,5 +1,5 @@
 pub mod enemy;
-mod experience;
+pub mod experience;
 pub mod player;
-mod skill;
-mod stats;
+pub mod skill;
+pub mod stats;

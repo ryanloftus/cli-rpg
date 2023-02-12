@@ -131,7 +131,7 @@ fn do_story(player: &mut Player, area: Area) -> AreaResult {
                         _ => panic!(),
                     })
                     .collect();
-                match battle(&player, enemies) {
+                match battle(player, enemies) {
                     BattleResult::Victory => {
                         player.gain_xp(XpGainAction::EnemiesDefeated(enemies.clone()))
                     }
@@ -141,7 +141,7 @@ fn do_story(player: &mut Player, area: Area) -> AreaResult {
             }
             StoryComponentAction::BossBattle(boss) => {
                 let enemies = vec![boss];
-                match battle(&player, &enemies) {
+                match battle(player, &enemies) {
                     BattleResult::Victory => player.gain_xp(XpGainAction::EnemiesDefeated(enemies)),
                     BattleResult::Defeat => return AreaResult::PlayerWasDefeated,
                 }
