@@ -1,5 +1,5 @@
 use super::super::stats::{StatMultiplier, Stats};
-use super::Enemy;
+use super::{Enemy, EnemyAttribute};
 use rand::{self, Rng};
 
 pub enum MonsterType {
@@ -32,6 +32,7 @@ fn new_slime(level: u16) -> Enemy {
         level,
         difficulty: super::EnemyDifficulty::Weak,
         stats: Stats::new(level, vec![StatMultiplier::MagicResist(1.25)]),
+        attributes: Vec::new(),
     }
 }
 
@@ -48,6 +49,7 @@ fn new_goblin(level: u16) -> Enemy {
                 StatMultiplier::Skill(0.75),
             ],
         ),
+        attributes: Vec::new(),
     }
 }
 
@@ -67,6 +69,7 @@ fn new_dragon(level: u16) -> Enemy {
                 StatMultiplier::Speed(1.25),
             ],
         ),
+        attributes: Vec::new(),
     }
 }
 
@@ -91,6 +94,7 @@ fn new_ogre(level: u16) -> Enemy {
                     StatMultiplier::Luck(2.0),
                 ],
             ),
+            attributes: Vec::new(),
         }
     } else {
         Enemy {
@@ -108,6 +112,7 @@ fn new_ogre(level: u16) -> Enemy {
                     StatMultiplier::Speed(0.5),
                 ],
             ),
+            attributes: Vec::new(),
         }
     }
 }
@@ -125,6 +130,7 @@ fn new_demon(level: u16) -> Enemy {
                 StatMultiplier::Speed(1.5),
             ],
         ),
+        attributes: vec![EnemyAttribute::Dark, EnemyAttribute::Hot],
     }
 }
 
@@ -143,5 +149,6 @@ fn new_demonic_beast(level: u16) -> Enemy {
                 StatMultiplier::Speed(0.25),
             ],
         ),
+        attributes: vec![EnemyAttribute::Dark, EnemyAttribute::Hot],
     }
 }

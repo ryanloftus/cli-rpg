@@ -14,13 +14,21 @@ pub enum EnemyDifficulty {
     Special,
 }
 
+/// used to determine the strenghs and weaknesses of enemies
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum EnemyAttribute {
+    Hot,
+    Cold,
+    Dark,
+}
+
 #[derive(Debug, Clone)]
 pub struct Enemy {
     pub name: String,
     pub level: u16,
     pub difficulty: EnemyDifficulty,
     pub stats: Stats,
-    // TODO: add Attributes to determine effectiveness of attacks against this foe
+    pub attributes: Vec<EnemyAttribute>,
 }
 
 pub enum EnemyType {
@@ -49,12 +57,18 @@ impl Enemy {
         };
     }
 
-    pub fn new_boss(name: String, level: u16, stat_multipliers: Vec<StatMultiplier>) -> Enemy {
+    pub fn new_boss(
+        name: String,
+        level: u16,
+        stat_multipliers: Vec<StatMultiplier>,
+        attributes: Vec<EnemyAttribute>,
+    ) -> Enemy {
         return Enemy {
             name,
             level,
             difficulty: EnemyDifficulty::Boss,
             stats: Stats::new(level, stat_multipliers),
+            attributes,
         };
     }
 }

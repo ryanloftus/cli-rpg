@@ -20,6 +20,7 @@ pub fn new(soldier_type: SoldierType, faction: String, level: u16) -> Enemy {
             super::EnemyDifficulty::Weak
         },
         stats: Stats::new(level, get_stat_mult(soldier_type)),
+        attributes: Vec::new(),
     }
 }
 

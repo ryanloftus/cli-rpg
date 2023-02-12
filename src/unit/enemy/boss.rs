@@ -1,6 +1,6 @@
 use crate::unit::stats::StatMultiplier;
 
-use super::Enemy;
+use super::{Enemy, EnemyAttribute};
 
 /// The boss at the end of The Plains
 pub fn villainous_mage() -> Enemy {
@@ -13,6 +13,7 @@ pub fn villainous_mage() -> Enemy {
             StatMultiplier::Defense(0.75),
             StatMultiplier::MagicResist(2.0),
         ],
+        vec![EnemyAttribute::Dark],
     );
 }
 
@@ -29,6 +30,7 @@ pub fn demon_lord() -> Enemy {
             StatMultiplier::Skill(2.0),
             StatMultiplier::Luck(1.5),
         ],
+        vec![EnemyAttribute::Dark],
     );
 }
 
@@ -44,6 +46,7 @@ pub fn warm_island_king() -> Enemy {
             StatMultiplier::Defense(1.25),
             StatMultiplier::MagicResist(1.5),
         ],
+        vec![EnemyAttribute::Hot],
     );
 }
 
@@ -59,6 +62,7 @@ pub fn cold_island_king() -> Enemy {
             StatMultiplier::Defense(1.25),
             StatMultiplier::MagicResist(1.5),
         ],
+        vec![EnemyAttribute::Cold],
     );
 }
 
@@ -74,6 +78,7 @@ pub fn stormy_island_queen() -> Enemy {
             StatMultiplier::Defense(1.25),
             StatMultiplier::MagicResist(1.5),
         ],
+        vec![],
     );
 }
 
@@ -88,6 +93,7 @@ pub fn lizard_king() -> Enemy {
             StatMultiplier::Defense(1.5),
             StatMultiplier::Luck(1.5),
         ],
+        vec![],
     );
 }
 
@@ -102,10 +108,25 @@ pub fn molten_monstrosity() -> Enemy {
             StatMultiplier::Defense(3.0),
             StatMultiplier::Speed(0.25),
         ],
+        vec![EnemyAttribute::Hot],
     );
 }
 
-// The boss at the end of The Mountains (final boss)
+/// The boss at the end of The Mountains (final boss)
 pub fn doom_incarnate() -> Enemy {
-    return Enemy::new_boss(String::from("Doom Incarnate"), 100, Vec::new());
+    return Enemy::new_boss(
+        String::from("Doom Incarnate"),
+        100,
+        vec![
+            StatMultiplier::MaxHealth(10.0),
+            StatMultiplier::Strength(10.0),
+            StatMultiplier::Magic(10.0),
+            StatMultiplier::Defense(10.0),
+            StatMultiplier::MagicResist(10.0),
+            StatMultiplier::Speed(10.0),
+            StatMultiplier::Skill(10.0),
+            StatMultiplier::Luck(10.0),
+        ],
+        vec![EnemyAttribute::Dark],
+    );
 }
