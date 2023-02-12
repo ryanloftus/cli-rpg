@@ -2,7 +2,6 @@ pub mod boss;
 pub mod monster;
 pub mod soldier;
 
-use crate::unit::skill::Skill;
 use rand::{self, Rng};
 
 use super::stats::{StatMultiplier, Stats};
@@ -19,11 +18,9 @@ pub enum EnemyDifficulty {
 pub struct Enemy {
     pub name: String,
     pub level: u16,
-    pub skills: Vec<Skill>,
     pub difficulty: EnemyDifficulty,
     pub stats: Stats,
     // TODO: add Attributes to determine effectiveness of attacks against this foe
-    // TODO: actually give enemies unique skills and attributes
 }
 
 pub enum EnemyType {
@@ -52,16 +49,10 @@ impl Enemy {
         };
     }
 
-    pub fn new_boss(
-        name: String,
-        level: u16,
-        skills: Vec<Skill>,
-        stat_multipliers: Vec<StatMultiplier>,
-    ) -> Enemy {
+    pub fn new_boss(name: String, level: u16, stat_multipliers: Vec<StatMultiplier>) -> Enemy {
         return Enemy {
             name,
             level,
-            skills,
             difficulty: EnemyDifficulty::Boss,
             stats: Stats::new(level, stat_multipliers),
         };

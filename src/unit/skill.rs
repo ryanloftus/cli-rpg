@@ -10,7 +10,7 @@ pub struct Skill {
     pub attributes: Vec<Attribute>,
 }
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
 pub enum SkillType {
     FireMagic,
     WaterMagic,

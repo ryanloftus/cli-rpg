@@ -14,7 +14,6 @@ pub fn new(soldier_type: SoldierType, faction: String, level: u16) -> Enemy {
     Enemy {
         name: enemy_name(soldier_type, faction),
         level,
-        skills: Vec::new(),
         difficulty: if soldier_type == SoldierType::Lieutenant {
             super::EnemyDifficulty::Strong
         } else {

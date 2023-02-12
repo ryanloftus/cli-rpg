@@ -26,12 +26,12 @@ impl Experience {
         };
     }
 
-    fn add_experience(&mut self, experience: u16) {
+    fn add_experience(&mut self, experience: u16) -> u16 {
         self.experience_towards_next_level = self.experience_towards_next_level + experience;
-        while self.experience_towards_next_level >= XP_PER_LEVEL {
-            self.level += 1;
-            self.experience_towards_next_level -= XP_PER_LEVEL;
-        }
+        let levels_gained = self.experience_towards_next_level / XP_PER_LEVEL;
+        self.level += levels_gained;
+        self.experience_towards_next_level %= XP_PER_LEVEL;
+        return levels_gained;
     }
 
     fn get_difficulty_multiplier(enemy: &Enemy) -> u16 {
@@ -43,23 +43,25 @@ impl Experience {
         }
     }
 
-    pub fn enemies_defeated(&mut self, enemies: &Vec<Enemy>) {
+    pub fn enemies_defeated(&mut self, enemies: &Vec<Enemy>) -> u16 {
+        let mut levels_gained = 0;
         for enemy in enemies {
-            self.add_experience(
+            levels_gained += self.add_experience(
                 BASE_XP_FOR_ENEMY_DEFEATED * Self::get_difficulty_multiplier(enemy),
             );
         }
+        return levels_gained;
     }
 
-    pub fn area_cleared(&mut self) {
-        self.add_experience(XP_FOR_AREA_CLEARED);
+    pub fn area_cleared(&mut self) -> u16 {
+        return self.add_experience(XP_FOR_AREA_CLEARED);
     }
 
-    pub fn skill_used(&mut self) {
-        self.add_experience(XP_FOR_SKILL_USED);
+    pub fn skill_used(&mut self) -> u16 {
+        return self.add_experience(XP_FOR_SKILL_USED);
     }
 
-    pub fn skill_evolved(&mut self) {
-        self.add_experience(XP_PER_LEVEL);
+    pub fn skill_evolved(&mut self) -> u16 {
+        return self.add_experience(XP_PER_LEVEL);
     }
 }

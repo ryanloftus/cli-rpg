@@ -7,7 +7,7 @@ use self::class::Class;
 use serde::{Deserialize, Serialize};
 use story_progress::StoryProgress;
 
-use super::experience::Experience;
+use super::{enemy::Enemy, experience::Experience};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Player {
@@ -63,4 +63,24 @@ impl Player {
             self.stats.luck
         );
     }
+
+    pub fn gain_xp(&mut self, action: XpGainAction) {
+        let levels_gained = match action {
+            XpGainAction::EnemiesDefeated(enemies) => self.experience.enemies_defeated(&enemies),
+            XpGainAction::AreaCleared => self.experience.area_cleared(),
+        };
+        for _ in 0..levels_gained {
+            self.stats.level_up(self.class.stat_gain_multipliers())
+        }
+    }
+
+    pub fn area_cleared(&mut self) {
+        self.story_progress.areas_completed += 1;
+        self.story_progress.current_area_progress = 0;
+    }
+}
+
+pub enum XpGainAction {
+    EnemiesDefeated(Vec<Enemy>),
+    AreaCleared,
 }

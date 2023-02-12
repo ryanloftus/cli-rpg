@@ -7,7 +7,6 @@ pub fn villainous_mage() -> Enemy {
     return Enemy::new_boss(
         String::from("Villainous Mage"),
         15,
-        Vec::new(),
         vec![
             StatMultiplier::MaxHealth(4.0),
             StatMultiplier::Magic(2.0),
@@ -22,7 +21,6 @@ pub fn demon_lord() -> Enemy {
     return Enemy::new_boss(
         String::from("Demon Lord"),
         25,
-        Vec::new(),
         vec![
             StatMultiplier::MaxHealth(4.0),
             StatMultiplier::Magic(2.0),
@@ -39,7 +37,6 @@ pub fn warm_island_king() -> Enemy {
     return Enemy::new_boss(
         String::from("Warm Island King"),
         35,
-        Vec::new(),
         vec![
             StatMultiplier::MaxHealth(4.0),
             StatMultiplier::Strength(1.25),
@@ -55,7 +52,6 @@ pub fn cold_island_king() -> Enemy {
     return Enemy::new_boss(
         String::from("Cold Island King"),
         40,
-        Vec::new(),
         vec![
             StatMultiplier::MaxHealth(4.0),
             StatMultiplier::Strength(1.25),
@@ -71,7 +67,6 @@ pub fn stormy_island_queen() -> Enemy {
     return Enemy::new_boss(
         String::from("Stormy Island Queen"),
         45,
-        Vec::new(),
         vec![
             StatMultiplier::MaxHealth(4.0),
             StatMultiplier::Strength(1.25),
@@ -87,7 +82,6 @@ pub fn lizard_king() -> Enemy {
     return Enemy::new_boss(
         String::from("Lizard King"),
         60,
-        Vec::new(),
         vec![
             StatMultiplier::MaxHealth(5.0),
             StatMultiplier::Strength(2.0),
@@ -102,7 +96,6 @@ pub fn molten_monstrosity() -> Enemy {
     return Enemy::new_boss(
         String::from("Molten Monstrosity"),
         75,
-        Vec::new(),
         vec![
             StatMultiplier::MaxHealth(4.0),
             StatMultiplier::Strength(2.5),
@@ -114,5 +107,5 @@ pub fn molten_monstrosity() -> Enemy {
 
 // The boss at the end of The Mountains (final boss)
 pub fn doom_incarnate() -> Enemy {
-    return Enemy::new_boss(String::from("Doom Incarnate"), 100, Vec::new(), Vec::new());
+    return Enemy::new_boss(String::from("Doom Incarnate"), 100, Vec::new());
 }

@@ -1,3 +1,4 @@
+use rand::Rng;
 use serde::{Deserialize, Serialize};
 
 /*
@@ -35,7 +36,6 @@ pub enum StatMultiplier {
     Luck(f32),
 }
 
-// TODO: increase the player's stats when they level up
 impl Stats {
     /*
      * Creates a new Stats scaled to the given values
@@ -59,6 +59,81 @@ impl Stats {
         // we don't want the multiplier to apply to base stats given to all units at level 1, so we add them here
         stats.max_health += BASE_HEALTH;
         return stats;
+    }
+
+    pub fn level_up(&mut self, stat_multipliers: Vec<StatMultiplier>) {
+        self.max_health += Self::calc_stat_gain(stat_multipliers.iter().find_map(|m| {
+            if let StatMultiplier::MaxHealth(mult) = m {
+                Some(mult.clone())
+            } else {
+                None
+            }
+        }));
+        self.strength += Self::calc_stat_gain(stat_multipliers.iter().find_map(|m| {
+            if let StatMultiplier::Strength(mult) = m {
+                Some(mult.clone())
+            } else {
+                None
+            }
+        }));
+        self.magic += Self::calc_stat_gain(stat_multipliers.iter().find_map(|m| {
+            if let StatMultiplier::Magic(mult) = m {
+                Some(mult.clone())
+            } else {
+                None
+            }
+        }));
+        self.defense += Self::calc_stat_gain(stat_multipliers.iter().find_map(|m| {
+            if let StatMultiplier::Defense(mult) = m {
+                Some(mult.clone())
+            } else {
+                None
+            }
+        }));
+        self.magic_resist += Self::calc_stat_gain(stat_multipliers.iter().find_map(|m| {
+            if let StatMultiplier::MagicResist(mult) = m {
+                Some(mult.clone())
+            } else {
+                None
+            }
+        }));
+        self.speed += Self::calc_stat_gain(stat_multipliers.iter().find_map(|m| {
+            if let StatMultiplier::Speed(mult) = m {
+                Some(mult.clone())
+            } else {
+                None
+            }
+        }));
+        self.skill += Self::calc_stat_gain(stat_multipliers.iter().find_map(|m| {
+            if let StatMultiplier::Skill(mult) = m {
+                Some(mult.clone())
+            } else {
+                None
+            }
+        }));
+        self.luck += Self::calc_stat_gain(stat_multipliers.iter().find_map(|m| {
+            if let StatMultiplier::Luck(mult) = m {
+                Some(mult.clone())
+            } else {
+                None
+            }
+        }));
+    }
+
+    fn calc_stat_gain(stat_multiplier: Option<f32>) -> u16 {
+        if let Some(mut mult) = stat_multiplier {
+            let mut stat_gain = 0;
+            while mult > 1.0 {
+                stat_gain += 1;
+                mult -= 1.0;
+            }
+            if rand::thread_rng().gen_range(0.0..1.0) < mult {
+                stat_gain += 1;
+            }
+            return stat_gain;
+        } else {
+            return 1;
+        }
     }
 
     fn apply_multiplier(&mut self, multiplier: StatMultiplier) {

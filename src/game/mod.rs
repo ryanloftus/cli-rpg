@@ -9,7 +9,8 @@ use crate::prompt::{
     get_optional_selection_from_options, get_selection_from_options, PromptOption,
 };
 use crate::save::{self, save};
-use crate::unit::player::{class::choose_class_prompt, Player};
+use crate::unit::player::XpGainAction;
+use crate::unit::player::{class::progress_class, Player};
 
 #[derive(Debug, Clone)]
 enum PlayerAction {
@@ -131,7 +132,9 @@ fn do_story(player: &mut Player, area: Area) -> AreaResult {
                     })
                     .collect();
                 match battle(&player, enemies) {
-                    BattleResult::Victory => player.experience.enemies_defeated(enemies),
+                    BattleResult::Victory => {
+                        player.gain_xp(XpGainAction::EnemiesDefeated(enemies.clone()))
+                    }
                     BattleResult::Defeat => return AreaResult::PlayerWasDefeated,
                 }
                 enemies.len()
@@ -139,7 +142,7 @@ fn do_story(player: &mut Player, area: Area) -> AreaResult {
             StoryComponentAction::BossBattle(boss) => {
                 let enemies = vec![boss];
                 match battle(&player, &enemies) {
-                    BattleResult::Victory => player.experience.enemies_defeated(&enemies),
+                    BattleResult::Victory => player.gain_xp(XpGainAction::EnemiesDefeated(enemies)),
                     BattleResult::Defeat => return AreaResult::PlayerWasDefeated,
                 }
                 1
@@ -163,7 +166,9 @@ fn train(player: &mut Player, area: Area) -> AreaResult {
             StoryComponentAction::Battle(num_enemies) => {
                 let enemies = &area.generate_training_enemies(num_enemies, player.experience.level);
                 match battle(player, enemies) {
-                    BattleResult::Victory => player.experience.enemies_defeated(enemies),
+                    BattleResult::Victory => {
+                        player.gain_xp(XpGainAction::EnemiesDefeated(enemies.clone()))
+                    }
                     BattleResult::Defeat => {}
                 }
             }
@@ -174,15 +179,13 @@ fn train(player: &mut Player, area: Area) -> AreaResult {
 }
 
 fn on_area_completed(player: &mut Player) -> PlayerAction {
-    player.experience.area_cleared();
-    player.story_progress.areas_completed += 1;
-    player.story_progress.current_area_progress = 0;
+    player.gain_xp(XpGainAction::AreaCleared);
+    player.area_cleared();
     save(&player);
     if player.story_progress.areas_completed == NUM_AREAS {
         return PlayerAction::QuitGame;
     } else {
-        choose_class_prompt(&player.class);
-        // TODO: add new skills/upgrade existing skills when new class acquired
+        progress_class(player);
         return get_action_after_area_completed();
     }
 }

@@ -9,7 +9,10 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     prompt::{self, PromptOption},
-    unit::{skill::SkillType, stats::StatMultiplier},
+    unit::{
+        skill::{Skill, SkillType},
+        stats::StatMultiplier,
+    },
 };
 
 use self::{
@@ -17,6 +20,8 @@ use self::{
     intermediate_class::IntermediateClass, master_class::MasterClass,
     overpowered_class::OverpoweredClass, starter_class::StarterClass,
 };
+
+use super::Player;
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum Class {
@@ -131,21 +136,40 @@ impl PromptOption for Class {
     }
 }
 
-pub fn choose_class_prompt(current_class: &Class) -> Class {
-    let class_options = current_class.progressions();
-    if class_options.len() == 1 {
-        println!(
-            "You were advanced to the {} class!",
-            class_options[0].option_name()
-        );
-        return class_options[0].clone();
-    }
-    loop {
-        let selected =
-            prompt::get_selection_from_options(String::from("Choose a class."), &class_options);
-        println!("{}", selected.description());
-        if prompt::get_boolean_selection(&format!("Change to {}? [Y/N]", selected.option_name())) {
-            return selected;
+pub fn progress_class(player: &mut Player) -> Class {
+    let class_options = player.class.progressions();
+    let mut new_class = class_options[0];
+
+    if class_options.len() > 1 {
+        loop {
+            new_class =
+                prompt::get_selection_from_options(String::from("Choose a class."), &class_options);
+            println!("{}", new_class.description());
+            if prompt::get_boolean_selection(&format!(
+                "Change to {}? [Y/N]",
+                new_class.option_name()
+            )) {
+                return new_class;
+            }
         }
+    }
+
+    add_class_skills(player, new_class);
+    println!(
+        "You were advanced to the {} class!",
+        new_class.option_name()
+    );
+    return new_class;
+}
+
+fn add_class_skills(player: &mut Player, new_class: Class) {
+    'outer: for new_skill in new_class.skills() {
+        for i in 0..player.skills.len() {
+            if player.skills[i].skill_type == new_skill {
+                player.skills[i].experience.skill_evolved();
+                continue 'outer;
+            }
+        }
+        player.skills.push(Skill::new(new_skill));
     }
 }

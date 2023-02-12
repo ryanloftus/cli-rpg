@@ -30,7 +30,6 @@ fn new_slime(level: u16) -> Enemy {
     Enemy {
         name: String::from("Slime"),
         level,
-        skills: Vec::new(),
         difficulty: super::EnemyDifficulty::Weak,
         stats: Stats::new(level, vec![StatMultiplier::MagicResist(1.25)]),
     }
@@ -40,7 +39,6 @@ fn new_goblin(level: u16) -> Enemy {
     Enemy {
         name: String::from("Goblin"),
         level,
-        skills: Vec::new(),
         difficulty: super::EnemyDifficulty::Weak,
         stats: Stats::new(
             level,
@@ -57,7 +55,6 @@ fn new_dragon(level: u16) -> Enemy {
     Enemy {
         name: String::from("Dragon"),
         level,
-        skills: Vec::new(),
         difficulty: super::EnemyDifficulty::Strong,
         stats: Stats::new(
             level,
@@ -80,7 +77,6 @@ fn new_ogre(level: u16) -> Enemy {
         Enemy {
             name: String::from("Shrek"),
             level: 100,
-            skills: Vec::new(),
             difficulty: super::EnemyDifficulty::Special,
             stats: Stats::new(
                 level,
@@ -100,7 +96,6 @@ fn new_ogre(level: u16) -> Enemy {
         Enemy {
             name: String::from("Ogre"),
             level,
-            skills: Vec::new(),
             difficulty: super::EnemyDifficulty::Strong,
             stats: Stats::new(
                 level,
@@ -121,7 +116,6 @@ fn new_demon(level: u16) -> Enemy {
     Enemy {
         name: String::from("Demon"),
         level,
-        skills: Vec::new(),
         difficulty: super::EnemyDifficulty::Weak,
         stats: Stats::new(
             level,
@@ -138,7 +132,6 @@ fn new_demonic_beast(level: u16) -> Enemy {
     Enemy {
         name: String::from("Demonic Beast"),
         level,
-        skills: Vec::new(),
         difficulty: super::EnemyDifficulty::Strong,
         stats: Stats::new(
             level,
