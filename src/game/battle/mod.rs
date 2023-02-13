@@ -72,7 +72,7 @@ pub fn battle(_player: &mut Player, _enemies: &Vec<Enemy>) -> BattleResult {
                 }
                 PlayerTurnAction::UnselectedSkill => panic!("cannot perform unselected skill"),
             }
-            enemies = enemies.into_iter().filter(|e| e.health > 0).collect();
+            enemies = filter_defeated_enemies(enemies, &player);
             if enemies.is_empty() {
                 break 'outer;
             }
@@ -88,7 +88,7 @@ pub fn battle(_player: &mut Player, _enemies: &Vec<Enemy>) -> BattleResult {
         for enemy in &mut enemies {
             enemy.health = apply_damage(enemy.health, enemy.dot_per_turn);
         }
-        enemies = enemies.into_iter().filter(|e| e.health > 0).collect();
+        enemies = filter_defeated_enemies(enemies, &player);
         if enemies.is_empty() {
             break 'outer;
         }
@@ -97,7 +97,7 @@ pub fn battle(_player: &mut Player, _enemies: &Vec<Enemy>) -> BattleResult {
         print_defeat_message(&player, &enemies);
         return BattleResult::Defeat;
     } else if enemies.is_empty() {
-        print_victory_message(&player, _enemies); // TODO: print enemy defeated message when enemy is defeated, rather all at the end
+        print_victory_message(&player);
         return BattleResult::Victory;
     } else {
         print_retreat_message(&player);
@@ -129,6 +129,22 @@ fn get_turn_action(player: &PlayerInBattle, enemies: &Vec<EnemyInBattle>) -> Pla
     }
 }
 
+fn filter_defeated_enemies(
+    enemies: Vec<EnemyInBattle>,
+    player: &PlayerInBattle,
+) -> Vec<EnemyInBattle> {
+    return enemies
+        .into_iter()
+        .filter(|e| {
+            let is_defeated = e.health == 0;
+            if is_defeated {
+                println!("{} defeated {}!", player.name, e.name);
+            }
+            !is_defeated
+        })
+        .collect();
+}
+
 fn perform_enemy_attack(enemy: &EnemyInBattle, player: &mut PlayerInBattle) {
     println!("{} attacked!", enemy.name);
     let mut bonus_defense_stat = player.bonus_defense as f32;
@@ -138,14 +154,14 @@ fn perform_enemy_attack(enemy: &EnemyInBattle, player: &mut PlayerInBattle) {
     let damage = (calc_attack_damage(&enemy.stats, &player.stats) as f32
         / (bonus_defense_stat + 1.0)) as u16;
     player.health -= apply_damage(damage, player.health);
-    println!("{} took {} damage!", player.name, damage);
+    print_damage_message(damage, &player.name);
 }
 
 fn perform_player_attack(player: &PlayerInBattle, enemy: &mut EnemyInBattle) {
     println!("{} attacked!", player.name);
     let damage = calc_attack_damage(&player.stats, &enemy.stats);
     enemy.health -= apply_damage(damage, enemy.health);
-    println!("{} took {} damage!", enemy.name, damage);
+    print_damage_message(damage, &enemy.name);
 }
 
 fn perform_player_skill(
@@ -154,9 +170,32 @@ fn perform_player_skill(
     skill: &Skill,
 ) {
     println!("{} used {}!", player.name, skill.option_name());
-    // TODO: handle damage from skills
-    // TODO: increase skills effects with level
-    // TODO: use SkillAttributes and EnemyAttributes to determine effectiveness of attacking skills
+    let enemies_targeted = if skill.has_attribute(SkillAttribute::AreaOfEffect) {
+        0..(5 * skill.experience.level as usize)
+    } else {
+        0..1
+    };
+    if skill.has_attribute(SkillAttribute::Physical) {
+        for i in enemies_targeted {
+            let damage = (calc_damage_from_stats(player.stats.strength, enemies[i].stats.defense)
+                as f32
+                * calc_effectiveness(skill, &enemies[i])
+                * (1.0 + skill.experience.level as f32 / 10.0))
+                .round() as u16;
+            enemies[i].health -= apply_damage(enemies[i].health, damage);
+            print_damage_message(damage, &enemies[i].name);
+        }
+    } else if skill.has_attribute(SkillAttribute::Magic) {
+        for i in enemies_targeted {
+            let damage = (calc_damage_from_stats(player.stats.magic, enemies[i].stats.magic_resist)
+                as f32
+                * calc_effectiveness(skill, &enemies[i])
+                * (1.0 + skill.experience.level as f32 / 10.0))
+                .round() as u16;
+            enemies[i].health -= apply_damage(enemies[i].health, damage);
+            print_damage_message(damage, &enemies[i].name);
+        }
+    }
     if skill.has_attribute(SkillAttribute::Healing) {
         let heal = std::cmp::min(
             player.stats.magic * skill.experience.level / 4,
@@ -197,6 +236,36 @@ fn calc_attack_damage(attacker_stats: &Stats, defender_stats: &Stats) -> u16 {
     return calc_damage_from_stats(attack_stat, defense_stat);
 }
 
+fn calc_effectiveness(skill: &Skill, enemy: &EnemyInBattle) -> f32 {
+    let mut effectiveness: f32 = 1.0;
+    for attribute in &enemy.attributes {
+        match attribute {
+            EnemyAttribute::Hot => {
+                if skill.has_attribute(SkillAttribute::Ice)
+                    || skill.has_attribute(SkillAttribute::Water)
+                {
+                    effectiveness *= 2.0;
+                } else if skill.has_attribute(SkillAttribute::Fire) {
+                    effectiveness *= 0.5;
+                }
+            }
+            EnemyAttribute::Cold => {
+                if skill.has_attribute(SkillAttribute::Fire) {
+                    effectiveness *= 2.0;
+                } else if skill.has_attribute(SkillAttribute::Ice) {
+                    effectiveness *= 0.5
+                }
+            }
+            EnemyAttribute::Dark => {
+                if skill.has_attribute(SkillAttribute::Light) {
+                    effectiveness *= 2.0;
+                }
+            }
+        }
+    }
+    return effectiveness;
+}
+
 fn calc_damage_from_stats(attack_stat: u16, defense_stat: u16) -> u16 {
     let attack_power = attack_stat / 2;
     let defense_power = std::cmp::min(defense_stat / 4, attack_power);
@@ -207,6 +276,10 @@ fn apply_damage(health: u16, damage: u16) -> u16 {
     return std::cmp::min(health, damage);
 }
 
+fn print_damage_message(damage: u16, name: &str) {
+    println!("{} took {} damage!", name, damage);
+}
+
 fn print_defeat_message(player: &PlayerInBattle, enemies: &Vec<EnemyInBattle>) {
     if enemies.iter().find(|e| e.name == "Shrek").is_some() {
         println!("{}\n{}", ASCII_SHREK, "GAME OGRE");
@@ -215,10 +288,8 @@ fn print_defeat_message(player: &PlayerInBattle, enemies: &Vec<EnemyInBattle>) {
     }
 }
 
-fn print_victory_message(player: &PlayerInBattle, enemies: &Vec<Enemy>) {
-    for enemy in enemies {
-        println!("{} defeated {}!", player.name, enemy.name);
-    }
+fn print_victory_message(player: &PlayerInBattle) {
+    println!("{} won the battle!", player.name);
 }
 
 fn print_retreat_message(player: &PlayerInBattle) {
