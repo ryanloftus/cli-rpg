@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 pub struct Skill {
     pub skill_type: SkillType,
     pub experience: Experience,
-    pub attributes: Vec<Attribute>,
+    pub attributes: Vec<SkillAttribute>,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
@@ -44,66 +44,72 @@ impl Skill {
             attributes: skill_type.base_attributes(),
         };
     }
+
+    pub fn has_attribute(&self, attribute: SkillAttribute) -> bool {
+        return self.attributes.contains(&attribute);
+    }
 }
 
 impl SkillType {
-    fn base_attributes(&self) -> Vec<Attribute> {
+    fn base_attributes(&self) -> Vec<SkillAttribute> {
         return match self {
-            SkillType::FireMagic => vec![Attribute::Magic, Attribute::Fire],
-            SkillType::WaterMagic => vec![Attribute::Magic, Attribute::Water],
-            SkillType::LightningMagic => vec![Attribute::Magic, Attribute::Electric],
-            SkillType::IceMagic => vec![Attribute::Magic, Attribute::Ice],
+            SkillType::FireMagic => vec![SkillAttribute::Magic, SkillAttribute::Fire],
+            SkillType::WaterMagic => vec![SkillAttribute::Magic, SkillAttribute::Water],
+            SkillType::LightningMagic => vec![SkillAttribute::Magic, SkillAttribute::Electric],
+            SkillType::IceMagic => vec![SkillAttribute::Magic, SkillAttribute::Ice],
             SkillType::ExplosionMagic => {
-                vec![Attribute::Magic, Attribute::Fire, Attribute::AreaOfEffect]
+                vec![
+                    SkillAttribute::Magic,
+                    SkillAttribute::Fire,
+                    SkillAttribute::AreaOfEffect,
+                ]
             }
-            SkillType::WindMagic => vec![Attribute::Magic, Attribute::Wind],
-            SkillType::DarkMagic => vec![Attribute::Magic, Attribute::Dark],
+            SkillType::WindMagic => vec![SkillAttribute::Magic, SkillAttribute::Wind],
+            SkillType::DarkMagic => vec![SkillAttribute::Magic, SkillAttribute::Dark],
             SkillType::UnholyCurse => {
-                vec![Attribute::Magic, Attribute::Dark, Attribute::DamageOverTime]
+                vec![
+                    SkillAttribute::Magic,
+                    SkillAttribute::Dark,
+                    SkillAttribute::DamageOverTime,
+                ]
             }
-            SkillType::LightMagic => vec![Attribute::Magic, Attribute::Light, Attribute::Healing],
-            SkillType::DivineBlessing => vec![
-                Attribute::Magic,
-                Attribute::Light,
-                Attribute::Healing,
-                Attribute::MagicResistive,
+            SkillType::LightMagic => vec![
+                SkillAttribute::Magic,
+                SkillAttribute::Light,
+                SkillAttribute::Healing,
             ],
+            SkillType::DivineBlessing => {
+                vec![SkillAttribute::Healing, SkillAttribute::MagicResistive]
+            }
             SkillType::WeatherForecast => vec![
-                Attribute::Magic,
-                Attribute::Water,
-                Attribute::Fire,
-                Attribute::Wind,
-                Attribute::Electric,
-                Attribute::Ice,
-                Attribute::AreaOfEffect,
+                SkillAttribute::Magic,
+                SkillAttribute::Water,
+                SkillAttribute::Fire,
+                SkillAttribute::Wind,
+                SkillAttribute::Electric,
+                SkillAttribute::Ice,
+                SkillAttribute::AreaOfEffect,
             ],
-            SkillType::SwordStrike => vec![Attribute::Physical],
-            SkillType::DuelStrike => vec![Attribute::Physical, Attribute::MultiHit(2)],
-            SkillType::DefensiveForm => vec![Attribute::Defensive],
+            SkillType::SwordStrike => vec![SkillAttribute::Physical],
+            SkillType::DuelStrike => vec![SkillAttribute::Physical, SkillAttribute::MultiHit(2)],
+            SkillType::DefensiveForm => vec![SkillAttribute::Defensive],
             SkillType::SwordSummoning => vec![
-                Attribute::Physical,
-                Attribute::Magic,
-                Attribute::AreaOfEffect,
-                Attribute::MultiHit(5),
+                SkillAttribute::Magic,
+                SkillAttribute::AreaOfEffect,
+                SkillAttribute::MultiHit(5),
             ],
-            SkillType::TempestStrike => {
-                vec![Attribute::Physical, Attribute::Magic, Attribute::Wind]
+            SkillType::TempestStrike => vec![SkillAttribute::Physical, SkillAttribute::Wind],
+            SkillType::FlamingStrike => vec![SkillAttribute::Physical, SkillAttribute::Fire],
+            SkillType::FrozenStrike => vec![SkillAttribute::Physical, SkillAttribute::Ice],
+            SkillType::PiercingStrike => {
+                vec![SkillAttribute::ArmorPiercing, SkillAttribute::Physical]
             }
-            SkillType::FlamingStrike => {
-                vec![Attribute::Physical, Attribute::Magic, Attribute::Fire]
+            SkillType::LanceOfLight => vec![SkillAttribute::Physical, SkillAttribute::Light],
+            SkillType::Shield => vec![SkillAttribute::Defensive],
+            SkillType::DarkSpear => vec![SkillAttribute::Physical, SkillAttribute::Dark],
+            SkillType::DeathFromAbove => {
+                vec![SkillAttribute::Physical, SkillAttribute::AreaOfEffect]
             }
-            SkillType::FrozenStrike => vec![Attribute::Physical, Attribute::Magic, Attribute::Ice],
-            SkillType::PiercingStrike => vec![Attribute::ArmorPiercing, Attribute::Physical],
-            SkillType::LanceOfLight => {
-                vec![Attribute::Physical, Attribute::Magic, Attribute::Light]
-            }
-            SkillType::Shield => vec![Attribute::Defensive],
-            SkillType::DarkSpear => vec![Attribute::Magic, Attribute::Physical, Attribute::Dark],
-            SkillType::DeathFromAbove => vec![
-                Attribute::Magic,
-                Attribute::Physical,
-                Attribute::AreaOfEffect,
-            ],
         };
     }
 }
@@ -143,8 +149,8 @@ impl PromptOption for Skill {
 }
 
 /// Attributes describe a Skill and are used to determine effectiveness in battle
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub enum Attribute {
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub enum SkillAttribute {
     Magic,
     Physical,
     Fire,
@@ -163,25 +169,25 @@ pub enum Attribute {
     MultiHit(u16),
 }
 
-impl PromptOption for Attribute {
+impl PromptOption for SkillAttribute {
     fn option_name(&self) -> String {
         return String::from(match self {
-            Attribute::Magic => "Magic",
-            Attribute::Physical => "Physical",
-            Attribute::Fire => "Fire",
-            Attribute::Ice => "Ice",
-            Attribute::Electric => "Electric",
-            Attribute::Water => "Water",
-            Attribute::Wind => "Wind",
-            Attribute::Dark => "Dark",
-            Attribute::Light => "Light",
-            Attribute::Healing => "Healing",
-            Attribute::Defensive => "Defensive",
-            Attribute::MagicResistive => "Magic Resistive",
-            Attribute::DamageOverTime => "Damage Over Time",
-            Attribute::AreaOfEffect => "Area of Effect",
-            Attribute::ArmorPiercing => "Armor Piercing",
-            Attribute::MultiHit(_) => "Multi-Hit",
+            SkillAttribute::Magic => "Magic",
+            SkillAttribute::Physical => "Physical",
+            SkillAttribute::Fire => "Fire",
+            SkillAttribute::Ice => "Ice",
+            SkillAttribute::Electric => "Electric",
+            SkillAttribute::Water => "Water",
+            SkillAttribute::Wind => "Wind",
+            SkillAttribute::Dark => "Dark",
+            SkillAttribute::Light => "Light",
+            SkillAttribute::Healing => "Healing",
+            SkillAttribute::Defensive => "Defensive",
+            SkillAttribute::MagicResistive => "Magic Resistive",
+            SkillAttribute::DamageOverTime => "Damage Over Time",
+            SkillAttribute::AreaOfEffect => "Area of Effect",
+            SkillAttribute::ArmorPiercing => "Armor Piercing",
+            SkillAttribute::MultiHit(_) => "Multi-Hit",
         });
     }
 

@@ -3,7 +3,7 @@ use crate::{
     unit::{
         enemy::{Enemy, EnemyAttribute},
         player::Player,
-        skill::Skill,
+        skill::{Skill, SkillAttribute},
         stats::Stats,
     },
 };
@@ -49,28 +49,26 @@ impl PromptOption for PlayerTurnAction {
  * Starts a battle between player and enemies.
  * Returns true if the player won and false otherwise.
  */
-pub fn battle(player: &mut Player, enemies: &Vec<Enemy>) -> BattleResult {
+pub fn battle(_player: &mut Player, enemies: &Vec<Enemy>) -> BattleResult {
     if enemies[0].name == "Doom Incarnate" {
-        return final_boss_battle(player);
+        return final_boss_battle(_player);
     }
-    let mut player_in_battle = player_to_player_in_battle(player);
+    let mut player = player_to_player_in_battle(_player);
     let mut enemies = enemies.iter().map(enemy_to_enemy_in_battle).collect();
     'outer: loop {
         // perform player turns
-        let num_player_turns = calc_num_player_turns(&player_in_battle, &enemies);
+        let num_player_turns = calc_num_player_turns(&player, &enemies);
         for _ in 0..num_player_turns {
-            match get_turn_action(&player_in_battle, &enemies) {
+            match get_turn_action(&player, &enemies) {
                 PlayerTurnAction::TacticalRetreat => break 'outer,
-                PlayerTurnAction::Attack => {
-                    perform_player_attack(&player_in_battle, &mut enemies[0])
-                }
+                PlayerTurnAction::Attack => perform_player_attack(&player, &mut enemies[0]),
                 PlayerTurnAction::Skill(skill) => {
-                    player.skills.iter_mut().for_each(|s| {
+                    _player.skills.iter_mut().for_each(|s| {
                         if s.skill_type == skill.skill_type {
                             s.experience.skill_used();
                         }
                     });
-                    perform_player_skill(&player_in_battle, &mut enemies);
+                    perform_player_skill(&mut player, &mut enemies, &skill);
                 }
                 PlayerTurnAction::UnselectedSkill => panic!("cannot perform unselected skill"),
             }
@@ -81,8 +79,8 @@ pub fn battle(player: &mut Player, enemies: &Vec<Enemy>) -> BattleResult {
         }
         // perform enemy turns
         for enemy in &enemies {
-            perform_enemy_attack(enemy, &mut player_in_battle);
-            if player_in_battle.health == 0 {
+            perform_enemy_attack(enemy, &mut player);
+            if player.health == 0 {
                 break 'outer;
             }
         }
@@ -95,14 +93,14 @@ pub fn battle(player: &mut Player, enemies: &Vec<Enemy>) -> BattleResult {
             break 'outer;
         }
     }
-    if player_in_battle.health == 0 {
-        print_defeat_message(player, &enemies);
+    if player.health == 0 {
+        print_defeat_message(&player, &enemies);
         return BattleResult::Defeat;
     } else if enemies.is_empty() {
-        print_victory_message(player, &enemies);
+        print_victory_message(&player, &enemies);
         return BattleResult::Victory;
     } else {
-        print_retreat_message(player);
+        print_retreat_message(&player);
         return BattleResult::Retreat;
     }
 }
@@ -150,8 +148,31 @@ fn perform_player_attack(player: &PlayerInBattle, enemy: &mut EnemyInBattle) {
     println!("{} took {} damage!", enemy.name, damage);
 }
 
-fn perform_player_skill(player: &PlayerInBattle, enemies: &mut Vec<EnemyInBattle>) {
-    todo!()
+fn perform_player_skill(
+    player: &mut PlayerInBattle,
+    enemies: &mut Vec<EnemyInBattle>,
+    skill: &Skill,
+) {
+    println!("{} used {}!", player.name, skill.option_name());
+    // TODO: handle damage from skills
+    // TODO: increase skills effects with level
+    // TODO: use SkillAttributes and EnemyAttributes to determine effectiveness of attacking skills
+    if skill.has_attribute(SkillAttribute::Healing) {
+        let heal = std::cmp::min(
+            player.stats.magic * skill.experience.level / 4,
+            player.stats.max_health - player.health,
+        );
+        player.health += heal;
+        println!("{} healed for {} health!", player.name, heal);
+    }
+    if skill.has_attribute(SkillAttribute::MagicResistive) {
+        player.bonus_magic_resist += skill.experience.level;
+        println!("{} gained magic resistance!", player.name);
+    }
+    if skill.has_attribute(SkillAttribute::Defensive) {
+        player.bonus_defense += skill.experience.level;
+        println!("{} gained defense!", player.name);
+    }
 }
 
 fn calc_num_player_turns(player: &PlayerInBattle, enemies: &Vec<EnemyInBattle>) -> usize {
@@ -183,7 +204,7 @@ fn apply_damage(health: u16, damage: u16) -> u16 {
     return std::cmp::min(health, damage);
 }
 
-fn print_defeat_message(player: &Player, enemies: &Vec<EnemyInBattle>) {
+fn print_defeat_message(player: &PlayerInBattle, enemies: &Vec<EnemyInBattle>) {
     if enemies.iter().find(|e| e.name == "Shrek").is_some() {
         println!("{}\n{}", ASCII_SHREK, "GAME OGRE");
     } else {
@@ -191,13 +212,13 @@ fn print_defeat_message(player: &Player, enemies: &Vec<EnemyInBattle>) {
     }
 }
 
-fn print_victory_message(player: &Player, enemies: &Vec<EnemyInBattle>) {
+fn print_victory_message(player: &PlayerInBattle, enemies: &Vec<EnemyInBattle>) {
     for enemy in enemies {
         println!("{} defeated {}!", player.name, enemy.name);
     }
 }
 
-fn print_retreat_message(player: &Player) {
+fn print_retreat_message(player: &PlayerInBattle) {
     println!("{} retreated successfully.", player.name);
 }
 
