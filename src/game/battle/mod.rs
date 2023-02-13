@@ -1,6 +1,11 @@
 use crate::{
     prompt::{get_optional_selection_from_options, get_selection_from_options, PromptOption},
-    unit::{enemy::Enemy, player::Player, skill::Skill},
+    unit::{
+        enemy::{Enemy, EnemyAttribute},
+        player::Player,
+        skill::Skill,
+        stats::Stats,
+    },
 };
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -48,43 +53,53 @@ pub fn battle(player: &mut Player, enemies: &Vec<Enemy>) -> BattleResult {
     if enemies[0].name == "Doom Incarnate" {
         return final_boss_battle(player);
     }
-    let mut player_health = player.stats.max_health;
-    let mut enemy_health: Vec<u16> = enemies.iter().map(|e| e.stats.max_health).collect();
-    let mut mutable_enemies = enemies.clone();
+    let mut player_in_battle = player_to_player_in_battle(player);
+    let mut enemies = enemies.iter().map(enemy_to_enemy_in_battle).collect();
     'outer: loop {
-        // player attacks first
-        let num_player_turns = calc_num_player_turns(player, &mutable_enemies);
+        // perform player turns
+        let num_player_turns = calc_num_player_turns(&player_in_battle, &enemies);
         for _ in 0..num_player_turns {
-            match get_turn_action(player, &mutable_enemies) {
+            match get_turn_action(&player_in_battle, &enemies) {
                 PlayerTurnAction::TacticalRetreat => break 'outer,
-                PlayerTurnAction::Attack => todo!(),
-                PlayerTurnAction::Skill(skill) => todo!(),
+                PlayerTurnAction::Attack => {
+                    perform_player_attack(&player_in_battle, &mut enemies[0])
+                }
+                PlayerTurnAction::Skill(skill) => {
+                    player.skills.iter_mut().for_each(|s| {
+                        if s.skill_type == skill.skill_type {
+                            s.experience.skill_used();
+                        }
+                    });
+                    perform_player_skill(&player_in_battle, &mut enemies);
+                }
                 PlayerTurnAction::UnselectedSkill => panic!("cannot perform unselected skill"),
             }
-            let mut i = 0;
-            while i < mutable_enemies.len() {
-                if enemy_health[i] == 0 {
-                    mutable_enemies.remove(i);
-                    enemy_health.remove(i);
-                } else {
-                    i += 1;
-                }
-            }
-        }
-        // perform enemy turns
-        for enemy in &mutable_enemies {
-            let damage_to_player = calc_enemy_attack_damage(enemy, player);
-            player_health -= damage_to_player;
-            if player_health == 0 {
+            enemies = enemies.into_iter().filter(|e| e.health > 0).collect();
+            if enemies.is_empty() {
                 break 'outer;
             }
         }
+        // perform enemy turns
+        for enemy in &enemies {
+            perform_enemy_attack(enemy, &mut player_in_battle);
+            if player_in_battle.health == 0 {
+                break 'outer;
+            }
+        }
+        // apply DOT effects
+        for enemy in &mut enemies {
+            enemy.health = apply_damage(enemy.health, enemy.dot_per_turn);
+        }
+        enemies = enemies.into_iter().filter(|e| e.health > 0).collect();
+        if enemies.is_empty() {
+            break 'outer;
+        }
     }
-    if player_health == 0 {
-        print_defeat_message(player, enemies);
+    if player_in_battle.health == 0 {
+        print_defeat_message(player, &enemies);
         return BattleResult::Defeat;
-    } else if mutable_enemies.is_empty() {
-        print_victory_message(player, enemies);
+    } else if enemies.is_empty() {
+        print_victory_message(player, &enemies);
         return BattleResult::Victory;
     } else {
         print_retreat_message(player);
@@ -92,17 +107,15 @@ pub fn battle(player: &mut Player, enemies: &Vec<Enemy>) -> BattleResult {
     }
 }
 
-fn get_turn_action(player: &Player, enemies: &Vec<Enemy>) -> PlayerTurnAction {
+fn get_turn_action(player: &PlayerInBattle, enemies: &Vec<EnemyInBattle>) -> PlayerTurnAction {
+    let mut action_options = vec![PlayerTurnAction::Attack, PlayerTurnAction::TacticalRetreat];
+    if !player.skills.is_empty() {
+        action_options.push(PlayerTurnAction::UnselectedSkill);
+    }
     loop {
-        println!("You are attacking {}", enemies[0].name);
-        let mut turn_action = get_selection_from_options(
-            String::from("What will you do?"),
-            &vec![
-                PlayerTurnAction::Attack,
-                PlayerTurnAction::UnselectedSkill,
-                PlayerTurnAction::TacticalRetreat,
-            ],
-        );
+        println!("You are attacking {}.", enemies[0].name);
+        let mut turn_action =
+            get_selection_from_options(String::from("What will you do?"), &action_options);
         if let PlayerTurnAction::UnselectedSkill = turn_action {
             let skill = get_optional_selection_from_options(
                 String::from("Which skill will you use?"),
@@ -118,7 +131,30 @@ fn get_turn_action(player: &Player, enemies: &Vec<Enemy>) -> PlayerTurnAction {
     }
 }
 
-fn calc_num_player_turns(player: &Player, enemies: &Vec<Enemy>) -> usize {
+fn perform_enemy_attack(enemy: &EnemyInBattle, player: &mut PlayerInBattle) {
+    println!("{} attacked!", enemy.name);
+    let mut bonus_defense_stat = player.bonus_defense as f32;
+    if enemy.stats.magic > enemy.stats.strength {
+        bonus_defense_stat = player.bonus_magic_resist as f32;
+    }
+    let damage = (calc_attack_damage(&enemy.stats, &player.stats) as f32
+        / (bonus_defense_stat + 1.0)) as u16;
+    player.health -= apply_damage(damage, player.health);
+    println!("{} took {} damage!", player.name, damage);
+}
+
+fn perform_player_attack(player: &PlayerInBattle, enemy: &mut EnemyInBattle) {
+    println!("{} attacked!", player.name);
+    let damage = calc_attack_damage(&player.stats, &enemy.stats);
+    enemy.health -= apply_damage(damage, enemy.health);
+    println!("{} took {} damage!", enemy.name, damage);
+}
+
+fn perform_player_skill(player: &PlayerInBattle, enemies: &mut Vec<EnemyInBattle>) {
+    todo!()
+}
+
+fn calc_num_player_turns(player: &PlayerInBattle, enemies: &Vec<EnemyInBattle>) -> usize {
     let enemy_speed: u16 =
         enemies.iter().map(|e| e.stats.speed).sum::<u16>() / enemies.len() as u16;
     let player_speed = player.stats.speed;
@@ -129,11 +165,25 @@ fn calc_num_player_turns(player: &Player, enemies: &Vec<Enemy>) -> usize {
     return num_turns;
 }
 
-fn calc_enemy_attack_damage(enemy: &Enemy, player: &Player) -> u16 {
-    todo!()
+fn calc_attack_damage(attacker_stats: &Stats, defender_stats: &Stats) -> u16 {
+    let mut attack_stat = attacker_stats.strength;
+    let mut defense_stat = defender_stats.defense;
+    if attacker_stats.magic > attacker_stats.strength {
+        attack_stat = attacker_stats.magic;
+        defense_stat = defender_stats.magic_resist;
+    }
+    return calc_damage_from_stats(attack_stat, defense_stat);
 }
 
-fn print_defeat_message(player: &Player, enemies: &Vec<Enemy>) {
+fn calc_damage_from_stats(attack_stat: u16, defense_stat: u16) -> u16 {
+    return (attack_stat / 2) - (defense_stat / 4);
+}
+
+fn apply_damage(health: u16, damage: u16) -> u16 {
+    return std::cmp::min(health, damage);
+}
+
+fn print_defeat_message(player: &Player, enemies: &Vec<EnemyInBattle>) {
     if enemies.iter().find(|e| e.name == "Shrek").is_some() {
         println!("{}\n{}", ASCII_SHREK, "GAME OGRE");
     } else {
@@ -141,7 +191,7 @@ fn print_defeat_message(player: &Player, enemies: &Vec<Enemy>) {
     }
 }
 
-fn print_victory_message(player: &Player, enemies: &Vec<Enemy>) {
+fn print_victory_message(player: &Player, enemies: &Vec<EnemyInBattle>) {
     for enemy in enemies {
         println!("{} defeated {}!", player.name, enemy.name);
     }
@@ -160,8 +210,46 @@ fn final_boss_battle(player: &Player) -> BattleResult {
     println!("You find the strange rock you picked up in The Kingdom and decide to throw it into the fog...");
     println!("Doom Incarnate:");
     println!("\"Hey, I've been looking for this thing for centuries! I dropped it so long ago I thought I'd never see it again.");
-    println!("Thanks {}, I guess I misjudged you. I'll go back to sleep for a couple centuries and wait until you're long gone before I come back and destroy the world.", player.name);
+    println!("Thanks {}, I guess I misjudged you. I'll go back to sleep for a couple centuries and wait until you're long gone before I come back and destroy the world.\"", player.name);
     return BattleResult::Victory;
+}
+
+struct EnemyInBattle {
+    name: String,
+    health: u16,
+    stats: Stats,
+    attributes: Vec<EnemyAttribute>,
+    dot_per_turn: u16,
+}
+
+fn enemy_to_enemy_in_battle(enemy: &Enemy) -> EnemyInBattle {
+    return EnemyInBattle {
+        name: enemy.name.clone(),
+        health: enemy.stats.max_health,
+        stats: enemy.stats.clone(),
+        attributes: enemy.attributes.clone(),
+        dot_per_turn: 0,
+    };
+}
+
+struct PlayerInBattle {
+    name: String,
+    health: u16,
+    stats: Stats,
+    skills: Vec<Skill>,
+    bonus_defense: u16,
+    bonus_magic_resist: u16,
+}
+
+fn player_to_player_in_battle(player: &Player) -> PlayerInBattle {
+    return PlayerInBattle {
+        name: player.name.clone(),
+        health: player.stats.max_health,
+        stats: player.stats.clone(),
+        skills: player.skills.clone(),
+        bonus_defense: 0,
+        bonus_magic_resist: 0,
+    };
 }
 
 const ASCII_SHREK: &str = "⢀⡴⠑⡄⠀⠀⠀⠀⠀⠀⠀⣀⣀⣤⣤⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ 

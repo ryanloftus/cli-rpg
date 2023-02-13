@@ -14,7 +14,7 @@ pub enum EnemyDifficulty {
     Special,
 }
 
-/// used to determine the weaknesses of enemies
+/// used to determine the strengths and weaknesses of enemies
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum EnemyAttribute {
     Hot,
