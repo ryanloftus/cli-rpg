@@ -49,12 +49,12 @@ impl PromptOption for PlayerTurnAction {
  * Starts a battle between player and enemies.
  * Returns true if the player won and false otherwise.
  */
-pub fn battle(_player: &mut Player, enemies: &Vec<Enemy>) -> BattleResult {
-    if enemies[0].name == "Doom Incarnate" {
+pub fn battle(_player: &mut Player, _enemies: &Vec<Enemy>) -> BattleResult {
+    if _enemies[0].name == "Doom Incarnate" {
         return final_boss_battle(_player);
     }
     let mut player = player_to_player_in_battle(_player);
-    let mut enemies = enemies.iter().map(enemy_to_enemy_in_battle).collect();
+    let mut enemies = _enemies.iter().map(enemy_to_enemy_in_battle).collect();
     'outer: loop {
         // perform player turns
         let num_player_turns = calc_num_player_turns(&player, &enemies);
@@ -97,7 +97,7 @@ pub fn battle(_player: &mut Player, enemies: &Vec<Enemy>) -> BattleResult {
         print_defeat_message(&player, &enemies);
         return BattleResult::Defeat;
     } else if enemies.is_empty() {
-        print_victory_message(&player, &enemies);
+        print_victory_message(&player, _enemies); // TODO: print enemy defeated message when enemy is defeated, rather all at the end
         return BattleResult::Victory;
     } else {
         print_retreat_message(&player);
@@ -178,10 +178,11 @@ fn perform_player_skill(
 fn calc_num_player_turns(player: &PlayerInBattle, enemies: &Vec<EnemyInBattle>) -> usize {
     let enemy_speed: u16 =
         enemies.iter().map(|e| e.stats.speed).sum::<u16>() / enemies.len() as u16;
-    let player_speed = player.stats.speed;
+    let mut player_speed = player.stats.speed;
     let mut num_turns = 1;
     while player_speed > enemy_speed * 2 {
         num_turns += 1;
+        player_speed /= 2;
     }
     return num_turns;
 }
@@ -197,7 +198,9 @@ fn calc_attack_damage(attacker_stats: &Stats, defender_stats: &Stats) -> u16 {
 }
 
 fn calc_damage_from_stats(attack_stat: u16, defense_stat: u16) -> u16 {
-    return (attack_stat / 2) - (defense_stat / 4);
+    let attack_power = attack_stat / 2;
+    let defense_power = std::cmp::min(defense_stat / 4, attack_power);
+    return attack_power - defense_power;
 }
 
 fn apply_damage(health: u16, damage: u16) -> u16 {
@@ -212,7 +215,7 @@ fn print_defeat_message(player: &PlayerInBattle, enemies: &Vec<EnemyInBattle>) {
     }
 }
 
-fn print_victory_message(player: &PlayerInBattle, enemies: &Vec<EnemyInBattle>) {
+fn print_victory_message(player: &PlayerInBattle, enemies: &Vec<Enemy>) {
     for enemy in enemies {
         println!("{} defeated {}!", player.name, enemy.name);
     }

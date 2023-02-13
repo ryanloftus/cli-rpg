@@ -81,7 +81,11 @@ pub fn play_game() {
 }
 
 fn get_player_action(player: &Player) -> PlayerAction {
-    return if player.story_progress.current_area_progress == 0 {
+    return if player.story_progress.areas_completed == 0
+        && player.story_progress.current_area_progress == 0
+    {
+        PlayerAction::EnterNextArea
+    } else if player.story_progress.current_area_progress == 0 {
         get_action_after_area_completed()
     } else {
         get_action_after_area_left()
@@ -128,6 +132,7 @@ fn do_story(player: &mut Player, area: Area) -> AreaResult {
                     .iter()
                     .map(|sc| match sc {
                         StoryComponent::Enemy(enemy) => enemy.clone(),
+                        StoryComponent::TutorialBattle(enemy) => enemy.clone(),
                         _ => panic!(),
                     })
                     .collect();
