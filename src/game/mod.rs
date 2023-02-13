@@ -136,6 +136,7 @@ fn do_story(player: &mut Player, area: Area) -> AreaResult {
                         player.gain_xp(XpGainAction::EnemiesDefeated(enemies.clone()))
                     }
                     BattleResult::Defeat => return AreaResult::PlayerWasDefeated,
+                    BattleResult::Retreat => continue,
                 }
                 enemies.len()
             }
@@ -144,6 +145,7 @@ fn do_story(player: &mut Player, area: Area) -> AreaResult {
                 match battle(player, &enemies) {
                     BattleResult::Victory => player.gain_xp(XpGainAction::EnemiesDefeated(enemies)),
                     BattleResult::Defeat => return AreaResult::PlayerWasDefeated,
+                    BattleResult::Retreat => continue,
                 }
                 1
             }
@@ -165,11 +167,8 @@ fn train(player: &mut Player, area: Area) -> AreaResult {
             StoryComponentAction::ShowPlayerInfo => player.print_summary(),
             StoryComponentAction::Battle(num_enemies) => {
                 let enemies = &area.generate_training_enemies(num_enemies, player.experience.level);
-                match battle(player, enemies) {
-                    BattleResult::Victory => {
-                        player.gain_xp(XpGainAction::EnemiesDefeated(enemies.clone()))
-                    }
-                    BattleResult::Defeat => {}
+                if battle(player, enemies) == BattleResult::Victory {
+                    player.gain_xp(XpGainAction::EnemiesDefeated(enemies.clone()));
                 }
             }
             StoryComponentAction::LeaveArea => return AreaResult::LeftArea,
